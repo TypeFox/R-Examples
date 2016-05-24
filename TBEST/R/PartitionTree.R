@@ -1,0 +1,169 @@
+PartitionTree<-function(x,siglevel=0.05,statname="fldc",sigtype=c("raw","corrected","fdr")){
+	clusterobj<-x	
+	data<-clusterobj$data
+	indextable<-clusterobj$indextable
+	jointcounts<-data.matrix(indextable[,as.character(paste("p",statname,sep=""))])
+	colnames(jointcounts)<-statname
+	candpack<-vector("list",length(statname))
+	names(candpack)<-statname
+	sigtype<-match.arg(sigtype)
+	mypmatrix<-matrix(nrow=nrow(indextable),ncol=2,data=0)
+	mypmatrix[,1]<-1:nrow(indextable)
+	p<-indextable[,paste("p",statname,sep="")]
+	op<-options(warn=-1)
+	if(sigtype=="raw"){
+		sigp<-siglevel
+		mypmatrix[,2]<-p
+	}
+	if(sigtype=="fdr"){
+		qobj<-fdrtool::fdrtool(p[!is.na(p)], statistic="pvalue",plot=FALSE,verbose=FALSE)
+		jointcounts[,statname]<-qobj$qval
+		sigp<-siglevel
+		mypmatrix[,2]<-qobj$qval
+	}
+	if(sigtype=="corrected"){
+		sigp<- 1-(1-siglevel)^(1/(nrow(data)-2))
+		mypmatrix[,2]<- 1-(1-p)^(nrow(data)-2)
+	}
+	dimnames(mypmatrix)[[2]]<-c("branch_index",sigtype)
+	if(substring(statname,first=1,last=1)=="f")
+		candidates<-which(jointcounts[,statname]<sigp) #forward derivatives
+	if(substring(statname,first=1,last=1)!="f")
+		candidates<-c(indextable[jointcounts[,statname]<sigp,"index1"],
+			indextable[jointcounts[,statname]<sigp,"index2"]) #backward derivatives
+	candidates<-candidates[!is.na(candidates)]
+	if(length(candidates)>0){
+		induced<-rep(0,length(candidates))
+		lind<-0
+		gain<-1
+		while(gain!=0){
+			gain<-0	
+			newc<-NULL
+			cind<-NULL
+		for(firstsplit in c(nrow(indextable),indextable[nrow(indextable),"index1"],indextable[nrow(indextable),"index2"])){
+		if(firstsplit>0){
+		if(indextable[firstsplit,"index1"]%in%candidates&
+			!(indextable[firstsplit,"index2"]%in%candidates)){
+				gain<-1
+				lind<-lind+1
+				newc<-c(newc,indextable[firstsplit,"index2"])
+		}
+		if(indextable[firstsplit,"index2"]%in%candidates&
+			!(indextable[firstsplit,"index1"]%in%candidates)){
+				gain<-1
+				lind<-lind+1
+				newc<-c(newc,indextable[firstsplit,"index1"])
+		}
+		}
+		}
+		for(i in 1:length(candidates))if(candidates[i]>0){
+			if(indextable[candidates[i],"index1"]%in%candidates&
+			!(indextable[candidates[i],"index2"]%in%candidates)){
+				gain<-1
+				lind<-lind+1
+				newc<-c(newc,indextable[candidates[i],"index2"])
+		}
+		if(indextable[candidates[i],"index2"]%in%candidates&
+			!(indextable[candidates[i],"index1"]%in%candidates)){
+				gain<-1
+				lind<-lind+1
+				newc<-c(newc,indextable[candidates[i],"index1"])
+		}
+	}
+	if(!is.null(newc))candidates<-c(candidates,newc)
+}
+if(lind!=0)cind<-candidates[(length(candidates)-lind+1):length(candidates)]
+singles<-candidates[candidates<0]
+candidates<-candidates[candidates>0]
+candidates<-c(singles,candidates[order(indextable[candidates,"clustersize"])])
+induced<-rep(0,length(candidates))
+induced[!is.na(match(candidates,cind))]<-1
+ancestry<-vector("list",length(candidates))
+membership<-vector("list",length(candidates[candidates>0]))
+for(i in 1:length(candidates)){
+	ancestry[[i]]<-candidates[i]
+	parent<-candidates[i]
+	while(parent<nrow(indextable)){
+		m<-match(parent,indextable[,"index1"])
+		if(is.na(m))m<-match(parent,indextable[,"index2"])
+		#if(indextable[m,pname]<sigp)ancestry[[i]]<-c(ancestry[[i]],m)
+		if(m%in%candidates)ancestry[[i]]<-c(ancestry[[i]],m)
+		parent<-m
+	}
+}
+newcandidates<-candidates[candidates>0]
+for(i in 1:length(newcandidates)){
+	myfamily<-newcandidates[i]
+	nmem<-0
+	while(nmem<indextable[newcandidates[i],"clustersize"]){
+		membership[[i]]<-unique(c(myfamily,indextable[myfamily,"index1"],
+			indextable[myfamily,"index2"]))
+		myfamily<-membership[[i]][membership[[i]]>0]
+		nmem<-sum(membership[[i]]<0)
+		}
+	membership[[i]]<-(-membership[[i]][membership[[i]]<0])
+}
+anflat<-sort(unlist(ancestry))
+irreducible<-unique(anflat)[match(unique(anflat),anflat)==length(anflat)+1-match(unique(anflat),rev(anflat))]
+candpack[[statname]]<-list(candidates,irreducible,induced,ancestry,membership)
+names(candpack[[statname]])<-c("candidate","irreducible","induced","ancestry",
+"membership")
+}	
+rm(m,parent,ancestry,myfamily,nmem,membership,anflat,candidates,irreducible,
+induced,lind,singles,newc,gain,i)
+nitem<-nrow(data)
+        myans<-candpack[[statname]][["ancestry"]]
+        allast<-NULL
+        for(i in 1:length(myans))
+                allast<-c(allast,myans[[i]][length(myans[[i]])])
+        allast<-unique(allast)
+        failure<-0
+        if(length(allast)!=0){
+        if(sum(indextable[allast[allast>0],"clustersize"])<nitem){
+                failure<-length(allast)}
+        }
+        while(failure<length(allast)){
+                for(j in 1:length(allast)){
+                        newans<-myans
+                        for(i in 1:length(newans))if(length(newans[[i]])>0)
+                                if(newans[[i]][length(newans[[i]])]==allast[j])
+                                        newans[[i]]<-newans[[i]][-length(newans[[i]])]
+                        newlast<-NULL
+                        for(i in 1:length(newans)) newlast<-
+                                c(newlast,newans[[i]][length(newans[[i]])])
+                        newlast<-unique(newlast)
+                        newlast<-newlast[newlast>0]
+                        if(sum(indextable[newlast,"clustersize"])==nitem){
+                                failure<-0
+                                myans<-newans
+                                allast<-newlast
+                                break
+                        }
+                        failure<-failure+1
+                }
+        }
+        candpack[[statname]]$detpart<-allast
+rm(myans,allast,i,j,failure,newans,newlast,nitem)
+m<-match(candpack[[statname]]$detpart,
+	candpack[[statname]]$candidate[candpack[[statname]]$candidate>0])
+names<-rep(0,nrow(data))
+for(i in 1:length(candpack[[statname]]$detpart)){
+	names[candpack[[statname]]$membership[[m[i]]]]<-
+		candpack[[statname]]$detpart[i]
+}
+mytypes<-names
+mytypes<-data.frame(cbind(dimnames(data)[[1]],as.numeric(mytypes)),stringsAsFactors=FALSE)
+mytypes[,2]<-as.numeric(mytypes[,2])
+dimnames(mytypes)[[2]]<-c("ID","index")
+mypartition<-vector(mode="list",length=4)
+names(mypartition)<-c("Call","best","sigvalue","partition")
+mypartition$Call<-match.call()
+mypartition$best<-x
+#mypartition$statistic<-statname
+mypartition$sigvalue<-mypmatrix
+if(all(mytypes[,2]>0)){mypartition$partition<-mytypes
+}else{mypartition$partition<-mytypes;mypartition$partition[,2]<-nrow(mytypes)-1}
+class(mypartition)<-"partition"
+options(op)
+return(mypartition)
+}

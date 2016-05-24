@@ -1,0 +1,30 @@
+integrator2<-function(init,l,m,psi,times,rtol,atol,migr){
+	ode<-function(times,y,p){
+		lambda11<-p[1]
+		lambda12<-p[2]
+		lambda21<-p[3]
+		lambda22<-p[4]
+		mu1<-p[5]
+		mu2<-p[6]
+		psi1<-p[7]
+		psi2<-p[8]
+		
+		if (migr==0){
+		yd1<-mu1-(lambda11+lambda12+mu1+psi1)*y[1]+lambda11*y[1]*y[1]+lambda12*y[1]*y[2]
+		yd2<-mu2-(lambda21+lambda22+mu2+psi2)*y[2]+lambda21*y[1]*y[2]+lambda22*y[2]*y[2]
+		}
+		if (migr==1){
+		yd1<-mu1-(lambda11+lambda12+mu1+psi1)*y[1]+lambda11*y[1]*y[1]+lambda12*y[2]
+		yd2<-mu2-(lambda21+lambda22+mu2+psi2)*y[2]+lambda21*y[1]+lambda22*y[2]*y[2]
+		}
+		#3.4.14
+		if (migr==2) {  #SEIR 1 is E, 2 is I
+		yd1<- mu1-(lambda12)*y[1]+lambda12*y[2]
+		yd2<- mu2-(lambda21+mu2+psi2)*y[2]+lambda21*y[1]*y[2]
+		}
+		list(c(yd1,yd2))
+	}
+	p<-c(l,m,psi)
+	out<-lsoda(init,times,ode,p,rtol=rtol,atol=atol)[2,2:3]
+	out
+}

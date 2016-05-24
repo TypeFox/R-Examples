@@ -1,0 +1,20 @@
+context("trafo_results")
+
+test_that("we can trafo with bj", {
+  reg = makeTestRegistry()
+  p1 = addProblem(reg, "p1", 1)
+  a1 = addAlgorithm(reg, id="a1", fun=function(static, dynamic) static)
+  a2 = addAlgorithm(reg, id="a2", fun=function(static, dynamic, a) static+a)
+  ad2 = makeDesign(a2, exhaustive=list(a=1:2))
+  addExperiments(reg, algo.designs=list(makeDesign("a1"), ad2))
+  submitJobs(reg)
+  waitForJobs(reg)
+  y1 = loadResults(reg, simplify=TRUE)
+
+  reg2 = makeRegistry(id="foo", file.dir = tf())
+  batchMapResults(reg, reg2, fun=function(job, res) res*2)
+  submitJobs(reg2)
+  waitForJobs(reg2)
+  y2 = loadResults(reg2, simplify=TRUE)
+  expect_equal(2*y1, y2, check.names=FALSE)
+})

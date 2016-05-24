@@ -1,0 +1,69 @@
+#global AFM2
+if(inherits(x,"MFAshiny")){
+  ligne=x$ligne
+  code=x$code
+  nomData=x$nom
+  axe1=x$axe1#
+  axe2=x$axe2#
+  ind1=x$ind1#
+  ind2=x$ind2#
+  ind3=x$ind3#
+  ind4=x$ind4#
+  drawing=x$drawing#
+  drawing2=x$drawing2
+  partial=x$partial#
+  partial2=x$partial2#
+  partial3=x$partial3#
+  selectvar=x$selectvar#
+  selectvar2=x$selectvar2
+  hide=x$hide#
+  colorvar=x$colorvar#
+  freq1=x$freq1#
+  freq2=x$freq2#
+  partaxe=x$partaxe#
+  title1=x$title1
+  title2=x$title2
+  title3=x$title3
+  title4=x$title4
+  title5=x$title5
+}
+if(inherits(x,"MFA")){
+  ligne=x$call$call
+  code=x
+  axe1=1
+  axe2=2
+  ind1=TRUE
+  ind2=TRUE
+  ind3=TRUE
+  ind4=TRUE
+  drawing="a"
+  drawing2=NULL
+  partial=1
+  partial2=NULL
+  partial3=FALSE
+  selectvar="no"
+  selectvar2=NULL
+  hide="non"
+  colorvar=TRUE
+  freq1=TRUE
+  freq2=TRUE
+  partaxe=TRUE
+  title1="Groups representation"
+  title2="Individual factor map"
+  title3="Correlation circle"
+  title4="Partial axes"
+  title5="Frequencies"
+}
+nameJDD=nomData
+nom=rownames(code$ind$coord)
+num=c(1:dim(code$ind$coord)[1])
+data=code$global.pca$call$X
+### Recherche des variables quali
+quanti=names(which(sapply(data,is.numeric)))
+quali=names(which(!(sapply(data,is.numeric))))
+VariableChoices=quanti
+nom=rownames(data)
+num=c(1:length(nom))
+QualiChoice=quali
+IdChoices=c(1:length(VariableChoices))
+Idqualisup=c(1:length(QualiChoice))

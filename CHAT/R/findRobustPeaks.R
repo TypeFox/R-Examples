@@ -1,0 +1,33 @@
+findRobustPeaks<-function(fit,thr=1.5){
+	x<-fit$x1
+	y<-fit$dens
+	p<-fit$y
+	peaks<-getPeaks(x,y)
+	vpeaks<-getPeaks(x,-y)
+	vpeaks[,2]<-abs(vpeaks[,2])
+	rownames(peaks)<-rep(1,nrow(peaks))
+	rownames(vpeaks)<-rep(0,nrow(vpeaks))
+	Pmat<-rbind(peaks,vpeaks)
+	if(nrow(Pmat)>1)Pmat<-Pmat[order(Pmat[,1],decreasing=TRUE),]
+	Pmat<-rbind(c(1,0),Pmat,c(0,0))
+	rownames(Pmat)[1]<-0
+	rownames(Pmat)[nrow(Pmat)]<-0
+	ppos<-which(rownames(Pmat)==1)
+	PA<-rep(NA,length(fit$y))
+	np<-1
+	for(k in ppos){
+		hp<-Pmat[k,2]
+		hv1<-Pmat[k-1,2]
+		hv2<-Pmat[k+1,2]
+		hv<-max(hv1,hv2)
+		if(hp>thr*hv){
+			low.lim<-Pmat[k+1,1]+0.005
+			up.lim<-Pmat[k-1,1]-0.005
+			vv<-which(p>low.lim&p<up.lim)
+			if(length(vv)==0)next
+			PA[vv]<-np
+			np<-np+1
+		}
+	}
+	return(PA)
+}

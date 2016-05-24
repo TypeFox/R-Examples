@@ -1,0 +1,6 @@
+data(bmw)
+data(siemens)
+plot(bmw, siemens)
+out <- gpdbiv(-bmw, -siemens, ne1 = 100, ne2 = 100)
+interpret.gpdbiv(out, 0.05, 0.05)
+plot(out)

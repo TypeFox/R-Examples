@@ -1,0 +1,5 @@
+context("basic tests")
+expect_identical(listWithDefaults(defaultList=list(a=2,b=2)),list(a=2,b=2))
+expect_identical(listWithDefaults(a=1,defaultList=list(a=2,b=2)),list(a=1,b=2))
+expect_identical(listWithDefaults(b=1,defaultList=list(a=2,b=2)),list(b=1,a=2))
+expect_identical(listWithDefaults(a=1,b=1,defaultList=list(a=2,b=2)),list(a=1,b=1))

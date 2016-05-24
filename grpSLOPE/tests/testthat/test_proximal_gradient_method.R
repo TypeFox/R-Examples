@@ -1,0 +1,104 @@
+library(grpSLOPE)
+
+context("proxSortedL1()")
+
+y   <- 12:2
+lam <- log(y)
+sol <- c(9.515093350,8.602104727,7.697414907,6.802775423,5.920558458, 5.054089851,
+         4.208240531,3.390562088,2.613705639,1.901387711,1.306852819)
+
+test_that("the prox is evaluated correctly", {
+  x <- proxSortedL1(y = y, lambda = lam)
+  expect_equal(x, sol)
+})
+
+
+
+context("proxGroupSortedL1()")
+
+y   <- 1:10
+grp <- c(1,1,1,2,2,2,3,3,3,4)
+sol <- c(0, 0, 0, 0.353261553, 0.441576942, 0.529892330, 
+         1.974292890, 2.256334731, 2.538376572, 1.0000000001)
+lam <- 10:1
+
+test_that("the prox is evaluated correctly with method='rcpp' when the groups are consequtive blocks", {
+  x   <- proxGroupSortedL1(y = y, group = grp, lambda = lam, method="rcpp")
+  expect_equal(x, sol)
+})
+
+test_that("the prox is evaluated correctly with method='rcpp' when the groups are not consequtive blocks", {
+  ord <- sample(y, 10)
+  x <- proxGroupSortedL1(y = y[ord], group = grp[ord], lambda = lam, method="rcpp")
+  expect_equal(x, sol[ord], tolerance=1e-6)
+})
+
+test_that("the prox is evaluated correctly with method='c' when the groups are consequtive blocks", {
+  x   <- proxGroupSortedL1(y = y, group = grp, lambda = lam, method="c")
+  expect_equal(x, sol)
+})
+
+test_that("the prox is evaluated correctly with method='c' when the groups are not consequtive blocks", {
+  ord <- sample(y, 10)
+  x <- proxGroupSortedL1(y = y[ord], group = grp[ord], lambda = lam, method="c")
+  expect_equal(x, sol[ord], tolerance=1e-6)
+})
+
+
+
+context("proximalGradientSolverGroupSLOPE()")
+
+# set.seed(1)
+# A <- matrix(runif(100, 0, 1), 10, 10)
+A.vec <- c(0.26550866314209997653961,0.37212389963679015636444,0.57285336335189640522003,0.90820778999477624893188,0.20168193103745579719543,0.89838968496769666671753,0.94467526860535144805908,0.66079779248684644699097,0.62911404389888048171997,0.06178627046756446361542,0.20597457489930093288422,0.17655675252899527549744,0.68702284665778279304504,0.38410371821373701095581,0.76984141999855637550354,0.49769924208521842956543,0.71761850826442241668701,0.99190609483048319816589,0.38003517943434417247772,0.77744522131979465484619,0.93470523110590875148773,0.21214252128265798091888,0.65167376608587801456451,0.12555509596131742000580,0.26722066872753202915192,0.38611409254372119903564,0.01339033315889537334442,0.38238795707002282142639,0.86969084572046995162964,0.34034899668768048286438,0.48208011547103524208069,0.59956582542508840560913,0.49354130704887211322784,0.18621760141104459762573,0.82737331860698759555817,0.66846673819236457347870,0.79423986072652041912079,0.10794362588785588741302,0.72371094604022800922394,0.41127442964352667331696,0.82094629411585628986359,0.64706019381992518901825,0.78293276228941977024078,0.55303631164133548736572,0.52971958019770681858063,0.78935623168945312500000,0.02333120233379304409027,0.47723006503656506538391,0.73231373867020010948181,0.69273155648261308670044,0.47761962213553488254547,0.86120947683230042457581,0.43809710722416639328003,0.24479727703146636486053,0.07067904714494943618774,0.09946616017259657382965,0.31627170718275010585785,0.51863426319323480129242,0.66200507641769945621490,0.40683018718846142292023,0.91287592425942420959473,0.29360337276011705398560,0.45906572625972330570221,0.33239467418752610683441,0.65087046707049012184143,0.25801678071729838848114,0.47854524827562272548676,0.76631067064590752124786,0.08424691436812281608582,0.87532133003696799278259,0.33907293784432113170624,0.83944035018794238567352,0.34668348915874958038330,0.33377493079751729965210,0.47635124507360160350800,0.89219833584502339363098,0.86433947063051164150238,0.38998954347334802150726,0.77732069883495569229126,0.96061799721792340278625,0.43465948477387428283691,0.71251467871479690074921,0.39999436889775097370148,0.32535215187817811965942,0.75708714802749454975128,0.20269225514493882656097,0.71112122246995568275452,0.12169192102737724781036,0.24548851395957171916962,0.14330437942408025264740,0.23962941509671509265900,0.05893437727354466915131,0.64228825853206217288971,0.87626921269111335277557,0.77891467744484543800354,0.79730882588773965835571,0.45527445361949503421783,0.41008408204652369022369,0.81087024277076125144958,0.60493329027667641639709)
+A   <- matrix(A.vec, 10, 10)
+grp <- c(0, 0, 1, 1, 2, 2, 2, 2, 2, 3)
+wt  <- c(2, 2, 2, 2, 5, 5, 5, 5, 5, 1)
+x   <- c(0, 0, 5, 1, 0, 0, 0, 1, 0, 3)
+y   <- A %*% x
+lam <- 0.1 * (10:7)
+sol <- c(0,0,3.856002988,2.080742942,0,0,0,0,0,3.512828045)
+
+test_that("it works correctly when the groups are consequtive blocks", {
+  result <- proximalGradientSolverGroupSLOPE(y=y, A=A, group=grp, wt=wt, lambda=lam, 
+                                             dual.gap.tol=1e-6, infeas.tol=1e-6, verbose=FALSE)
+  expect_equal(result$x, as.matrix(sol), tolerance=1e-4)
+  expect_identical(result$status, 1)
+  expect_is(result$L, "numeric")
+  expect_true(result$L > 0)
+  expect_is(result$iter, "numeric")
+  expect_true(result$iter > 1)
+  expect_is(result$L.iter, "numeric")
+  expect_true(result$L.iter >= result$iter)
+})
+
+test_that("it works correctly when the groups are not consequtive blocks", {
+  ord <- sample(1:10, 10)
+  result <- proximalGradientSolverGroupSLOPE(y=y, A=A[ , ord], group=grp[ord], wt=wt[ord],
+                                             lambda=lam, dual.gap.tol=1e-6, infeas.tol=1e-6, verbose=FALSE)
+  expect_equal(result$x, as.matrix(sol[ord]), tolerance=1e-4)
+  expect_identical(result$status, 1)
+  expect_is(result$L, "numeric")
+  expect_true(result$L > 0)
+  expect_is(result$iter, "numeric")
+  expect_true(result$iter > 1)
+  expect_is(result$L.iter, "numeric")
+  expect_true(result$L.iter >= result$iter)
+})
+
+test_that("solution is computed correctly when each group is a singleton", {
+  grp <- 1:10
+  lam <- 0.1*(10:1)
+  wt  <- rep(1, 10)
+  sol <- c(0.2036292051,0.2036292051,3.8097062299,0.8573736336,0.8573736336,
+           0.2036292051,0.2036292051,0.7057561857,0.2036292051,2.3940891644)
+  result <- proximalGradientSolverGroupSLOPE(y=y, A=A, group=grp, wt=wt, lambda=lam, 
+                                             dual.gap.tol=1e-6, infeas.tol=1e-6, verbose=FALSE)
+  expect_equal(result$x, as.matrix(sol), tolerance=1e-6)
+  expect_identical(result$status, 1)
+  expect_is(result$L, "numeric")
+  expect_true(result$L > 0)
+  expect_is(result$iter, "numeric")
+  expect_true(result$iter > 1)
+  expect_true(is.null(result$L.iter))
+})

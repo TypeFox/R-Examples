@@ -1,0 +1,4 @@
+getMicrosoftLanguages <-
+function(){
+    getLanguages('Microsoft')
+}

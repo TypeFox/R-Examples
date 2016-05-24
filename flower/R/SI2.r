@@ -1,0 +1,26 @@
+SI2<-function(dd,pop,ind){
+fls=as.factor(ind)
+pop=as.factor(pop)
+LL=levels(pop)
+a=length(LL)
+m=length(dd)
+DT=data.frame(pop,fls,dd)
+Result=array(0,dim=c(a,5))
+for (i in 1:a){
+DT2=DT[DT$pop==LL[i],][,]
+DDsub=as.matrix(DT2[,3:ncol(DT2)])
+DDind=as.matrix(DT2[,2])
+print(LL[i])
+AA=SI2_onepop(DDsub,DDind)
+rr0=length(AA)
+rr1=min(AA)
+rr2=max(AA)
+rr3=mean(AA)
+rr4=sd(AA)
+rr=cbind(rr0,rr1,rr2,rr3,rr4)
+Result[i,]=rr
+}
+rownames(Result)=LL
+colnames(Result)=c("n","min","max","mean","sd")
+(si=Result)
+}

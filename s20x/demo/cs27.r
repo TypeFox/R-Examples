@@ -1,0 +1,18 @@
+data (zoo.df)
+zoo.df
+pairs20x(zoo.df[c(2,1,3,6)])
+stripchart(attendance~nice.day,vert=T,pch=1,method="jitter",main="Attendance by nice day",data=zoo.df)
+stripchart(attendance~day.type,vert=T,pch=1,method="jitter",main="Attendance by day type",data=zoo.df)
+zoo.df<-within(zoo.df,{day.type1.<-factor(day.type)})
+zoo.fit<-lm(attendance~time+sun.yesterday+tv.ads+nice.day+day.type1.,data=zoo.df)
+eovcheck(zoo.fit)
+plot(residuals(zoo.fit)~fitted(zoo.fit),type="n",main="Residual plot (fitted) by day type")
+text(fitted(zoo.fit),residuals(zoo.fit),zoo.df$day.type1.)
+zoo.fit1<-lm(log(attendance)~time+sun.yesterday+tv.ads+nice.day+day.type1.,data=zoo.df)
+plot(residuals(zoo.fit1)~fitted(zoo.fit1),type="n",main="Residual plot (fitted) by day type")
+text(fitted(zoo.fit1),residuals(zoo.fit1),zoo.df$day.type1.)
+summary(zoo.fit1)
+cooks20x(zoo.fit1)
+normcheck(zoo.fit1)
+exp(ciReg(zoo.fit1))
+

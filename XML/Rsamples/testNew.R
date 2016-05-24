@@ -1,0 +1,10 @@
+library(XML)
+gctorture()
+doc = xmlParse("<mydoc><a><b><c>Some text</c></b><d>More text</d></a></mydoc>", asText = TRUE)
+node = newXMLNode("bob", newXMLNode("jane", "my new text"))
+addChildren(xmlRoot(doc)[["a"]], node)
+rm(node)
+gc()
+rm(doc)
+gc()
+

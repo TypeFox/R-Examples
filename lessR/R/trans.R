@@ -1,0 +1,5 @@
+trans <-
+function(...)
+
+  Transform(...)
+

@@ -1,0 +1,1 @@
+helpfunctionmultistate1 <- function(x, ef){sum(ef[x])}

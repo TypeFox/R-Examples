@@ -1,0 +1,5 @@
+"specopt" <-
+function(...){
+	new("specopt",...)
+}
+

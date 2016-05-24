@@ -1,0 +1,333 @@
+ft_gradientCasM <-
+function(fl,data1,N,gmname,gcname,yname,vecma.u,HW=TRUE)
+                   {
+                    # Arguments specifiques  la fonction
+                    # d: vecteur des proportion de cas et de temoins echantillonnes 
+                    # gmname: nom de la variable contenant le genotype de la mere
+                    # gcname: nom de la variable contenant le genotype de l enfant
+                    # varz: nom des vriable de l environement c("","")
+                    # ma.u est la matrice des parametre u  
+                    
+                    # creation de deux table une avec tous les donnees complet de c et l autre avec les seules c observables
+                      lstdat<-fctcd(data1,gcname,yname)
+                      datMod<-lstdat$datdmcp # data des donnees complets (tout ijm * 3)
+                      datNo<-lstdat$datnmv # data complet c'est-a-dire pour chaque patient nous avons ijmc
+                      datMv<-lstdat$datdm  # data complete c'est a dire pour chaque coupe ijm on donne toutes les combi de c
+                      datrmv<-lstdat$datmv # data de donnee manquantes 
+
+					# Nom des variables
+                      varz00<-all.vars(fl)
+                      # # noms des labels 
+                      varz0<-all.vars(fl)[-1];varz<-varz0[-which(varz0%in%c(gmname,gcname))]
+                      
+                    # A partie des donnees complet  
+                    # A.1-Generer la data.frame du modele
+                      cl<- model.frame(fl, data = datMod)
+                      vx <- model.matrix(fl,data=datMod)
+                    # extraction de la variable reponse
+                      outc<-model.extract(cl,"response")
+                    # Extraction du vecteur de genotypes de la mere
+                      gm <- vx[,gmname]
+                    # Extraction du vecteur de genotypes de l enfant
+                      gc <- vx[,gcname]
+                      vdcop<-datMod[,"vdcop"]
+                    
+                    # B partie des donnees imcomplet  
+                    # B.1-Generer le "frame" du modele
+#                      clb<- model.frame(fl, data = datrmv3)
+#                      vxb <- model.matrix(fl,data=datrmv3)
+                      clb<- model.frame(fl, data = datMv)
+                      vxb <- model.matrix(fl,data=datMv)
+                    # extarction de la variable reponse
+                      outcb<-model.extract(clb,"response")
+                    # Extraction du vecteur de genotypes de la mere
+                      gmb <- vxb[,gmname]
+                    # Extraction du vecteur de genotypes de lenfant
+                      gcb <- vxb[,gcname]
+                      vdcopb<-datMv[,"vdcop"]
+                      idm = datMv["id"]                      
+                    
+                    # noms des labels 
+                      varz0<-all.vars(fl)[-1];varz<-varz0[-which(varz0%in%c(gmname,gcname))]
+                    # les valeurs possibles du geotype de la mere
+                      gm1<-gm[is.na(gm)!=TRUE]
+                      frq<-unique(gm1);np1<-length(frq)
+                      noutc=as.character(terms.formula(fl)[[2]])
+                    # selon les cas il nous donne la fonction indique a utilise pour le genotype de la mere
+                      #indfg<-IndF3(gm)
+                      pp<-length(vecma.u)/2;ppd<-2*pp;uu<-pp+1
+                      ma.u<-rbind(vecma.u[1:pp],vecma.u[uu:ppd])
+
+					# Donnees de tous les sujets                      
+                      vxt = rbind(vx,vxb)
+                    # Extraction du vecteur de genotypes de la mere
+                      gmt <- vxt[,gmname]
+                    # Extraction du vecteur de genotypes de lenfant
+                      gct <- vxt[,gcname]
+                    # Vecteur de reponse
+                      outct = c(outc,outcb)
+                      
+                    # 2-Construction du systeme non lineaire =======================================
+                    # 2.1-creation de la table A
+                        matd<-cbind(outc,vx)
+                        np<-dim(vx)[2]
+                        mat.geno<-cbind(gm,gc);
+                        
+                    # B-2.1-creation de la table B
+                        matdb<-cbind(outcb,vxb)
+                        
+                        d<-vector()
+                        d[1]<-N[1]-sum(data1[,noutc]==0)
+                        d[2]<-N[2]-sum(data1[,noutc]==1)
+                       
+                       # construction des indices
+                        or<-rep(1,dim(data1)[1])
+                        data_ori<-data.frame(data1,or)
+                        #construction de Cjm 
+                         mat.cjm<-fpol1(data_ori,c(varz,gmname),"or","Cjm")  
+                          
+                    ## la fonction de gradient de la log-vraisemblence 
+                    gradient_prof<-function(parms){
+                                    beta.start<-parms[1:np];n1<-np+1;theta.start<-parms[n1:length(parms)]
+                                    
+                                    # A-nv 
+                                    eta = vx%*%beta.start
+                                    Pijmc<-((1/(exp(-eta)+1))^outc)*((1-1/(exp(-eta)+1))^(1-outc))
+                                    dPijmc.eta = (-1)^(1-outc)*S1(eta)
+                                    dlogPijmc.eta = outc - S0(-eta)
+
+                                    # B-nv
+                                    etab = vxb%*%beta.start
+                                    Pijmcb<-((1/(exp(-etab)+1))^outcb)*((1-1/(exp(-etab)+1))^(1-outcb))
+                                    dPijmcb.eta = (-1)^(1-outcb)*S1(as.vector(etab))
+                                                                                                                                           
+                                    # construction de la distribution conditionnelle du genotype de l enfant sachant la mere et celle de la mere selon que nous sommes sous HW ou non
+                                    # A-nv
+                                    # prob conditionel de l'enf sachant la mere Pc/m matd
+                                    Pgcm<-Prgcm_HW1(matd[,c(gmname,gcname)],theta.start)
+                                    # Derivee de la prob conditionel de l'enf sachant la mere                                    
+                                    dPgcm.theta<-dPrgcm_HW1.theta(matd[,c(gmname,gcname)],theta.start)
+                                    dlogPgcm.theta<-dlogPrgcm_HW1.theta(matd[,c(gmname,gcname)],theta.start)
+                                                                     
+                                    # calcul du genotype 
+                                    Pgm<-Prgm_HW1(matd[,gmname],theta.start)
+                                    # calcul de sa derivee
+                                    dPgm.theta<-dPrgm_HW1.theta(matd[,gmname],theta.start)
+
+                                    # B-nv
+                                    # prob conditionel de l enf sachant la mere Pc/m matd
+                                    Pgcmb<-Prgcm_HW1(matdb[,c(gmname,gcname)],theta.start)
+                                    # Derivee de la prob conditionel de l'enf sachant la mere                                    
+                                    dPgcmb.theta<-dPrgcm_HW1.theta(matdb[,c(gmname,gcname)],theta.start)
+                                                                     
+                                    # calcul du genotype 
+                                    Pgmb<-Prgm_HW1(matdb[,gmname],theta.start)
+                                    # calcul de sa derivee
+                                    dPgmb.theta<-dPrgm_HW1.theta(matdb[,gmname],theta.start)
+                                    
+                                                                                                            
+                                    # A-calcul de la fonction hijmc 
+                                    Hijmc<-Pijmc*Pgcm
+                                    # calcul des derivees de la fonction hijmc                                    
+                                    dHijmc.eta<-dPijmc.eta * Pgcm
+                                    dHijmc.theta<-Pijmc * dPgcm.theta   
+                                    
+                                    nva<-vx[,varz]                                    
+
+                                    # B-calcul de la fonction hijmc 
+                                    Hijmcb<-Pijmcb*Pgcmb
+                                    # calcul des derivees de la fonction hijmc                                    
+                                    dHijmcb.eta<-dPijmcb.eta * Pgcmb
+                                    dHijmcb.theta<-Pijmcb * dPgcmb.theta   
+                                    # Multiplication des termes de derivee a sommer par la matrix de design    
+                                    mat.dHijmcb = vxb*dHijmcb.eta    
+                                    colnames(mat.dHijmcb) = paste("dHijmcb.",colnames(vxb),sep="") 
+                                    
+                                    nvab<-vxb[,varz]                                    
+                                                                        
+                                    # data.frame A
+                                    # On a besoin des variables de vx pour le gradient
+                                    nam<-c("outc","vdcop","Pijmc","Pgcm","Pgm","Hijmc","dPijmc.eta", "dlogPijmc.eta","dPgcm.theta","dlogPgcm.theta","dPgm.theta","dHijmc.eta","dHijmc.theta",colnames(vx))
+                                    matA.comp0<-data.frame(outc,vdcop,Pijmc,Pgcm,Pgm,Hijmc,dPijmc.eta,dlogPijmc.eta,dPgcm.theta, dlogPgcm.theta,dPgm.theta,dHijmc.eta,dHijmc.theta,vx)
+                                    names(matA.comp0)<-nam;
+
+                                    #B-data.frame 
+                                    # On cree ces noms a l'avance
+                                    dHijmc.names = paste("dHijmc.",colnames(vx),sep="") 
+                                    dHijm.names = paste("dHijm.",colnames(vx),sep="") 
+                                    
+                                    namb<-c("idm","outc",varz,gmname,gcname,"Pijmc","Pgcm","Pgm","Hijmc",dHijmc.names,"dHijmc.theta")
+                                    mat.Hijmcb<-data.frame(idm,outcb,nvab,gmb,gcb,Pijmcb,Pgcmb,Pgmb,Hijmcb,mat.dHijmcb,dHijmcb.theta)
+                                    names(mat.Hijmcb)<-namb;
+                                    #mat.hijmcb1<-mat.Hijmcb[mat.Hijmcb[,"Hijmc"]!=0,]
+                                    mat.hijmcb1<-mat.Hijmcb[mat.Hijmcb[,"Hijmc"]!=0&vdcopb==1,]
+#                                    mat.hijmb<-fpol1(mat.hijmcb1,c("outc",varz,gmname,"Pgm"),"Hijmc","Hijm")
+                                    mat.hijmb<-fpol1(mat.hijmcb1,c("idm","outc",varz,gmname,"Pgm"),"Hijmc","Hijm")
+                                    # Somme sur c de dHijmc.beta
+                                    mat.dHijmb.beta<-fpolm(mat.hijmcb1,c("idm","outc",varz,gmname,"Pgm"),dHijmc.names,dHijm.names)
+                                    # Somme sur c de dHijmc.theta
+                                    mat.dHijmb.theta<-fpol1(mat.hijmcb1,c("idm","outc",varz,gmname,"Pgm"),"dHijmc.theta","dHijm.theta")
+#                                    mat.hijmd<-merge(datrmv2,mat.hijmb,by=c("outc",varz,gmname))
+                                    mat.hijmd.beta<-merge(mat.hijmb,mat.dHijmb.beta,by=c("idm","outc",varz,gmname))
+                                    mat.hijmd.theta<-merge(mat.hijmb,mat.dHijmb.theta,by=c("idm","outc",varz,gmname))
+                                                                                                            
+                                    #C-data.frame
+                                    vdcopt = c(vdcop,vdcopb)
+                                    nvat<-vxt[,varz]
+                                    Pijmct = c(Pijmc,Pijmcb)                                    
+                                    Pgcmt = c(Pgcm,Pgcmb)                                    
+                                    Pgmt = c(Pgm,Pgmb)
+                                    dPgmt.theta = c(dPgm.theta,dPgmb.theta)                                    
+                                    Hijmct = c(Hijmc,Hijmcb)
+                                    dHijmct.eta = c(dHijmc.eta,dHijmcb.eta)                                   
+                                    dHijmct.theta = c(dHijmc.theta,dHijmcb.theta)                                   
+                                    mat.Hijmct<-data.frame(outct,vxt,gmt,gct,vdcopt,Pijmct,Pgcmt,Pgmt,Hijmct,dHijmct.eta,dHijmct.theta,dPgmt.theta)
+                                    #mat.Hijmct<-data.frame(outc,vx,gm,gc,vdcop,Pijmc,Pgcm,Pgm,Hijmc,dHijmc.eta,dHijmc.theta,dPgm.theta)
+                                    
+                                    names(mat.Hijmct)<-c("outc",colnames(vx),gmname,gcname,"vdcop","Pijmc","Pgcm","Pgm","Hijmc","dHijmc.eta","dHijmc.theta","dPgm.theta");
+                                    
+                                    
+                                    mat.dq1<-fpol1(matA.comp0,c("outc",varz,gmname,gcname,"Pgm"),"vdcop","nijmc", c(setdiff(colnames(vx),c(varz,gmname,gcname)),"dPgm.theta","Pgcm","dlogPijmc.eta", "dlogPgcm.theta"))
+                                    # compte les modalite i,j,m,c
+                                    # premier terme 
+                                    dq1.beta<-apply(mat.dq1[,colnames(vx)]*mat.dq1[,"dlogPijmc.eta"]*mat.dq1[,"nijmc"],2,sum)
+                                    dq1.theta<-sum(mat.dq1[,"dlogPgcm.theta"]*mat.dq1[,"nijmc"])
+                                    dq1 = c(dq1.beta,dq1.theta)
+                                    
+#                                    dq1b.beta = apply(mat.hijmd.beta[,"nijm"]*mat.hijmd.beta[,dHijm.names]/mat.hijmd.beta[,"Hijm"],2,sum)
+#                                    dq1b.theta = sum(mat.hijmd.theta[,"nijm"]*mat.hijmd.theta[,"dHijm.theta"]/mat.hijmd.theta[,"Hijm"])
+                                    dq1b.beta = apply(mat.hijmd.beta[,dHijm.names]/mat.hijmd.beta[,"Hijm"],2,sum)
+                                    dq1b.theta = sum(mat.hijmd.theta[,"dHijm.theta"]/mat.hijmd.theta[,"Hijm"])
+                                    dq1b = c(dq1b.beta,dq1b.theta)
+                                                                                                                                                        
+                                    # 2.2-calcule de q2
+                                    # Ici on ne se sert pas de nijmc. Tout ce que ceci fait, c'est enlever
+                                    # les observations redondantes de mat.Hijmct
+                                    mat.Hijmc1<-fpol1(mat.Hijmct,c("outc",varz,gmname,gcname,"Pgm"), "vdcop","nijmc",c(setdiff(colnames(vx),c(varz,gmname,gcname)),"Hijmc","dHijmc.eta","dHijmc.theta","dPgm.theta"))
+                                    mat.Hijmc<-mat.Hijmc1[mat.Hijmc1[,"Hijmc"]!=0,]
+                                    # Somme sur c de Hijmc
+                                    mat.Hijm<-fpol1(mat.Hijmc,c("outc",varz,gmname,"Pgm"),"Hijmc","Hijm","dPgm.theta")
+                                    # Multiplication des termes de derivee a sommer par la matrix de design    
+                                    mat.Hijmc[,dHijmc.names] = mat.Hijmc[,colnames(vx)]*mat.Hijmc$dHijmc.eta                                    
+                                    # Somme sur c de dHijmc.beta
+                                    mat.dHijm.beta<-fpolm(mat.Hijmc,c("outc",varz,gmname,"Pgm"),dHijmc.names,dHijm.names)
+                                    # Somme sur c de dHijmc.theta
+                                    mat.dHijm.theta<-fpol1(mat.Hijmc,c("outc",varz,gmname,"Pgm"),"dHijmc.theta","dHijm.theta")
+                                    # nv ** 6
+                                    matHijm.uim<-function(ma.u){
+                                                rr<-as.matrix(mat.Hijm[,c("outc",gmname)])
+                                                Uim<-(ifelse(rr[,1]==0 & rr[,2]==0,ma.u[1,1],0)
+                                                +ifelse(rr[,1]==0 & rr[,2]==1,ma.u[1,2],0)
+                                                +ifelse(rr[,1]==0 & rr[,2]==2,ma.u[1,3],0)
+                                                +ifelse(rr[,1]==1 & rr[,2]==0,ma.u[2,1],0)
+                                                +ifelse(rr[,1]==1 & rr[,2]==1,ma.u[2,2],0)
+                                                +ifelse(rr[,1]==1 & rr[,2]==2,ma.u[2,3],0))
+                                                Fijm<-mat.Hijm$Hijm*Uim
+                                                # Attention! Dans le data.frame dFijm.beta, les variables gardent les noms dHijm.names
+                                                dFijm.beta<-mat.dHijm.beta[,dHijm.names]*Uim
+                                                # On change les noms
+                                                dFijm.names = paste("dFijm.",colnames(vx),sep="")                                               
+                                                dFijm.theta<-mat.dHijm.theta$dHijm.theta*Uim                                                
+                                                tmp = data.frame(mat.Hijm,mat.dHijm.beta[,dHijm.names],mat.dHijm.theta$dHijm.theta, Fijm,dFijm.beta,dFijm.theta)
+                                                names(tmp) = c(names(mat.Hijm),dHijm.names,"dHijm.theta","Fijm",dFijm.names,"dFijm.theta")
+                                                return(tmp)
+                                                }
+                                    tab.fijm<-matHijm.uim(ma.u)
+                                    
+                                    # nv 
+                                    # Ici on garde les dHijm.names, dHijm.theta et les variables x pour besoins futurs                                 
+                                    dFijm.names = paste("dFijm.",colnames(vx),sep="")                                    
+                                    dFjm.names = paste("dFjm.",colnames(vx),sep="")                                    
+                                    mat.fjm<-fpolm(tab.fijm,c(varz,gmname,"Pgm"),c("Fijm",dFijm.names,"dFijm.theta"), c("Fjm",dFjm.names,"dFjm.theta"),"dPgm.theta")
+                                      
+                                    tab.cjm<-merge(mat.cjm,mat.fjm,by=c(varz,gmname))
+                                    qjm<-tab.cjm$Cjm/tab.cjm$Fjm
+                                    # termes de derivee a sommer sur j pour obtenir dNm.beta et dNm.theta
+                                    djm.beta<-(-tab.cjm$Cjm/tab.cjm$Fjm^2)*tab.cjm[,dFjm.names]                                    
+                                    djm.theta<-(-tab.cjm$Cjm/tab.cjm$Fjm^2)*tab.cjm$dFjm.theta
+                               
+                                    tab.qjm<-data.frame(tab.cjm,qjm,djm.beta,djm.theta)
+                                    djm.names = paste("djm.",colnames(vx),sep="")                                    
+                                    names(tab.qjm) = c(names(tab.cjm),"qjm",djm.names,"djm.theta")
+                                   
+                                    # nv
+                                    mat.Nm<-fpol1(tab.qjm,c(gmname,"Pgm"),"qjm","Nm")                                    
+                                    mat.dNm.theta<-fpol1(tab.qjm,c(gmname,"Pgm"),"djm.theta","dNm.theta","dPgm.theta")
+                                    dNm.names = paste("dNm.",colnames(vx),sep="")                                    
+                                    mat.dNm.beta<-fpolm(tab.qjm,c(gmname,"Pgm"),djm.names,dNm.names)
+                                                                        
+                                    dlogNm.beta = mat.dNm.beta[,dNm.names]/mat.Nm$Nm
+									mat.dlogNm.beta = data.frame(mat.dNm.beta,dlogNm.beta)
+									dlogNm.names = paste("dlogNm.",colnames(vx),sep="")									
+									names(mat.dlogNm.beta) = c(names(mat.dNm.beta),dlogNm.names)
+									tab.dlogNm.beta = merge(tab.qjm,mat.dlogNm.beta,by=gmname)
+									sumdlogNm.beta = apply(tab.dlogNm.beta[,dlogNm.names]*tab.dlogNm.beta$Cjm,2,sum)																		
+                                    dlogFjm.beta = apply((tab.qjm[,dFjm.names]/tab.qjm$Fjm)*tab.qjm$Cjm,2,sum)
+                                    
+                                    dlogNm.theta = mat.dNm.theta$dNm.theta/mat.Nm$Nm                                    
+									mat.dlogNm.theta = data.frame(mat.dNm.theta,dlogNm.theta)
+									tab.dlogNm.theta = merge(tab.qjm,mat.dlogNm.theta,by=c(gmname))
+									sumdlogNm.theta = sum(tab.dlogNm.theta$dlogNm.theta*tab.dlogNm.theta$Cjm)
+																										                                    
+                                    dlogFjm.theta = sum((tab.qjm$dFjm.theta/tab.qjm$Fjm)*tab.qjm$Cjm)
+                                    
+                                    dlogPgm.theta = sum((tab.cjm[,"dPgm.theta"]/tab.cjm[,"Pgm"])*tab.cjm[,"Cjm"])
+
+									dq2.beta = -dlogFjm.beta - sumdlogNm.beta 
+																		
+									dq2.theta = dlogPgm.theta - dlogFjm.theta - sumdlogNm.theta
+																		
+									dq2 = c(dq2.beta,dq2.theta)
+																
+                                    # calcul de q3
+                                    tab.Zijm<-merge(tab.fijm,tab.qjm,by=c(varz,gmname))
+                                    Zijm<-tab.Zijm$Hijm*tab.Zijm$qjm
+                                    tab.Zijm$Zijm<-Zijm;
+                                    tab.Zijm$Fijm<-NULL
+                                    tab.Zijm$Pgm.y<-NULL
+                                    tab.Zijm$qjm<-NULL                                                                       
+                                    
+                                    dg312j.beta = (tab.Zijm$Fjm*tab.Zijm[,dHijm.names] - tab.Zijm[,dFjm.names]*tab.Zijm$Hijm)*tab.Zijm$Cjm/tab.Zijm$Fjm^2
+									# On renome les variables du data.frame dg312j.beta
+                                    names(dg312j.beta) = paste("dg312j.",colnames(vx),sep="")                                                                        
+                                    dg312j.theta = (tab.Zijm$Fjm*tab.Zijm$dHijm.theta - tab.Zijm$dFjm.theta*tab.Zijm$Hijm)*tab.Zijm$Cjm/tab.Zijm$Fjm^2
+                                    
+                                    tab.dg312 = data.frame(tab.Zijm,dg312j.beta,dg312j.theta)
+                                    names(tab.dg312) = c(names(tab.Zijm),names(dg312j.beta),"dg312j.theta")
+                                    
+                                    # nv 
+                        			mat.Zim<-fpol1(tab.Zijm,c("outc",gmname),"Zijm","Zim")
+                        			dg312.names = paste("dg312.",colnames(vx),sep="")
+                        			# Attention Ici, pour une raison inexpliquee, il faut que c(gmname,"outc") soient dans cet ordre pour un resultat correct                                                                        
+                        			mat.dg312<-fpolm(tab.dg312,c(gmname,"outc"),c(names(dg312j.beta),"dg312j.theta"),c(dg312.names,"dg312.theta"))
+                        			
+			
+                                    Rm<-as.numeric(mat.Nm[,2])/as.numeric(mat.Nm$Nm)
+                                    mat.Rm<-data.frame(mat.Nm,Rm)
+                        			tab.wim<-merge(mat.Rm,mat.Zim,by=c(gmname))
+                        			wim<-(tab.wim$Rm)*(tab.wim$Zim);tab.wim$wim<-wim;
+                        			tab.wim$Pgm<-NULL;tab.wim$Nm<-NULL;
+                        			tab.wim$Pgm.x<-NULL
+
+                                    # Termes 311
+                                    dg311.beta = -mat.dNm.beta$Pgm*mat.dNm.beta[,dNm.names]/mat.Nm$Nm^2
+                                    names(dg311.beta) = paste("dg311.",colnames(vx),sep="")                                     
+                                    dg311.theta = (mat.dNm.theta$dPgm.theta*mat.Nm$Nm - mat.dNm.theta$Pgm*mat.dNm.theta$dNm.theta)/mat.Nm$Nm^2
+                                    # Ici, prendre mat.dNm.beta ou mat.dNm.theta ne devrait rien changer. Voir s'il faut fusionner ces 2 mat                                    
+                                    mat.dg311 = data.frame(mat.dNm.beta,dg311.beta,dg311.theta)
+                                    names(mat.dg311) = c(names(mat.dNm.beta),names(dg311.beta),"dg311.theta") 
+                                    
+                                    tmp = merge(tab.wim,mat.dg312,by=c("outc",gmname))                                     
+                                    mat.dg31 = merge(tmp,mat.dg311,by=gmname)
+                                    # Attention En sommant les variables dg311.beta et dg312.names, le resultat garde les noms dg311.beta                                  
+                                    dg31.beta = mat.dg31[,names(dg311.beta)]*mat.dg31$Zim + mat.dg31$Rm*mat.dg31[,dg312.names]
+                                    dg31.theta = mat.dg31$dg311.theta*mat.dg31$Zim + mat.dg31$Rm*mat.dg31$dg312.theta                                    
+
+                                    dq3.beta = d[1]*apply(dg31.beta[tab.wim$outc==0,names(dg311.beta)],2,sum)/sum(tab.wim[tab.wim$outc==0,"wim"]) + d[2]*apply(dg31.beta[tab.wim$outc==1,names(dg311.beta)],2,sum)/sum(tab.wim[tab.wim$outc==1,"wim"])
+                                    dq3.theta = d[1]*sum(dg31.theta[tab.wim$outc==0])/sum(tab.wim[tab.wim$outc==0,"wim"]) + d[2]*sum(dg31.theta[tab.wim$outc==1])/sum(tab.wim[tab.wim$outc==1,"wim"])
+                                    dq3 = c(dq3.beta,dq3.theta)
+                                                                                                                                                                                                                                                                                   
+                        			return(dq1+dq1b+dq2+dq3)    
+                                    }                      
+                   return(gradient_prof)
+                    }

@@ -1,0 +1,1 @@
+biplotmds <- function(object, extvar, scale = TRUE)UseMethod("biplotmds")

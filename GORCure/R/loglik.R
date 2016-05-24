@@ -1,0 +1,24 @@
+loglik <-
+function(x0,r,sdata,Xp,Zp,bl.Li,bl.Ri){
+  M<-ncol(Zp)
+  P<-ncol(Xp)
+  e0<-x0[1:M]
+  b0<-x0[(M+1):(M+P)]
+  g0<-x0[-c(1:(M+P))]
+  pzi<-exp(Zp%*%e0)/(1+exp(Zp%*%e0))
+  exb<-exp(Xp%*%b0)
+  He.Li<-t(bl.Li)%*%matrix(g0,ncol=1)
+  He.Ri<-t(bl.Ri)%*%matrix(g0,ncol=1)
+  pc0<-(1-sdata$d3)*log(pzi)
+  if(r>0){
+  pc1<-sdata$d1*(1-(1+r*He.Ri*exb)^(-1/r))
+  pc2<-sdata$d2*((1+r*He.Li*exb)^(-1/r)-(1+r*He.Ri*exb)^(-1/r))
+  pc3<-sdata$d3*(1-pzi+pzi*(1+r*He.Li*exb)^(-1/r))
+  }else{
+  pc1<-sdata$d1*(1-exp(-He.Ri*exb))
+  pc2<-sdata$d2*(exp(-He.Li*exb)-exp(-He.Ri*exb))
+  pc3<-sdata$d3*(1-pzi+pzi*exp(-He.Li*exb))
+  }
+ll<-sum(pc0+log(pc1+pc2+pc3))
+return(-ll)
+}

@@ -1,0 +1,21 @@
+kProductTypeIdentifier <-
+list(iPhoneInstall                     = "1",
+     iPhoneUpdate                      = "7",
+     iOSInAppPurchase                  = "IA1",
+     iOSInAppSubscription              = "IA9",
+     iOSInAppAutoRenewableSubscription = "IAY",
+     iOSInAppFreeSubscription          = "IAC",
+     iOSInstall                        = "1F",
+     iOSUpdate                         = "7F",
+     iPadInstall                       = "1T",
+     iPadUpdate                        = "7T",
+     MacInstall                        = "F1",
+     MacUpdate                         = "F7",
+     MacInAppPurchease                 = "FI1",
+     iPhoneCustom                      = "1E",
+     iPadCustom                        = "1EP",
+     iOSCustom                         = "1EU",
+     Install                           = c("1", "1F", "1T", "F1"),
+     Update                            = c("7", "7F", "7T", "F7"),
+     InAppPurchase                     = c("IA1", "IA9", "IAY", "FI1"))
+

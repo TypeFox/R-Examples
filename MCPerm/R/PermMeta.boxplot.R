@@ -1,0 +1,93 @@
+PermMeta.boxplot <-
+function(PermMeta,plot="Qp",
+    true_data_pch=3,pch_col='red',border_col="red",fill_col=NULL,
+    main="boxplot for heterogeneity Q p_vlaue",digits=3){
+	 if(class(PermMeta)!='PermMeta'){
+	    stop("'PermMeta.boxplot' applied to an object of class 'PermMeta'.")
+	 }
+	 if (!is.element(plot, c("Qp", "I2", "merged_LnOR", "merged_LnOR_VAR", "merged_LnOR_p"))){
+	     stop("'plot' should be 'Qp', 'I2', 'merged_LnOR', 'merged_LnOR_VAR', 'merged_LnOR_p'.")
+	 }
+	 switch(plot,
+	    Qp={ 
+		    true_data=PermMeta$corrected_result[2,1]
+		    plot_data=c(PermMeta$perm_Qp,true_data)
+		},
+		 I2={ 
+		    true_data=PermMeta$corrected_result[1,2]
+		    plot_data=c(PermMeta$perm_I2,true_data)
+	   },
+		 merged_LnOR={
+		    true_data=PermMeta$corrected_result[1,3]
+		    plot_data=c(PermMeta$perm_merged_LnOR,true_data)
+		},
+		 merged_LnOR_VAR={
+		    true_data=PermMeta$true_merged_LnOR_VAR
+		    plot_data=c(PermMeta$perm_merged_VARLnOR,true_data)
+		},
+		 merged_LnOR_p={
+		    true_data=PermMeta$corrected_result[2,3]
+		    plot_data=c(PermMeta$perm_p,true_data)
+		}
+	 )
+	 par(oma=c(1,1,3,1))
+	 boxplot(plot_data,col=fill_col,border=border_col)
+	 points(1,true_data,pch=true_data_pch,col=pch_col)
+	 mtext(text=main,side=3,outer=TRUE)
+
+	 switch(plot,
+	    Qp={
+		    temp1=paste('Q_stat',round(PermMeta$corrected_result[1,1],digits),sep='=')
+			 temp2=paste('Q_p',round(PermMeta$corrected_result[2,1],digits),sep='=')
+			 temp3=paste('p.corrected',round(PermMeta$corrected_result[3,1],digits),sep='=')
+			 temp=c(temp1,temp2,temp3)
+		    legend('top',legend=temp,pch=c(20,true_data_pch,20),
+			    col=c('black',pch_col,'black'),
+			    text.col=c('black',pch_col,'black'),
+				 cex=0.8,inset=-0.2,xpd=TRUE,ncol=3)
+		},
+		 I2={
+		    temp1=paste('I2_stat',round(PermMeta$corrected_result[1,2],digits),sep='=')
+			 temp2=paste('p.corrected',round(PermMeta$corrected_result[3,2],digits),sep='=')
+			 temp=c(temp1,temp2)
+		    legend('top',legend=temp,pch=c(true_data_pch,20),
+			    col=c(pch_col,'black'),
+			    text.col=c(pch_col,'black'),
+				 cex=0.8,inset=-0.2,xpd=TRUE,ncol=2)
+		},
+		 merged_LnOR={
+		    temp1=paste('merged_LnOR',round(PermMeta$corrected_result[1,3],digits),sep='=')
+			 temp2=paste('merged_LnOR_VAR',round(PermMeta$true_merged_LnOR_VAR,3),sep='=')
+			 temp3=paste('merged_LnOR_p',round(PermMeta$corrected_result[2,3],3),sep='=')
+			 temp4=paste('p.corrected',round(PermMeta$corrected_result[3,3],3),sep='=')
+			 temp=c(temp1,temp2,temp3,temp4)
+		    legend('top',legend=temp,pch=c(true_data_pch,20,20,20),
+			    col=c(pch_col,'black','black','black'),
+			    text.col=c(pch_col,'black','black','black'),
+				 cex=0.8,inset=-0.2,xpd=TRUE,ncol=2)
+		},
+		 merged_LnOR_VAR={
+		    temp1=paste('merged_LnOR',round(PermMeta$corrected_result[1,3],digits),sep='=')
+			 temp2=paste('merged_LnOR_VAR',round(PermMeta$true_merged_LnOR_VAR,digits),sep='=')
+			 temp3=paste('merged_LnOR_p',round(PermMeta$corrected_result[2,3],digits),sep='=')
+			 temp4=paste('p.corrected',round(PermMeta$corrected_result[3,3],digits),sep='=')
+			 temp=c(temp1,temp2,temp3,temp4)
+		    legend('top',legend=temp,pch=c(20,true_data_pch,20,20),
+			    col=c('black',pch_col,'black','black'),
+			    text.col=c('black',pch_col,'black','black'),
+				 cex=0.8,inset=-0.2,xpd=TRUE,ncol=2)
+		},
+		
+		 merged_LnOR_p={
+		    temp1=paste('merged_LnOR',round(PermMeta$corrected_result[1,3],digits),sep='=')
+			 temp2=paste('merged_LnOR_VAR',round(PermMeta$true_merged_LnOR_VAR,digits),sep='=')
+			 temp3=paste('merged_LnOR_p',round(PermMeta$corrected_result[2,3],digits),sep='=')
+			 temp4=paste('p.corrected',round(PermMeta$corrected_result[3,3],digits),sep='=')
+			 temp=c(temp1,temp2,temp3,temp4)
+		    legend('top',legend=temp,pch=c(20,20,true_data_pch,20),
+			    col=c('black','black',pch_col,'black'),
+			    text.col=c('black','black',pch_col,'black'),
+				 cex=0.8,inset=-0.2,xpd=TRUE,ncol=2)
+		}
+	 )
+}

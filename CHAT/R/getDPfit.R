@@ -1,0 +1,23 @@
+getDPfit <-function(y,alpha=0.05,low.thr=0.05,prior,mcmc){
+	vv<-which(!is.na(y)&y>low.thr&y<1)
+    if(length(vv)<=5)return(list(model=0))
+	y0<-y[vv]
+	fit<-DPdensity(y0,status=TRUE,mcmc=mcmc,prior=prior)
+	tmp<-SampleNMM(y0)
+	BIC.null<-tmp$BIC
+	print(BIC.null)
+	BIC<-ApproxBIC(y0,fit$x1,fit$dens,length(prior))
+	print(BIC)
+	p<-1-pchisq(BIC.null-BIC-(length(prior)-3)*log(length(y)),1)
+	print(p)
+	if(BIC<=BIC.null){
+		print("model2")
+		PA<-findRobustPeaks(fit,thr=1)
+		PA0<-rep(NA,length(y))
+		PA0[vv]<-PA
+		return(list(PA0=PA0,x=fit$x1,y=fit$dens,P=p,model=2))
+	}else{
+		print("model1")
+		return(list(PA0=-1,A=tmp$fit[1],mu=tmp$fit[2],sigma=tmp$fit[3],P=p,model=1))
+	}
+}

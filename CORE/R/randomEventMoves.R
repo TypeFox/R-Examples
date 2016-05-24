@@ -1,0 +1,30 @@
+randomEventMoves <-
+function(eventLengths,boundaries){
+	chrlengths<-boundaries[,"end"]-boundaries[,"start"]+1
+	ochl<-order(chrlengths,decreasing=T)
+	schl<-chrlengths[ochl]
+	cschl<-cumsum(schl)
+	sb<-boundaries[ochl,]
+	oe<-order(eventLengths,decreasing=T)
+	z<-cbind(c(chrlengths,eventLengths),
+		c(rep(1,length(chrlengths)),rep(0,length(eventLengths))))
+	z<-z[order(z[,1],decreasing=T),]
+	chrmax<-cumsum(z[,2])[z[,2]==0]
+	eventLengths<-z[z[,2]==0,1]
+	abslen<-floor(cschl[chrmax]*runif(length(chrmax)))
+	z<-cbind(c(cschl,abslen),c(rep(1,length(cschl)),rep(0,length(abslen))),
+		c(rep(0,length(cschl)),eventLengths))
+	oz<-order(z[,1])
+	oze<-order(z[z[,3]!=0,1])
+	z<-z[oz,]
+	z[,2]<-cumsum(z[,2])+1
+	z<-z[z[,3]!=0,,drop=F]
+	start<-sb[z[,2],"start"]+floor((schl[z[,2]]-z[,3]+1)*runif(nrow(z)))
+	end<-start+z[,3]-1
+	chrom<-ochl[z[,2]]
+	sec<-matrix(ncol=3,nrow=length(start),
+		dimnames=list(NULL,c("start","end","chrom")))
+	sec[oze,]<-cbind(start,end,chrom)
+	sec[oe,]<-sec
+	return(sec)
+}

@@ -1,0 +1,60 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
+createDf=function(){
+   t=1:20
+   inp=seq(1.05,2,0.05)
+   tframe=data.frame(times=t,inputrates=inp)
+   tframe
+}
+test.BoundFc_initialize=function(){
+   tstart=0
+   tend=0
+   f=function(t){2*t}
+   # test initializers
+   obj=new(Class="BoundFc",f,tstart,tend) 
+}
+#---------------------------------------------------------------------
+#                      constructors wiht dataframe
+#---------------------------------------------------------------------
+test.BoundFc_constructorDF_lag_format_interpol=function(){
+   tframe=createDf()
+   obj=BoundFc(tframe,lag=0,format="Delta14C",interpol=splinefun)
+   checkEquals(c("t_min"=1,"t_max"=20),getTimeRange(obj))
+}
+#---------------------------------------------------------------------
+test.BoundFc_constructorDF_lag_format=function(){
+   tframe=createDf()
+   obj=BoundFc(tframe,lag=0,format="Delta14C")
+   checkEquals(c("t_min"=1,"t_max"=20),getTimeRange(obj))
+}
+#---------------------------------------------------------------------
+test.BoundFc_constructorDF_format_interpol=function(){
+   tframe=createDf()
+   obj=BoundFc(tframe,format="Delta14C",interpolation=splinefun)
+   checkEquals(c("t_min"=1,"t_max"=20),getTimeRange(obj))
+}
+#---------------------------------------------------------------------
+test.BoundFc_constructorDF_format=function(){
+   tframe=createDf()
+   obj=BoundFc(tframe,format="Delta14C")
+   checkEquals(c("t_min"=1,"t_max"=20),getTimeRange(obj))
+}
+#---------------------------------------------------------------------
+#                      constructors wiht function
+#---------------------------------------------------------------------
+test.BoundFc_constructor_func_tstart_tend_lag_format=function(){
+   tstart=0
+   tend=20
+   f=function(t){2*t}
+   obj=BoundFc(f,tstart,tend,lag=0,format="Delta14C") 
+   checkEquals(c("t_min"=tstart,"t_max"=tend),getTimeRange(obj))
+}
+#---------------------------------------------------------------------
+test.BoundFc_constructor_func_tstart_tend_format=function(){
+   tstart=0
+   tend=20
+   f=function(t){2*t}
+   obj=BoundFc(f,tstart,tend,format="Delta14C") 
+   checkEquals(c("t_min"=tstart,"t_max"=tend),getTimeRange(obj))
+}
+

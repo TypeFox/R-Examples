@@ -1,0 +1,40 @@
+CalcMerge<-function(hc,node,class)
+{
+	num=dim(hc$merge)[1]
+	kc=numeric(2)
+	flag=numeric(num)
+	for( i in 1:num)
+	{
+		for(j in 1:2)
+		{
+		if(hc$merge[i,j]<0)
+		{
+			kc[j]=class[-hc$merge[i,j]]
+		}
+		else
+		{
+			if(flag[hc$merge[i,j]]==0)
+			{
+				kc[j]=class[node[[i]][[j]][1]]
+			}
+			else
+			{
+				flag[i]=1
+				break
+			}
+		}
+		}
+		if(flag[i]!=1)
+		{
+		if(kc[1]==kc[2])
+		{
+			flag[i]=0
+		}
+		else
+		{
+			flag[i]=1
+		}
+		}
+	}
+	return(flag)
+}

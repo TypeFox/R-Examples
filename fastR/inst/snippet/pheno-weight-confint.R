@@ -1,0 +1,1 @@
+confint(pheno.lm)

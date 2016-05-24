@@ -1,0 +1,1 @@
+diffPlot <- function(x, ...) UseMethod("diffPlot")

@@ -1,0 +1,20 @@
+
+print.summary.llra <- function(x,...)
+  {
+    cat("\n")
+    cat("Results of LLRA via",x$model,"estimation: \n")
+    cat("\n")
+    cat("Call: ", x$call, "\n")
+    cat("\n")
+    cat("Conditional log-likelihood:", x$loglik, "\n")
+    cat("Number of iterations:", x$iter, "\n")
+    cat("Number of parameters:", x$npar, "\n")
+    cat("\n")
+    cat("Estimated parameters ")
+    cat("with 0.95 CI:\n")
+    coeftable <- as.data.frame(cbind(round(x$etapar, 3),round(x$se.eta, 3), round(x$ci, 3)))
+    colnames(coeftable) <- c("Estimate", "Std.Error", "lower.CI", "upper.CI")
+    rownames(coeftable) <- names(x$etapar)
+    print(coeftable)
+    cat("\nReference Group: ",x$refGroup,"\n")
+ }

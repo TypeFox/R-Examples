@@ -1,0 +1,16 @@
+caModel<-function(y,x)
+{
+	options(contrasts=c("contr.sum","contr.poly"))
+	outdec<-options(OutDec="."); on.exit(options(outdec))
+	options(OutDec=",")
+	y<-m2v(y)
+	xnms<-names(x)
+	ynms<-names(y)
+	xtmp<-paste("factor(x$",xnms,sep="",paste(")"))
+	xfrm<-paste(xtmp,collapse="+")
+	yfrm<-paste("y$",ynms,sep="","~")
+	frml<-as.formula(paste(yfrm,xfrm))
+	camodel<-lm(frml)
+	model<-summary.lm(camodel)
+	return(model)
+}

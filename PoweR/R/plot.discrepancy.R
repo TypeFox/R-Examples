@@ -1,0 +1,35 @@
+plot.discrepancy <- function(x,legend.pos=NULL,...) {
+
+	Fx <- x
+	
+	if(!inherits(Fx, "Fx")) stop("Method is only for Fx objects!")
+
+	## Retrieve informations from Fx computed by calcFx()
+	Fxi <- Fx$Fx.mat
+	xi <- Fx$x
+	law <- Fx$law
+	statnames <- Fx$statnames
+	N <- Fx$N
+
+	## Now we plot these (xi,Fxi-xi) on the same graph
+
+	# we trace the 45 degree line
+	plot(c(0,1),c(min(Fxi-xi),max(Fxi-xi)),type = "n",main=paste("P value discrepancy plots","\n N = ",N," & m = ",length(xi),sep=""),sub=paste("Data: ",law,sep=""),xlab="Nominal Size",ylab="Size Discrepancy",...)
+	lines(x=c(0,1),y=c(0,0),lty="dotted",col=1)
+	
+	# then add theses P value discrepancy plots
+	for (i in 1:length(statnames)) {
+          points(xi,Fxi[,i]-xi,type="l",col=i+1,...)
+	}
+	
+	# legend
+        if (is.character(legend.pos)) legend(x=legend.pos,legend=statnames,col=2:(length(statnames)+1),lty=1)
+        if (is.null(legend.pos)) {
+          legend.x <- 0.7
+          legend.y <- 0.9*max(Fxi-xi)
+          legend(x=legend.x,y=legend.y,legend=statnames,col=2:(length(statnames)+1),lty=1)
+        } else {
+          legend(x=legend.pos[1],y=legend.pos[2],legend=statnames,col=2:(length(statnames)+1),lty=1)
+        }
+        
+}

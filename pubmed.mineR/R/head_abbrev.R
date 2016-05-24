@@ -1,0 +1,1 @@
+head_abbrev = function(limits,term,pmid,abs){if (missing(limits)) limits = 50;test = pmids_to_abstracts(pmid,abs); test1 = gregexpr(term,test@Abstract,fixed=T); if (test1[[1]] != -1)  {test1a = NULL; for (i in 1:length(test1[[1]])){test1a = c(test1a,substr(test@Abstract,test1[[1]][i]-limits,test1[[1]][i]+limits))}; return(test1a) } else return("match not found")}

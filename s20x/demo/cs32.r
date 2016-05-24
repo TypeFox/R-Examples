@@ -1,0 +1,11 @@
+data (books.df)
+boxplot(length~book,main="Sentence length by book",xlab="book",ylab="length",data=books.df)
+book.fit<-lm(length~book,data=books.df)
+eovcheck(book.fit)
+normcheck(book.fit)
+book.fit1<-lm(log(length)~book,data=books.df)
+eovcheck(book.fit1)
+normcheck(book.fit1)
+summary1way(book.fit1)
+multipleComp(book.fit1)
+

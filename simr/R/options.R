@@ -1,0 +1,93 @@
+#
+# Default settings.
+#
+
+.simrOptions <- new.env(parent=emptyenv())
+
+.simrOptions $ nsim <- 1000
+.simrOptions $ alpha <- 0.05
+.simrOptions $ progress <- TRUE
+.simrOptions $ binom <- "exact"
+.simrOptions $ pbnsim <- 100
+.simrOptions $ pcmin <- 3
+.simrOptions $ pcmax <- 10
+.simrOptions $ observedPowerWarning <- TRUE
+
+#' Options Settings for \code{simr}
+#'
+#' Control the default behaviour of \code{simr} analyses.
+#'
+#' @param ... a list of names to get options, or a named list of new values to set options.
+#' @param opt option name (character string).
+#'
+#' @return
+#'
+#' \code{getSimrOption} returns the current value for the option \code{x}.
+#'
+#' \code{simrOptions} returns
+#'
+#' \enumerate{
+#' \item a named list of all options, if no arguments are given.
+#' \item a named list of specified options, if a list of option names is given.
+#' \item (invisibly) a named list of changed options with their previous values, if options are set.
+#' }
+#'
+#' @section Options in \code{simr}:
+#'
+#' Options that can be set with this method (and their default values).
+#'
+#' \describe{
+#'   \item{\code{nsim}}{default number of simulations (\code{1000}).}
+#'   \item{\code{alpha}}{default confidence level (\code{0.05}).}
+#'   \item{\code{progress}}{use progress bars during calculations (\code{TRUE}).}
+#'   \item{\code{binom}}{method for calculating confidence intervals (\code{"exact"}).}
+#'   \item{\code{pbnsim}}{number of simulations for parametric bootstrap tests using \code{pbkrtest} (\code{100}).}
+#'   \item{\code{pcmin}}{minimum number of levels for the smallest point on a \code{\link{powerCurve}} (3).}
+#'   \item{\code{pcmax}}{maximum number of points on the default \code{\link{powerCurve}} (10).}
+#'   \item{\code{observedPowerWarning}}{warn if an unmodified fitted mode is used (TRUE).}
+#' }
+#'
+#' @examples
+#'
+#' getSimrOption("nsim")
+#' oldopts <- simrOptions(nsim=5)
+#' getSimrOption("nsim")
+#' simrOptions(oldopts)
+#' getSimrOption("nsim")
+#'
+#' @export
+simrOptions <- function(...) {
+
+  args <- list(...)
+
+  # Case 1: empty list; return all options.
+  if(length(args) == 0) return(as.list(.simrOptions))
+
+  # Case 2: unnamed list ...
+  if(is.null(names(args))) {
+
+    # Case 2a: single argument which is a list; use do.call.
+    if(length(args) == 1 && is.list(args[[1]])) return(do.call(simrOptions, args[[1]]))
+
+    # Case 2b: must be a list of characters; return specified options.
+    optNames <- unlist(args)
+    if(!is.character(optNames)) stop("not a list of option names")
+    for(n in optNames) if(!(n %in% ls(.simrOptions))) stop(str_c("no option to get named ", n))
+    return(mget(optNames, envir=.simrOptions))
+  }
+
+  # must be either unnamed or fully named
+  if(any(nchar(names(args))==0)) stop("cannot get and set options at the same time")
+
+  # Case 3: named list; set options.
+  for(n in names(args)) if(!n %in% ls(.simrOptions)) stop(str_c("no option to set named ", n))
+
+  oldOptions <- mget(names(args), envir=.simrOptions)
+  mapply(assign, names(args), args, MoreArgs=list(envir=.simrOptions))
+  invisible(oldOptions)
+}
+
+#' @export
+#' @rdname simrOptions
+getSimrOption <- function(opt) simrOptions(opt)[[1]]
+

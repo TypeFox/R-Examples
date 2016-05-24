@@ -1,0 +1,5 @@
+mrg <-
+function(...)
+
+  Merge(...)
+

@@ -1,0 +1,26 @@
+r.pb<-function(X,Y,beta=0.2){
+    n<-nrow(as.matrix(X))
+  prc<-function(V){
+    W.i<-abs(V-median(V))
+    W.pi<-sort(W.i)
+    m<-floor((1-beta)*n)
+    w.hat<-W.pi[m]
+    i<-(V-median(V))/w.hat
+    i.1<-length(i[i<(-1)])
+    i.2<-length(i[i>1])
+    S.i<-ifelse(i>1|i<(-1),0,V)
+    theta.hat<-(w.hat*(i.2-i.1)+sum(S.i))/(n-i.1-i.2)
+    U.i<-(V-theta.hat)/w.hat
+    U.i
+    }
+  U<-prc(X)
+  V<-prc(Y)
+  A<-sapply(U,function(x){max(-1,min(1,x))})
+  B<-sapply(V,function(x){max(-1,min(1,x))})
+  R<-sum(A*B)/sqrt(sum(A^2)*sum(B^2))
+  TS<-R*sqrt((n-2)/(1-R^2))
+  P<-pt(abs(TS),df=n-2,lower.tail=FALSE)*2
+  res<-data.frame(r.bp=R,TS=TS,P=P)
+  names(res)<-c("r.bp","t*","P(T>t*)")
+  res
+}

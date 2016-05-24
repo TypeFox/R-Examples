@@ -1,0 +1,19 @@
+random_parameter <-
+function(num){
+  Syllabic<-sample(0:100,size=num,replace=TRUE)
+  Place<-sample(0:100,size=num,replace=TRUE)
+  Stop<-sample(0:100,size=num,replace=TRUE)
+  Voice<-sample(0:100,size=num,replace=TRUE)
+  Nasal<-sample(0:100,size=num,replace=TRUE)
+  Retroflex<-sample(0:100,size=num,replace=TRUE) 
+  Lateral<-sample(0:100,size=num,replace=TRUE)
+  Aspirated<-sample(0:100,size=num,replace=TRUE)
+  Long<-sample(0:100,size=num,replace=TRUE)
+  High<-sample(0:100,size=num,replace=TRUE)
+  Back<-sample(0:100,size=num,replace=TRUE)
+  Round<-sample(0:100,size=num,replace=TRUE)
+  SkipCost<-sample(0:100,size=num,replace=TRUE)
+  #para<-matrix(nrow=n,ncol=12)
+  para<-cbind(Syllabic,Place,Stop,Voice,Nasal,Retroflex,Lateral,Aspirated,Long,High,Back,Round,SkipCost)
+  return(para)
+}

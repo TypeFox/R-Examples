@@ -1,0 +1,1 @@
+tContrast <- function(IV, ...) UseMethod("tContrast")

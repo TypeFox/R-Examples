@@ -1,0 +1,3 @@
+`median` <-function (...)  
+UseMethod("median")
+

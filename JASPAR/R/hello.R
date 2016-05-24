@@ -1,0 +1,5 @@
+hello <-
+function () 
+{
+    .Call("hello")
+}

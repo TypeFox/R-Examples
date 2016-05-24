@@ -1,0 +1,215 @@
+list(structure(list(Stats = structure(list(mean = c(13.45, 27.41, 
+40.91, -0.8844, 0.0448), sd = c(8.677, 7.465, 8.811, 2.831, 0.1047
+), MC_error = c(0.143, 0.08436, 0.1297, 0.04967, 0.001829), val2.5pc = c(-3.828, 
+12.88, 23.57, -4.62, -0.01401), median = c(13.52, 27.32, 40.89, 
+-0.67, 0.03728), val97.5pc = c(30.29, 42.38, 58.25, 0.6397, 0.1856
+), start = c(5001L, 5001L, 5001L, 5001L, 5001L), sample = c(20000L, 
+20000L, 20000L, 20000L, 20000L)), .Names = c("mean", "sd", "MC_error", 
+"val2.5pc", "median", "val97.5pc", "start", "sample"), row.names = c("X[1]", 
+"X[2]", "X[3]", "theta[1]", "theta[2]"), class = "data.frame"), 
+    DIC = structure(list(Dbar = c(14.2, 14.2), Dhat = c(11.62, 
+    11.62), DIC = c(16.79, 16.79), pD = c(2.583, 2.583)), .Names = c("Dbar", 
+    "Dhat", "DIC", "pD"), class = "data.frame", row.names = c("y", 
+    "total"))), .Names = c("Stats", "DIC")), structure(list(Stats = structure(list(
+    mean = c(1.808, 1.177, 1.095), sd = c(0.3942, 0.3816, 0.293
+    ), MC_error = c(0.004268, 0.004489, 0.003713), val2.5pc = c(1, 
+    1, 1), median = c(2, 1, 1), val97.5pc = c(2, 2, 2), start = c(5001L, 
+    5001L, 5001L), sample = c(20000L, 20000L, 20000L)), .Names = c("mean", 
+"sd", "MC_error", "val2.5pc", "median", "val97.5pc", "start", 
+"sample"), row.names = c("bronchitis", "either", "lung.cancer"
+), class = "data.frame"), DIC = NULL), .Names = c("Stats", "DIC"
+)), structure(list(Stats = structure(list(mean = c(-60.79, 34.31, 
+3.567, 9.951, 22.51, 33.9, 50.05, 53.22, 59.15, 58.69), sd = c(5.147, 
+2.894, 0.9514, 1.676, 2.09, 1.761, 1.662, 1.114, 0.7424, 0.4299
+), MC_error = c(0.0498, 0.02805, 0.008182, 0.01405, 0.01656, 
+0.01414, 0.01468, 0.01026, 0.006914, 0.004009), val2.5pc = c(-71.1, 
+28.75, 1.994, 6.945, 18.48, 30.4, 46.66, 50.84, 57.51, 57.7), 
+    median = c(-60.69, 34.26, 3.465, 9.858, 22.48, 33.91, 50.09, 
+    53.29, 59.22, 58.74), val97.5pc = c(-50.91, 40.14, 5.707, 
+    13.5, 26.67, 37.27, 53.16, 55.19, 60.38, 59.36), start = c(5001L, 
+    5001L, 5001L, 5001L, 5001L, 5001L, 5001L, 5001L, 5001L, 5001L
+    ), sample = c(20000L, 20000L, 20000L, 20000L, 20000L, 20000L, 
+    20000L, 20000L, 20000L, 20000L)), .Names = c("mean", "sd", 
+"MC_error", "val2.5pc", "median", "val97.5pc", "start", "sample"
+), row.names = c("alpha", "beta", "rhat[1]", "rhat[2]", "rhat[3]", 
+"rhat[4]", "rhat[5]", "rhat[6]", "rhat[7]", "rhat[8]"), class = "data.frame"), 
+    DIC = structure(list(Dbar = c(39.42, 39.42), Dhat = c(37.43, 
+    37.43), DIC = c(41.4, 41.4), pD = c(1.987, 1.987)), .Names = c("Dbar", 
+    "Dhat", "DIC", "pD"), class = "data.frame", row.names = c("r", 
+    "total"))), .Names = c("Stats", "DIC")), structure(list(Stats = structure(list(
+    mean = c(106.6, 6.187, 6.147), sd = c(2.352, 0.1061, 0.4781
+    ), MC_error = c(0.02256, 0.0009468, 0.006136), val2.5pc = c(101.9, 
+    5.978, 5.301), median = c(106.5, 6.187, 6.112), val97.5pc = c(111.2, 
+    6.398, 7.173), start = c(5001L, 5001L, 5001L), sample = c(20000L, 
+    20000L, 20000L)), .Names = c("mean", "sd", "MC_error", "val2.5pc", 
+"median", "val97.5pc", "start", "sample"), row.names = c("mu.beta[1]", 
+"mu.beta[2]", "sigma"), class = "data.frame"), DIC = structure(list(
+    Dbar = c(969.6, 969.6), Dhat = c(919.6, 919.6), DIC = c(1020, 
+    1020), pD = c(50.01, 50.01)), .Names = c("Dbar", "Dhat", 
+"DIC", "pD"), class = "data.frame", row.names = c("Y", "total"
+))), .Names = c("Stats", "DIC")), structure(list(Stats = structure(list(
+    mean = c(3.242, 0.008511, 0.008511, 3.199, 0.001476, 0.8453, 
+    -0.004605, -0.004605, 0.8579), sd = c(2.101, 2.492, 2.492, 
+    2.104, 0.6561, 0.5059, 0.7047, 0.7047, 0.509), MC_error = c(0.0255, 
+    0.08255, 0.08255, 0.02649, 0.02443, 0.007006, 0.02403, 0.02403, 
+    0.007312), val2.5pc = c(1.14, -4.754, -4.754, 1.104, -0.9073, 
+    0.2191, -1.398, -1.398, 0.2237), median = c(2.691, -0.01866, 
+    -0.01866, 2.652, -0.007769, 0.7261, 0.003158, 0.003158, 0.7381
+    ), val97.5pc = c(8.551, 4.769, 4.769, 8.537, 0.9089, 2.119, 
+    1.398, 1.398, 2.163), start = c(5001L, 5001L, 5001L, 5001L, 
+    5001L, 5001L, 5001L, 5001L, 5001L), sample = c(20000L, 20000L, 
+    20000L, 20000L, 20000L, 20000L, 20000L, 20000L, 20000L)), .Names = c("mean", 
+"sd", "MC_error", "val2.5pc", "median", "val97.5pc", "start", 
+"sample"), row.names = c("Sigma2[1,1]", "Sigma2[1,2]", "Sigma2[2,1]", 
+"Sigma2[2,2]", "rho", "tau[1,1]", "tau[1,2]", "tau[2,1]", "tau[2,2]"
+), class = "data.frame"), DIC = NULL), .Names = c("Stats", "DIC"
+)), structure(list(Stats = structure(list(mean = c(1.859, 2.651, 
+0.9713, 0.8622, 0.09894), sd = c(0.265, 0.07082, 0.07689, 0.03177, 
+0.01488), MC_error = c(0.0146, 0.00389, 0.002055, 0.001754, 0.0002341
+), val2.5pc = c(1.332, 2.53, 0.8227, 0.7911, 0.07493), median = c(1.853, 
+2.642, 0.9703, 0.8645, 0.09724), val97.5pc = c(2.374, 2.803, 
+1.124, 0.9148, 0.133), start = c(5001L, 5001L, 5001L, 5001L, 
+5001L), sample = c(20000L, 20000L, 20000L, 20000L, 20000L)), .Names = c("mean", 
+"sd", "MC_error", "val2.5pc", "median", "val97.5pc", "start", 
+"sample"), row.names = c("U3", "alpha", "beta", "gamma", "sigma"
+), class = "data.frame"), DIC = structure(list(Dbar = c(-49.1, 
+-49.1), Dhat = c(-52.96, -52.96), DIC = c(-45.25, -45.25), pD = c(3.852, 
+3.852)), .Names = c("Dbar", "Dhat", "DIC", "pD"), class = "data.frame", row.names = c("Y", 
+"total"))), .Names = c("Stats", "DIC")), structure(list(Stats = structure(list(
+    mean = c(2380, 2981, 1527), sd = c(8162, 1091, 22.42), MC_error = c(121.4, 
+    36.99, 0.3445), val2.5pc = c(0.01265, 1549, 1483), median = c(1382, 
+    2753, 1526), val97.5pc = c(10210, 5686, 1571), start = c(5001L, 
+    5001L, 5001L), sample = c(20000L, 20000L, 20000L)), .Names = c("mean", 
+"sd", "MC_error", "val2.5pc", "median", "val97.5pc", "start", 
+"sample"), row.names = c("sigma2.btw", "sigma2.with", "theta"
+), class = "data.frame"), DIC = structure(list(Dbar = c(323.4, 
+323.4), Dhat = c(316.9, 316.9), DIC = c(329.9, 329.9), pD = c(6.475, 
+6.475)), .Names = c("Dbar", "Dhat", "DIC", "pD"), class = "data.frame", row.names = c("y", 
+"total"))), .Names = c("Stats", "DIC")), structure(list(Stats = structure(list(
+    mean = c(0.9978, 1.434, -0.008588, -0.1801, 0.1104, 0.1406, 
+    0.9928), sd = c(0.04685, 0.05495, 0.05196, 0.05179, 0.03345, 
+    0.05436, 0.05167), MC_error = c(0.0003252, 0.001275, 0.0003669, 
+    0.0003675, 0.0006507, 0.0009669, 0.0003686), val2.5pc = c(1, 
+    1.325, -0.1124, -0.2828, 0.06491, 0.04493, 0.8937), median = c(1, 
+    1.434, -0.008368, -0.1805, 0.1032, 0.1355, 0.9917), val97.5pc = c(1, 
+    1.542, 0.09495, -0.0747, 0.1924, 0.2671, 1.1), start = c(5001L, 
+    5001L, 5001L, 5001L, 5001L, 5001L, 5001L), sample = c(20000L, 
+    20000L, 20000L, 20000L, 20000L, 20000L, 20000L)), .Names = c("mean", 
+"sd", "MC_error", "val2.5pc", "median", "val97.5pc", "start", 
+"sample"), row.names = c("equiv", "mu", "phi", "pi", "sigma1", 
+"sigma2", "theta"), class = "data.frame"), DIC = structure(list(
+    Dbar = c(-33.27, -33.27), Dhat = c(-45.21, -45.21), DIC = c(-21.32, 
+    -21.32), pD = c(11.94, 11.94)), .Names = c("Dbar", "Dhat", 
+"DIC", "pD"), class = "data.frame", row.names = c("Y", "total"
+))), .Names = c("Stats", "DIC")), structure(list(Stats = structure(list(
+    mean = c(0.6032, 0.3968, 536.8, 548.9, 3.758), sd = c(0.08391, 
+    0.08391, 0.9152, 1.209, 0.6041), MC_error = c(0.00113, 0.00113, 
+    0.01592, 0.01913, 0.01316), val2.5pc = c(0.4339, 0.2372, 
+    535.1, 546.5, 2.919), median = c(0.6042, 0.3958, 536.7, 548.9, 
+    3.653), val97.5pc = c(0.7628, 0.5662, 538.6, 551.2, 5.259
+    ), start = c(5001L, 5001L, 5001L, 5001L, 5001L), sample = c(20000L, 
+    20000L, 20000L, 20000L, 20000L)), .Names = c("mean", "sd", 
+"MC_error", "val2.5pc", "median", "val97.5pc", "start", "sample"
+), row.names = c("P[1]", "P[2]", "lambda[1]", "lambda[2]", "sigma"
+), class = "data.frame"), DIC = NULL), .Names = c("Stats", "DIC"
+)), structure(list(Stats = structure(list(mean = c(2.995, 0.7968, 
+1.022), sd = c(0.5625, 0.3953, 0.7287), MC_error = c(0.004086, 
+0.002512, 0.009658), val2.5pc = c(1.916, 0.05661, 0.4119), median = c(2.997, 
+0.7993, 0.8279), val97.5pc = c(4.059, 1.541, 2.789), start = c(5001L, 
+5001L, 5001L), sample = c(20000L, 20000L, 20000L)), .Names = c("mean", 
+"sd", "MC_error", "val2.5pc", "median", "val97.5pc", "start", 
+"sample"), row.names = c("alpha", "beta", "sigma"), class = "data.frame"), 
+    DIC = structure(list(Dbar = c(12.97, 12.97), Dhat = c(9.063, 
+    9.063), DIC = c(16.87, 16.87), pD = c(3.903, 3.903)), .Names = c("Dbar", 
+    "Dhat", "DIC", "pD"), class = "data.frame", row.names = c("Y", 
+    "total"))), .Names = c("Stats", "DIC")), structure(list(Stats = structure(list(
+    mean = c(5.264, 2.198, -5.881, 0.2585, 0.2708, 0.2283, 7.837
+    ), sd = c(0.1339, 0.1666, 0.1437, 0.1155, 0.1379, 0.1102, 
+    1.19), MC_error = c(0.002003, 0.00395, 0.003601, 0.001239, 
+    0.002355, 0.002098, 0.02413), val2.5pc = c(4.996, 1.879, 
+    -6.172, 0.1275, 0.1199, 0.1086, 5.91), median = c(5.264, 
+    2.196, -5.879, 0.2317, 0.2399, 0.2018, 7.699), val97.5pc = c(5.532, 
+    2.535, -5.602, 0.5434, 0.6071, 0.5034, 10.57), start = c(5001L, 
+    5001L, 5001L, 5001L, 5001L, 5001L, 5001L), sample = c(20000L, 
+    20000L, 20000L, 20000L, 20000L, 20000L, 20000L)), .Names = c("mean", 
+"sd", "MC_error", "val2.5pc", "median", "val97.5pc", "start", 
+"sample"), row.names = c("mu[1]", "mu[2]", "mu[3]", "sigma[1]", 
+"sigma[2]", "sigma[3]", "sigmaC"), class = "data.frame"), DIC = structure(list(
+    Dbar = c(242.7, 242.7), Dhat = c(229.9, 229.9), DIC = c(255.6, 
+    255.6), pD = c(12.83, 12.83)), .Names = c("Dbar", "Dhat", 
+"DIC", "pD"), class = "data.frame", row.names = c("Y", "total"
+))), .Names = c("Stats", "DIC")), structure(list(Stats = structure(list(
+    mean = c(106.6, 6.186, 6.097), sd = c(3.629, 0.1074, 0.4656
+    ), MC_error = c(0.02738, 0.0008775, 0.005451), val2.5pc = c(99.38, 
+    5.975, 5.271), median = c(106.6, 6.187, 6.065), val97.5pc = c(113.6, 
+    6.395, 7.094), start = c(5001L, 5001L, 5001L), sample = c(20000L, 
+    20000L, 20000L)), .Names = c("mean", "sd", "MC_error", "val2.5pc", 
+"median", "val97.5pc", "start", "sample"), row.names = c("alpha0", 
+"beta.c", "sigma"), class = "data.frame"), DIC = structure(list(
+    Dbar = c(967, 967), Dhat = c(912.7, 912.7), DIC = c(1021, 
+    1021), pD = c(54.36, 54.36)), .Names = c("Dbar", "Dhat", 
+"DIC", "pD"), class = "data.frame", row.names = c("Y", "total"
+))), .Names = c("Stats", "DIC")), structure(list(Stats = structure(list(
+    mean = c(0.7154, 1.294, -0.1516, -39.93, 0.0104, 0.05455, 
+    0.3221, 3.389), sd = c(0.1418, 0.3861, 0.1655, 12.65, 0.1014, 
+    0.2271, 0.4673, 0.6247), MC_error = c(0.002215, 0.005965, 
+    0.001676, 0.1113, 0.0006987, 0.001789, 0.004462, 0.005228
+    ), val2.5pc = c(0.4371, 0.5286, -0.4804, -65.13, 0, 0, 0, 
+    2.423), median = c(0.7154, 1.292, -0.1516, -39.98, 0, 0, 
+    0, 3.297), val97.5pc = c(0.9979, 2.062, 0.1764, -14.65, 0, 
+    1, 1, 4.841), start = c(5001L, 5001L, 5001L, 5001L, 5001L, 
+    5001L, 5001L, 5001L), sample = c(20000L, 20000L, 20000L, 
+    20000L, 20000L, 20000L, 20000L, 20000L)), .Names = c("mean", 
+"sd", "MC_error", "val2.5pc", "median", "val97.5pc", "start", 
+"sample"), row.names = c("b[1]", "b[2]", "b[3]", "b0", "outlier[3]", 
+"outlier[4]", "outlier[21]", "sigma"), class = "data.frame"), 
+    DIC = structure(list(Dbar = c(110.3, 110.3), Dhat = c(105, 
+    105), DIC = c(115.5, 115.5), pD = c(5.265, 5.265)), .Names = c("Dbar", 
+    "Dhat", "DIC", "pD"), class = "data.frame", row.names = c("Y", 
+    "total"))), .Names = c("Stats", "DIC")), structure(list(Stats = structure(list(
+    mean = c(0.02045, 0.1263, 0.07463, 0.05796, 0.04218, 0.0707, 
+    0.06664, 0.1475, 0.07183, 0.09073, 0.1164, 0.06897), sd = c(0.01989, 
+    0.02722, 0.02387, 0.008142, 0.01376, 0.01815, 0.02014, 0.02405, 
+    0.01783, 0.02867, 0.01986, 0.01338), MC_error = c(0.0001314, 
+    0.0001809, 0.0001651, 5.562e-05, 0.000104, 0.0001297, 0.0001363, 
+    0.000159, 0.0001341, 0.0002174, 0.0001431, 7.827e-05), val2.5pc = c(0.0005114, 
+    0.07791, 0.03489, 0.04312, 0.01952, 0.03918, 0.03277, 0.1033, 
+    0.04117, 0.04322, 0.08045, 0.04527), median = c(0.01431, 
+    0.1245, 0.07223, 0.05761, 0.0408, 0.06934, 0.06457, 0.1462, 
+    0.07045, 0.08807, 0.1156, 0.0682), val97.5pc = c(0.07349, 
+    0.1833, 0.1272, 0.0748, 0.07277, 0.1099, 0.1107, 0.1975, 
+    0.1112, 0.1546, 0.158, 0.09749), start = c(5001L, 5001L, 
+    5001L, 5001L, 5001L, 5001L, 5001L, 5001L, 5001L, 5001L, 5001L, 
+    5001L), sample = c(20000L, 20000L, 20000L, 20000L, 20000L, 
+    20000L, 20000L, 20000L, 20000L, 20000L, 20000L, 20000L)), .Names = c("mean", 
+"sd", "MC_error", "val2.5pc", "median", "val97.5pc", "start", 
+"sample"), row.names = c("p[1]", "p[2]", "p[3]", "p[4]", "p[5]", 
+"p[6]", "p[7]", "p[8]", "p[9]", "p[10]", "p[11]", "p[12]"), class = "data.frame"), 
+    DIC = structure(list(Dbar = c(62.74, 62.74), Dhat = c(52.3, 
+    52.3), DIC = c(73.17, 73.17), pD = c(10.43, 10.43)), .Names = c("Dbar", 
+    "Dhat", "DIC", "pD"), class = "data.frame", row.names = c("r", 
+    "total"))), .Names = c("Stats", "DIC")), structure(list(Stats = structure(list(
+    mean = c(0.05316, 0.103, 0.07054, 0.05926, 0.05167, 0.06909, 
+    0.06683, 0.1232, 0.07, 0.07816, 0.1021, 0.0685, 0.07273, 
+    0.4024), sd = c(0.01955, 0.02166, 0.0174, 0.00791, 0.01315, 
+    0.01487, 0.01597, 0.02253, 0.01458, 0.01988, 0.01755, 0.01166, 
+    0.01016, 0.1546), MC_error = c(0.0002498, 0.0002237, 0.0001453, 
+    8.046e-05, 0.0001714, 0.0001062, 0.0001437, 0.0002708, 0.0001184, 
+    0.0001472, 0.000178, 9.045e-05, 0.0001177, 0.002699), val2.5pc = c(0.01832, 
+    0.06674, 0.03992, 0.0446, 0.02813, 0.04269, 0.03834, 0.08309, 
+    0.04398, 0.04431, 0.07166, 0.04735, 0.05325, 0.1627), median = c(0.05232, 
+    0.101, 0.06922, 0.059, 0.05099, 0.0683, 0.06583, 0.1216, 
+    0.0691, 0.07615, 0.1009, 0.06801, 0.07254, 0.3812), val97.5pc = c(0.09456, 
+    0.1511, 0.1088, 0.07551, 0.07896, 0.1011, 0.1011, 0.1711, 
+    0.1012, 0.1223, 0.14, 0.09294, 0.0937, 0.7632), start = c(5001L, 
+    5001L, 5001L, 5001L, 5001L, 5001L, 5001L, 5001L, 5001L, 5001L, 
+    5001L, 5001L, 5001L, 5001L), sample = c(20000L, 20000L, 20000L, 
+    20000L, 20000L, 20000L, 20000L, 20000L, 20000L, 20000L, 20000L, 
+    20000L, 20000L, 20000L)), .Names = c("mean", "sd", "MC_error", 
+"val2.5pc", "median", "val97.5pc", "start", "sample"), row.names = c("p[1]", 
+"p[2]", "p[3]", "p[4]", "p[5]", "p[6]", "p[7]", "p[8]", "p[9]", 
+"p[10]", "p[11]", "p[12]", "pop.mean", "sigma"), class = "data.frame"), 
+    DIC = structure(list(Dbar = c(65.97, 65.97), Dhat = c(57.49, 
+    57.49), DIC = c(74.45, 74.45), pD = c(8.479, 8.479)), .Names = c("Dbar", 
+    "Dhat", "DIC", "pD"), class = "data.frame", row.names = c("r", 
+    "total"))), .Names = c("Stats", "DIC")))

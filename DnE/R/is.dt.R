@@ -1,0 +1,22 @@
+is.dt <-
+function(x,m=10,a)
+{
+	pr=c();
+	pr[1]=is.degen(x)[1,2];
+	pr[2]=is.bern(x)[1,2];
+	pr[3]=is.binom(x,m,a)[1,2];
+	pr[4]=is.pois(x,a)[1,2];
+	pr[5]=is.geom(x,a)[1,2];
+	pr[6]=is.nbinom(x,m,a)[1,2];
+	pr[7]=is.norm(x,m,a)[1,2];
+	pr[8]=is.unif(x,m,a)[1,2];
+	pr[9]=is.exp(x,m,a)[1,2];
+	pr[10]=is.chisq(x,m,a)[1,2];
+	pr[11]=is.gamma(x,m,a)[1,2];
+	pr[12]=is.t(x,m,a)[1,2];
+	pr[13]=is.f(x,m,a)[1,2];
+	pr[14]=is.beta(x,m,a)[1,2];
+	dis=c('degen','bern','binom','pois','geom','nbinom','norm','unif','exp','chisq','gamma','t','f','beta');
+	z=data.frame("distribution"=dis,"pvalue"=pr);
+	return(z[which(pr==min(pr)),]);
+}

@@ -1,0 +1,3 @@
+
+leaps<-function(...) eleaps(...)
+

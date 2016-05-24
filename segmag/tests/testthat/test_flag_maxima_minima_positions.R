@@ -1,0 +1,37 @@
+context("Accuracy for flag_maxima_position and flag_minima_position functions")
+
+test_that("flag_maxima_positions", {
+  expect_that(flag_maxima_positions(c()), throws_error())
+  expect_that(flag_maxima_positions(numeric(0)), throws_error())
+  expect_that(flag_maxima_positions(c(1)), throws_error())
+  expect_that(flag_maxima_positions(c(1,1)), throws_error())
+  expect_that(flag_maxima_positions(c(1,1,1)), throws_error())
+  
+  expect_that(flag_maxima_positions(c(2,1,1)), equals(c(T,F,F)))
+  expect_that(flag_maxima_positions(c(1,2,1)), equals(c(F,T,F)))
+  expect_that(flag_maxima_positions(c(1,1,2)), equals(c(F,F,T)))
+  expect_that(flag_maxima_positions(c(1,2,2)), equals(c(F,F,T)))
+  expect_that(flag_maxima_positions(c(2,2,1)), equals(c(F,T,F)))
+  expect_that(flag_maxima_positions(c(2,2,1,2,1,2,2)), equals(c(F,T,F,T,F,F,T)))
+  expect_that(flag_maxima_positions(c(2,1,2,1,2)), equals(c(T,F,T,F,T)))
+  expect_that(flag_maxima_positions(c(1,2,2,1)), equals(c(F,F,T,F)))
+  expect_that(flag_maxima_positions(c(1,2,2,2,1)), equals(c(F,F,T,F,F)))
+})
+
+test_that("flag_minima_positions", {
+  expect_that(flag_minima_positions(c()), throws_error())
+  expect_that(flag_minima_positions(numeric(0)), throws_error())
+  expect_that(flag_minima_positions(c(1)), throws_error())
+  expect_that(flag_minima_positions(c(1,1)), throws_error())
+  expect_that(flag_minima_positions(c(1,1,1)), throws_error())
+  
+  expect_that(flag_minima_positions(c(-2,1,1)), equals(c(T,F,F)))
+  expect_that(flag_minima_positions(c(1,-2,1)), equals(c(F,T,F)))
+  expect_that(flag_minima_positions(c(1,1,-2)), equals(c(F,F,T)))
+  expect_that(flag_minima_positions(c(1,-2,-2)), equals(c(F,F,T)))
+  expect_that(flag_minima_positions(c(-2,-2,1)), equals(c(F,T,F)))
+  expect_that(flag_minima_positions(c(-2,-2,1,-2,1,-2,-2)), equals(c(F,T,F,T,F,F,T)))
+  expect_that(flag_minima_positions(c(-2,1,-2,1,-2)), equals(c(T,F,T,F,T)))
+  expect_that(flag_minima_positions(c(1,-2,-2,1)), equals(c(F,F,T,F)))
+  expect_that(flag_minima_positions(c(1,-2,-2,-2,1)), equals(c(F,F,T,F,F)))
+})

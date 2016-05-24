@@ -1,0 +1,47 @@
+bcrossv.l1 <-
+function(x,y,trials=c(100,0.25),span=0.75,
+	degree=2,plot=TRUE,estimated=FALSE)
+{
+{
+	ss<-as.integer(trials[2]*length(x))
+	ns<-trials[1]
+	observations<-matrix(nrow=length(x),ncol=ns,
+		rep(c(1:length(x)),ns))
+	mm<-c(which(x==min(x)),which(x==max(x)))	
+	l.out<-t(apply(observations[-mm,],2,sample,ss))
+	crossval<-matrix(nrow=ns*ss,ncol=3)
+	colnames(crossval)<-c("x","observed","predicted")
+	l.funct<-as.list(c(1:ns))
+	a<-matrix(nrow=ns,ncol=2)
+	a[,1]<-seq(1,ns*ss,ss)
+	a[,2]<-seq(ss,ns*ss,ss)	
+	for(i in 1:ns){
+		loess(y[-l.out[i,]]~x[-l.out[i,]],span=span,
+			degree=degree)->l.funct[[i]]
+		predict(l.funct[[i]],
+			x[l.out[i,]])->crossval[a[i,1]:a[i,2],3]
+		y[l.out[i,]]->crossval[a[i,1]:a[i,2],2]
+		x[l.out[i,]]->crossval[a[i,1]:a[i,2],1]
+		}
+	crossval<-ifelse(crossval[,]<0,0,crossval)
+	error<-matrix(nrow=3,ncol=1,
+		dimnames=list(c("se","rse","rmse"),"value"))
+	error[1,1]<-mean((crossval[,3]-crossval[,2])^2)
+	error[2,1]<-error[1,1]^0.5
+	error[3,1]<-mean(abs(crossval[,2]-crossval[,3]))
+	crossval<-round(crossval,2)
+	if(plot==TRUE){
+			plot(crossval[,1],crossval[,3]-crossval[,2],
+			xlab="x",ylab="error")
+		}
+}	
+if(estimated==TRUE){
+	results<-list(crossval,error)
+	names(results)<-c("crossval","error")
+	return(results)	
+	}
+else{
+	return(error)
+	}
+}
+

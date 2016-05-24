@@ -1,0 +1,2 @@
+makeUseDynLibWork<-function() NULL
+

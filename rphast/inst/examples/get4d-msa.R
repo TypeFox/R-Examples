@@ -1,0 +1,11 @@
+exampleArchive <- system.file("extdata", "examples.zip", package="rphast")
+files <- c("ENr334-100k.maf", "ENr334-100k.fa", "gencode.ENr334-100k.gff")
+unzip(exampleArchive, files)
+f <- read.feat("gencode.ENr334-100k.gff")
+f$seqname <- "hg18.chr6"
+m1 <- read.msa("ENr334-100k.maf", features=f, do.4d=TRUE)
+m2 <- read.msa("ENr334-100k.maf")
+m3 <- get4d.msa(m2, features=f)
+m4 <- get4d.msa(read.msa("ENr334-100k.maf"), features=f)
+m5 <- get4d.msa(read.msa("ENr334-100k.fa", offset=41405894), features=f)
+unlink(files)

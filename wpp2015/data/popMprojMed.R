@@ -1,0 +1,1 @@
+popMprojMed <- read.delim(file='popMprojMed.txt', comment.char='#', check.names=FALSE)

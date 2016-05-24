@@ -1,0 +1,2 @@
+## fivenum( ~ Exercise, data = StudentSurvey)
+

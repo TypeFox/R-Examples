@@ -1,0 +1,185 @@
+#' Network visualization edges options
+#'
+#' Network visualization edges options. For full documentation, have a look at \link{visDocumentation}.
+#' 
+#' @param graph : a visNetwork object
+#' @param title : String. Default to undefined. The title is shown in a pop-up when the mouse moves over the edge.
+#' @param value : Number. Default to undefined. When a value is set, the edges' width will be scaled using the options in the scaling object defined above.
+#' @param label : String. Default to undefined. The label of the edge. HTML does not work in here because the network uses HTML5 Canvas.
+#' @param length : Number. Default to undefined. The physics simulation gives edges a spring length. This value can override the length of the spring in rest.
+#' @param width : Number. Default to 1. The width of the edge. If value is set, this is not used.
+#' @param dashes : Array or Boolean. Default to false. When true, the edge will be drawn as a dashed line. You can customize the dashes by supplying an Array. Array formart: Array of numbers, gap length, dash length, gap length, dash length, ... etc. The array is repeated until the distance is filled. When using dashed lines in IE versions older than 11, the line will be drawn straight, not smooth.
+#' @param hidden : Boolean. Default to false. When true, the edge is not drawn. It is part still part of the physics simulation however!
+#' @param hoverWidth : Number or Function. Default to 0.5. Assuming the hover behaviour is enabled in the interaction module, the hoverWidth determines the width of the edge when the user hovers over it with the mouse. If a number is supplied, this number will be added to the width. Because the width can be altered by the value and the scaling functions, a constant multiplier or added value may not give the best results. To solve this, you can supply a function.
+#' @param id : String. Default to undefined. The id of the edge. The id is optional for edges. When not supplied, an UUID will be assigned to the edge.
+#' @param physics : Boolean. Default to true. When true, the edge is part of the physics simulation. When false, it will not act as a spring.
+#' @param selectionWidth : Number or Function. Default to 1. The selectionWidth determines the width of the edge when the edge is selected. If a number is supplied, this number will be added to the width. Because the width can be altered by the value and the scaling functions, a constant multiplier or added value may not give the best results. To solve this, you can supply a function.
+#' @param selfReferenceSize : Number. Default to false.	When the to and from nodes are the same, a circle is drawn. This is the radius of that circle.
+#' @param labelHighlightBold 	: Boolean. Default to	true. Determines whether or not the label becomes bold when the edge is selected.
+#' 
+#' @param color : Named list or String. Default to named list. Color information of the edge in every situation. When the edge only needs a single color, a color value like 'rgb(120,32,14)', '#ffffff' or 'red'</code> can be supplied instead of an object.
+#' \itemize{
+#'  \item{"color"}{ : String. Default to '#848484. The color of the border of the node when it is not selected or hovered over (assuming hover is enabled in the interaction module).}
+#'  \item{"highlight "}{ : String. Default to '#848484'. The color the edge when it is selected.}
+#'  \item{"hover"}{ : String. Default to '#848484'. The color the edge when the mouse hovers over it (assuming hover is enabled in the interaction module).}
+#'  \item{"inherit"}{ : String or Boolean. Default to 'from'. When color, highlight or hover are defined, inherit is set to false! Supported options are: true, false, 'from','to','both'.}
+#'  \item{"opacity"}{ : Number. Default to 1.0. It can be useful to set the opacity of an edge without manually changing all the colors. The allowed range of the opacity option is between 0 and 1.}
+#'}
+#'
+#' @param font : Named list or String. This object defines the details of the label. A shorthand is also supported in the form 'size face color' for example: '14px arial red'
+#' \itemize{
+#'  \item{"color"}{ : String. Default to '#343434'. Color of the label text.}
+#'  \item{"size"}{ : Number. Default to 14. Size of the label text.}
+#'  \item{"face"}{ : String. Default to 'arial. Font face (or font family) of the label text.}
+#'  \item{"background"}{ : String. Default to undefined. When not undefined but a color string, a background rectangle will be drawn behind the label in the supplied color.}
+#'  \item{"strokeWidth"}{ : Number. Default to 2. As an alternative to the background rectangle, a stroke can be drawn around the text. When a value higher than 0 is supplied, the stroke will be drawn.}
+#'  \item{"strokeColor"}{ : String. Default to '#ffffff'. This is the color of the stroke assuming the value for stroke is higher than 0.}
+#'  \item{"align"}{ : String. Default tp 'horizontal'. Possible options: 'horizontal','top','middle','bottom'. The alignment determines how the label is aligned over the edge. The default value horizontal aligns the label horizontally, regardless of the orientation of the edge. When an option other than horizontal is chosen, the label will align itself according to the edge.}
+#'}
+#'
+#' @param arrows : Named list or String. To draw an arrow with default settings a string can be supplied. For example: 'to, from,middle' or 'to;from', any combination with any seperating symbol is fine. If you want to control the size of the arrowheads, you can supply an object.
+#' \itemize{
+#'  \item{"to"}{ : Named list or Boolean. Default to Named list. When true, an arrowhead on the 'to' side of the edge is drawn, pointing to the 'to' node with default settings. To customize the size of the arrow, supply an object.
+#'    \itemize{
+#'      \item{"enabled"}{ : Boolean. Default to false. Toggle the arrow on or off. This option is optional, if undefined and the scaleFactor property is set, enabled will be set to true.}
+#'      \item{"scaleFactor"}{ : Number. Default to 1. The scale factor allows you to change the size of the arrowhead.}
+#'    }
+#'  }
+#'  \item{"middle"}{ : Named list or Boolean. Default to Named list. Exactly the same as the to object but with an arrowhead in the center node of the edge.}
+#'  \item{"from "}{ : Named list or Boolean. Default to Named list. Exactly the same as the to object but with an arrowhead at the from node of the edge.}
+#'}
+#'
+#' @param arrowStrikethrough :	Boolean. Default to True. 	When false, the edge stops at the arrow. This can be useful if you have thick lines and you want the arrow to end in a point. Middle arrows are not affected by this.
+#'
+#' @param smooth : Boolean | named list. Default to named list. When true, the edge is drawn as a dynamic quadratic bezier curve. The drawing of these curves takes longer than that of straight curves but it looks better.
+#' \itemize{
+#'  \item{"enabled"}{ : Boolean. Default to true. Toggle smooth curves on and off. This is an optional option. If any of the other properties in this object are set, this option will be set to true.}
+#'  \item{"type"}{ : String. Default to 'dynamic'. Possible options: 'dynamic', 'continuous', 'discrete', 'diagonalCross', 'straightCross', 'horizontal', 'vertical', 'curvedCW', 'curvedCCW', 'cubicBezier'.}
+#'  \item{"roundness"}{ : Number. Default to 0.5. Accepted range: 0 .. 1.0. This parameter tweaks the roundness of the smooth curves for all types EXCEPT dynamic.}
+#'  \item{"forceDirection"}{ : String or Boolean. Default to false. Accepted options: ['horizontal', 'vertical', 'none']. This options is only used with the cubicBezier curves. When true, horizontal is chosen, when false, the direction that is larger (x distance between nodes vs y distance between nodes) is used. If the x distance is larger, horizontal. This is ment to be used with hierarchical layouts. }
+#'}
+#'
+#' @param shadow : Boolean | named list. Default to false. When true, the edges casts a shadow using the default settings. This can be further refined by supplying a list
+#' \itemize{
+#'  \item{"enabled"}{ : Boolean. Default to false. Toggle the casting of shadows. If this option is not defined, it is set to true if any of the properties in this object are defined.}
+#'  \item{"color"}{	: String. Default to	'rgba(0,0,0,0.5)'.	The color of the shadow as a string. Supported formats are 'rgb(255,255,255)', 'rgba(255,255,255,1)' and '#FFFFFF'.}
+#'  \item{"size"}{ : Number. Default to 10. The blur size of the shadow.}
+#'  \item{"x"}{ : Number. Default to 5. The x offset.}
+#'  \item{"y"}{ : Number. Default to 5. The y offset.}
+#'}
+#'
+#' @param scaling : Named list.  If the value option is specified, the size of the edges will be scaled according to the properties in this object.
+#' \itemize{
+#'  \item{"min"}{ :  Number. Default to 10. If edges have a value, their sizes are determined by the value, the scaling function and the min max values.}
+#'  \item{"max"}{ : Number. Default to 30. This is the maximum allowed size when the edges are scaled using the value option.}
+#'  \item{"label"}{ : Named list or Boolean. Default to Named list. This can be false if the label is not allowed to scale with the node. If true it will scale using default settigns. For further customization, you can supply an object.
+#'    \itemize{
+#'      \item{"enabled"}{ : Boolean. Default to false. Toggle the scaling of the label on or off. If this option is not defined, it is set to true if any of the properties in this object are defined.}
+#'      \item{"min"}{ : Number. Default to 14. The minimum font-size used for labels when scaling.}
+#'      \item{"max"}{ : Number. Default to 30. The maximum font-size used for labels when scaling.}
+#'      \item{"maxVisible"}{ :   Number. Default to 30. When zooming in, the font is drawn larger as well. You can limit the perceived font size using this option. If set to 30, the font will never look larger than size 30 zoomed at 100\%.}
+#'      \item{"drawThreshold"}{ : Number. Default to 5. When zooming out, the font will be drawn smaller. This defines a lower limit for when the font is drawn. When using font scaling, you can use this together with the maxVisible to first show labels of important nodes when zoomed out and only show the rest when zooming in.}
+#'    }
+#'  }
+#'  \item{"customScalingFunction"}{ : Function. If nodes have value fields, this function determines how the size of the nodes are scaled based on their values.}
+#'}
+#'
+#'@seealso \link{visNodes} for nodes options, \link{visEdges} for edges options, \link{visGroups} for groups options, 
+#'\link{visLegend} for adding legend, \link{visOptions} for custom option, \link{visLayout} & \link{visHierarchicalLayout} for layout, 
+#'\link{visPhysics} for control physics, \link{visInteraction} for interaction, \link{visNetworkProxy} & \link{visFocus} & \link{visFit} for animation within shiny,
+#'\link{visDocumentation}, \link{visEvents}, \link{visConfigure} ...
+#' 
+#' @examples
+#' nodes <- data.frame(id = 1:3)
+#' edges <- data.frame(from = c(1,2), to = c(1,3))
+#' 
+#' visNetwork(nodes, edges) %>% visEdges(arrows = 'from')
+#' 
+#' visNetwork(nodes, edges) %>% visEdges(arrows = 'to, from')
+#' 
+#' visNetwork(nodes, edges) %>% visEdges(arrows =list(to = list(enabled = TRUE, scaleFactor = 2)))
+#' 
+#' visNetwork(nodes, edges) %>% visEdges(smooth = FALSE)
+#' 
+#' visNetwork(nodes, edges) %>% visEdges(smooth = list(enabled = TRUE, type = "diagonalCross"))
+#' 
+#' visNetwork(nodes, edges) %>% visEdges(width = 10)
+#' 
+#' visNetwork(nodes, edges) %>% visEdges(color = list(hover = "green")) %>%
+#'  visInteraction(hover = TRUE)
+#'  
+#' visNetwork(nodes, edges) %>% visEdges(color = "red")
+#' 
+#' visNetwork(nodes, edges) %>% visEdges(color = list(color = "red", highlight = "yellow"))
+#' 
+#' visNetwork(nodes, edges) %>% visEdges(shadow = TRUE)
+#' 
+#' visNetwork(nodes, edges) %>% visEdges(shadow = list(enabled = TRUE, size = 5))
+#' 
+#' @export
+
+visEdges <- function(graph,
+                     title = NULL,
+                     value = NULL,
+                     label = NULL,
+                     length = NULL,
+                     width = NULL,
+                     dashes = NULL,
+                     hidden = NULL,
+                     hoverWidth = NULL,
+                     id = NULL,
+                     physics = NULL,
+                     selectionWidth = NULL,
+                     selfReferenceSize = NULL, 
+                     labelHighlightBold = NULL,
+                     color = NULL,
+                     font = NULL, 
+                     arrows = NULL, 
+                     arrowStrikethrough = NULL,
+                     smooth = NULL,
+                     shadow = NULL, 
+                     scaling = NULL){
+
+  if(!any(class(graph) %in% c("visNetwork", "visNetwork_Proxy"))){
+    stop("graph must be a visNetwork or a visNetworkProxy object")
+  }
+  
+  edges <- list()
+
+  edges$title <- title
+  edges$value <- value
+  edges$label <- label
+  edges$length <- length
+  edges$width <- width
+  edges$dashes <- dashes
+  edges$hidden <- hidden
+  edges$hoverWidth <- hoverWidth
+  edges$id <- id
+  edges$physics <- physics
+  edges$selectionWidth <- selectionWidth
+  edges$selfReferenceSize <- selfReferenceSize
+  edges$labelHighlightBold <- labelHighlightBold 
+  edges$arrows <- arrows
+  edges$arrowStrikethrough <- arrowStrikethrough
+  edges$color <- color
+  edges$font <- font
+  edges$smooth <- smooth
+  edges$shadow <- shadow
+  
+  if(!is.null(scaling)){
+    if("customScalingFunction"%in%names(scaling)){
+      scaling$customScalingFunction <- JS(scaling$customScalingFunction)
+    }
+  }
+  
+  edges$scaling <- scaling
+  
+  if(any(class(graph) %in% "visNetwork_Proxy")){
+    options <- list(edges = edges)
+    data <- list(id = graph$id, options = options)
+    graph$session$sendCustomMessage("visShinyOptions",data)
+  }else{
+    graph$x$options$edges <- mergeLists(graph$x$options$edges, edges)
+  }
+  graph
+}

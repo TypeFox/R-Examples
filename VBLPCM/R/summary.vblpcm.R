@@ -1,0 +1,16 @@
+summary.vblpcm<-function(object, ...)
+  {
+  cat("========================\n\n")
+  cat("Summary of model fit\n")
+  cat("========================\n\n")
+  cat("Number of nodes:\t",object$N,"\n")
+  cat("Number of edges:\t",object$NE,"\n")
+  cat("Number of groups:\t",object$G,"\n")
+  cat("Latent Space dimension:\t",object$d,"\n")
+  cat("Model:\t", object$model, "\n")
+  cat("Intercept mean and variance:", signif(object$V_xi_e[1],3), signif(object$V_psi2_e[1],3),"\n\n")
+  cat("Overall BIC:\t", object$BIC$overall, "\n")
+  cat("Likelihood BIC:\t", object$BIC$Y, "\n")
+  cat("Clustering BIC:\t", object$BIC$MBC, "\n")
+  cat("\n\n")
+  }

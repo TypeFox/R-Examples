@@ -1,0 +1,20 @@
+expansive.replace <- function(array1, array2, fac1 = NULL){
+     if (!is.matrix(array1)) stop("array1 must be a matrix")
+     if (!is.matrix(array2)) stop("array2 must be a matrix")
+     if (!is.null(fac1)) 
+         if (!fac1 %in% 1:ncol(array1)) 
+              stop("fac1 must be a column number for array1")
+     l1 <- levels.no(array1)
+     n2 <- nrow(array2)
+     if (!is.null(fac1)) 
+         if (!l1[fac1]==n2) 
+              stop("column ", fac1, " of array1 does not have ", n2, " levels") 
+     if (!n2 %in% l1) 
+         stop("array1 must have at least one factor with as many levels as array2 has rows")
+     if (is.null(fac1)) fac1 <- min(which(l1==n2))
+     if (length(setdiff(array1[,fac1], 1:n2))>0) 
+         stop("the levels of column fac1 must be coded as consecutive integers starting with 1")
+     aus <- cbind(array1[, -fac1], array2[array1[,fac1],])
+     class(aus) <- c("oa", "matrix")
+     aus
+}

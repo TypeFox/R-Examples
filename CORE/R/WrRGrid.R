@@ -1,0 +1,32 @@
+WrRGrid<-function(ncores){
+sink(paste(getwd(),"/RGrid.R",sep=""))
+cat(paste("task.id <-",'Sys.getenv("SGE_TASK_ID")'))
+cat("\r\n")
+cat(paste("job.id <-",'Sys.getenv("JOB_ID")'))
+cat("\r\n")
+cat(paste("load(paste(getwd(),",'"/tempMPI"',',sep=""))',sep=""))
+cat("\r\n")
+#cat("set.seed(task.id)")
+#cat("\r\n")
+#cat("x<-as.vector(randfun(procno=1,COREobj=returnme,
+#boundaries=boundaries,nprocs=1,rngoffset=0))")
+cat('if(doshuffles=="FROMSCRATCH"){')
+cat("\r\n")
+cat("x<-as.vector(randfun(procno=as.numeric(task.id),COREobj=returnme,
+boundaries=boundaries,nprocs=ncores,rngoffset=0))")
+cat("\r\n")
+cat("}")
+cat("\r\n")
+cat('if(doshuffles=="ADD"){')
+cat("\r\n")
+cat("x<-as.vector(randfun(procno=as.numeric(task.id),COREobj=returnme,
+boundaries=boundaries,nprocs=ncores,rngoffset=dataIn$nshuffle))")
+cat("\r\n")
+cat("}")
+cat("\r\n")
+cat(paste(paste("save(x,file=paste(getwd(),",'"/mygather.temp."',",as.character(job.id)",",as.character(task.id)",sep=""),',sep=""))',sep=""))
+cat("\r\n")
+cat(paste("save(job.id,file=paste(getwd(),",'"/jobid"',',sep=""))',sep=""))
+cat("\r\n")
+sink()
+}

@@ -1,0 +1,5 @@
+efa <-
+function(...)
+
+  corEFA(...)
+

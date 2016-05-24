@@ -1,0 +1,1 @@
+# # # Definition of the preCKrigePolygons class# # # Christoph Hofer, 30-03-2010setClass(    	Class = "preCKrigePolygons",	representation( covmat = "list", se.covmat = "list", pixconfig = "list",	    		pixcovmat = "matrix",  model = "list", data = "data.frame",	    		polygons = "list" ),	prototype = list(),	sealed = T,	S3methods = F)

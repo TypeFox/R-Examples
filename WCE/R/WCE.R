@@ -1,0 +1,1 @@
+WCE <- function(data, analysis, nknots, cutoff, constrained = FALSE, int.knots = NULL, aic = FALSE, MatchedSet = NULL, id='Id', event = 'Event',  start='Start', stop='Stop', expos ='dose', covariates = NULL, controls = NULL, ...) UseMethod("WCE")

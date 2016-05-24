@@ -1,0 +1,32 @@
+`nberdev` <- function(dnum=1) {
+  if (is.nan(dnum) || ! dnum %in% 1:28)
+  stop("dnum must be between 1 and 28")
+  return( c("uniform",
+            "exponential",
+            "Maxwell",
+            "double exponential",
+            "logistic",
+            "Cauchy",
+            "extreme value",
+            "infinite peak",
+            "Pareto",
+            "symmetric Pareto",
+            "normal",
+            "lognormal",
+            "uniform scale mixture",
+            "Matterhorn",
+            "logarithmic peak",
+            "isosceles triangle",
+            "beta (2,2)",
+            "chi-square (1)",
+            "normal cubed",
+            "inverse exponential",
+            "Marronite",
+            "skewed bimodal",
+            "claw",
+            "smooth comb",
+            "caliper",
+            "trimodal uniform",
+            "sawtooth",              
+            "bilogarithmic peak")[dnum])             
+}

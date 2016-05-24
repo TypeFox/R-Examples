@@ -1,0 +1,5 @@
+invisible(require(SoDA, quietly = TRUE))
+RNGkind("default", "Ahrens")
+set.seed(211)
+xx <- randomSlippage(1000, rnorm(10), rnorm(10))
+table(xx[,1], xx[,2])

@@ -1,0 +1,121 @@
+library(abind)
+# unlike cbind or rbind
+abind(x=1:4,y=5:8)
+# like cbind
+abind(x=1:4,y=5:8,along=2)
+abind(x=1:4,matrix(5:20,nrow=4),along=2)
+abind(1:4,matrix(5:20,nrow=4),along=2)
+# like rbind
+abind(x=1:4,matrix(5:20,nrow=4),along=1)
+abind(1:4,matrix(5:20,nrow=4),along=1,make.names=TRUE)
+# different default dimnames:
+abind(x=1:4,matrix(5:20,nrow=4),along=1)
+abind(x=1:4,matrix(5:20,nrow=4),along=1,force.array=FALSE)
+# concatenates two vectors:
+abind(x=1:4,y=5:8)
+abind(x=c(a=1,b=2),y=3:4)
+abind(x=c(a=1,b=2),y=c(c=3,d=4))
+# simulate rbind with row vectors in three ways:
+# (1) easiest way: insert new dimension before 1 (use any number less than 1 for along)
+abind(x=1:4,y=5:8,along=0.5)
+abind(x=c(a=1,b=2),y=c(c=3,d=4), along=0) # with names
+abind(x=c(a=1,b=2),y=c(c=3,d=4), along=0, use.first.dimnames=TRUE)
+# (2) permute the result:
+aperm(abind(1:4,5:8,along=2),c(2,1))
+# different default dimnames:
+aperm(abind(1:4,5:8,along=2,make.names=TRUE),c(2,1))
+# (3) convert arguments to row vectors
+abind(matrix(1:4,nrow=1),matrix(5:8,nrow=1),along=1)
+# bind two matrices, 5 possible values for along
+abind(x=matrix(1:16,nrow=4),y=matrix(17:32,nrow=4),along=1)
+abind(x=matrix(1:16,nrow=4),y=matrix(17:32,nrow=4),along=2)
+abind(x=matrix(1:16,nrow=4),y=matrix(17:32,nrow=4),along=3)
+abind(x=matrix(1:16,nrow=4),y=matrix(17:32,nrow=4),along=0.5)
+abind(x=matrix(1:16,nrow=4),y=matrix(17:32,nrow=4),along=1.5)
+# examples with three matrices
+cc <- as.data.frame(matrix(25:36,nrow=3))
+aa <- matrix(1:12,nrow=3,dimnames=list(letters[1:3],LETTERS[1:4]))
+# Note that names on cc are lost with as.matrix
+rownames(cc)
+rownames(as.matrix(cc))
+abind(a=aa, cc, matrix(25:36,3,4), along=0, use.first.dimnames=TRUE)
+abind(a=aa, cc, matrix(25:36,3,4), along=1, use.first.dimnames=TRUE)
+abind(a=aa, cc, matrix(25:36,3,4), along=1.1, use.first.dimnames=TRUE)
+abind(a=aa, cc, matrix(25:36,3,4), along=2)
+abind(a=aa, cc, matrix(25:36,3,4), along=2, use.first.dimnames=TRUE)
+abind(a=aa, cc, matrix(25:36,3,4), along=3, use.first.dimnames=TRUE)
+abind(a=aa, cc, matrix(25:36,3,4), along=3, make.names=TRUE, use.first.dimnames=TRUE)
+abind(a=aa, cc, dd=matrix(25:36,3,4), along=1.1, use.first.dimnames=TRUE)
+x1 <- array(1:8,dim=c(2,2,2),dimnames=list(letters[6:7],letters[1:2],letters[24:25]))
+x1
+# test that we get dimnames correctly when we need to expand dimensions
+x2.1 <- array(11:14,dim=c(2,2),dimnames=list(letters[1:2],letters[24:25]))
+x2.2 <- array(11:14,dim=c(2,2),dimnames=list(letters[6:7],letters[24:25]))
+x2.3 <- array(11:14,dim=c(2,2),dimnames=list(letters[6:7],letters[1:2]))
+abind(x1, h=x2.1, along=1)
+abind(x1, c=x2.2, along=2)
+abind(x1, z=x2.3, along=3)
+# Five different ways of binding together two matrices
+x <- matrix(1:12,3,4)
+y <- x+100
+dim(abind(x,y,along=0))
+dim(abind(x,y,along=1))
+dim(abind(x,y,along=1.5))
+dim(abind(x,y,along=2))
+dim(abind(x,y,along=3))
+dim(abind(x,y,rev.along=0))
+dim(abind(x,y,rev.along=1))
+# using a list argument
+abind(list(x=1:4,y=5:8))
+abind(list(x=1:4,y=5:8),along=2)
+abind(list(x=1:4,matrix(5:20,nrow=4)),along=2)
+abind(list(1:4,matrix(5:20,nrow=4)),along=2)
+L <- list(1:4,matrix(5:20,nrow=4))
+abind(L,along=2)
+abind(L,along=1)
+L <- list(x=1:4,matrix(5:20,nrow=4))
+abind(L,along=2)
+# Equivalent call to cbind
+do.call("cbind", L)
+# Equivalent call to rbind
+abind(L,along=1)
+do.call("rbind", L)
+L <- list(x=1:4,y=5:8)
+abind(L,along=0)
+abind(L,along=1)
+abind(L,along=2)
+# behavior with NULL objects
+dim(abind(list(a=NULL, b=NULL), along=1))
+abind(list(a=NULL, b=NULL), along=1)
+dimnames(abind(list(a=NULL, b=NULL), along=1))
+abind(list(a=NULL, b=NULL), along=2)
+dim(abind(list(a=NULL, b=NULL), along=2))
+dimnames(abind(list(a=NULL, b=NULL), along=2))
+abind(list(a=NULL, b=NULL), along=0)
+dim(abind(list(a=NULL, b=NULL), along=0))
+dimnames(abind(list(a=NULL, b=NULL), along=0))
+abind(list(a=NULL, b=NULL), along=3)
+# behavior with numeric(0) objects
+dim(abind(list(a=numeric(0), b=numeric(0)), along=1))
+abind(list(a=numeric(0), b=numeric(0)), along=1)
+dimnames(abind(list(a=numeric(0), b=numeric(0)), along=1))
+abind(list(a=numeric(0), b=numeric(0)), along=2)
+dim(abind(list(a=numeric(0), b=numeric(0)), along=2))
+dimnames(abind(list(a=numeric(0), b=numeric(0)), along=2))
+abind(list(a=numeric(0), b=numeric(0)), along=0)
+dim(abind(list(a=numeric(0), b=numeric(0)), along=0))
+dimnames(abind(list(a=numeric(0), b=numeric(0)), along=0))
+# check hierarchical name construction
+abind(x=cbind(1:3,4:6))
+abind(x=cbind(a=1:3,b=4:6), hier.names=TRUE)
+abind(x=cbind(1:3,4:6), hier.names=TRUE)
+abind(cbind(a=1:3,b=4:6))
+abind(cbind(1:3,4:6), hier.names=TRUE)
+abind(cbind(a=1:3,b=4:6), hier.names=TRUE)
+abind(cbind(a=1:3,b=4:6), cbind(a=7:9,b=10:12), hier.names=TRUE)
+abind(x=cbind(a=1:3,b=4:6), y=cbind(a=7:9,b=10:12), hier.names=TRUE)
+abind(x=cbind(1:3,4:6), y=cbind(7:9,10:12), hier.names=TRUE)
+abind(cbind(1:3,4:6), cbind(7:9,10:12), hier.names=TRUE)
+abind(x=cbind(a=1:3,b=4:6), hier.names='after')
+abind(x=cbind(a=1:3,b=4:6), hier.names='before')
+abind(x=cbind(a=1:3,b=4:6), hier.names='no')

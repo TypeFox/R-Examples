@@ -1,0 +1,2 @@
+
+has_punct(".") == TRUE 

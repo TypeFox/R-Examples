@@ -1,0 +1,4 @@
+"nma" <- function(...) {
+  UseMethod("nma")
+}
+

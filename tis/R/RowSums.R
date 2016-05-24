@@ -1,0 +1,6 @@
+RowSums      <- function(x, ...) UseMethod("RowSums")
+RowMeans     <- function(x, ...) UseMethod("RowMeans")
+RowSums.tis  <- function(x, ...) tis(rowSums( stripTis(x), ...), start = start(x))
+RowMeans.tis <- function(x, ...) tis(rowMeans(stripTis(x), ...), start = start(x))
+RowSums.default  <- function(x, ...) rowSums( x, ...)
+RowMeans.default <- function(x, ...) rowMeans(x, ...)

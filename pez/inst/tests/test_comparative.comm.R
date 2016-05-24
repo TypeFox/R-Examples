@@ -1,0 +1,123 @@
+require(testthat)
+require(picante)
+require(pez)
+require(caper)
+data(phylocom)
+
+context("comparative community object")
+
+test_that("comm - phy", {
+  simple <<- comparative.comm(phylocom$phy, phylocom$sample, warn=FALSE)
+  expect_that(simple, equals(simple[]))
+  expect_that(simple, equals(simple[,]))
+  expect_that(ncol(simple$comm), equals(ncol(phylocom$sample)))
+  expect_that(nrow(simple$comm), equals(nrow(phylocom$sample)))
+  expect_that(simple$data, equals(NULL))
+  expect_that(simple$env, equals(NULL))
+  expect_that(simple$comm[3,], equals(phylocom$sample[3,simple$phy$tip.label]))
+  expect_that(simple[1:3,]$comm[3,], equals(simple$comm[3,]))
+  expect_that(simple[,1:3]$comm[1,], equals(simple$comm[1,1:3]))
+  expect_that(sort(colnames(simple$comm)), equals(sort(simple$phy$tip.label)))
+  expect_that(simple[1:2,], equals(simple[c("clump1","clump2a")]))
+  expect_that(simple[1:2,], equals(simple[c(TRUE,TRUE,FALSE,FALSE,FALSE,FALSE)]))
+  expect_that(simple[,1:10], equals(simple[,species(simple)[1:10]]))
+  expect_that(simple[,1:10], equals(simple[,c(rep(TRUE,10),rep(FALSE,50))]))
+
+  t <- simple
+  expect_that(species(t), equals(colnames(simple$comm)))
+  expect_that(species(t), equals(simple$phy$tip.label))
+  species(t) <- letters[1:25]
+  expect_that(species(t), equals(letters[1:25]))
+  species(t)[1:3] <- c("w", "t", "f")
+  expect_that(species(t), equals(c("w","t","f",letters[4:25])))
+  expect_that(sites(t), equals(rownames(simple$comm)))
+  sites(t) <- letters[1:6]
+  expect_that(sites(t), equals(letters[1:6]))
+  sites(t)[1:3] <- c("w", "t", "f")
+  expect_that(sites(t), equals(c("w","t","f",letters[4:6])))
+  expect_true(is.null(env.names(simple)))
+  expect_true(is.null(trait.names(simple)))
+  
+  t <- phylocom$sample
+  colnames(t)[1] <- "deliberately wrong"
+  dropping <- comparative.comm(phylocom$phy, t, warn=FALSE)
+  expect_that(ncol(dropping$comm), equals(ncol(simple$comm)-1))
+  expect_that(nrow(dropping$comm), equals(nrow(simple$comm)))
+  expect_that(names(simple), equals(c("phy","comm","data","env","dropped","names")))
+  expect_that(rownames(dropping$vcv), equals(colnames(dropping$vcv)))
+  expect_true(is.null(simple$data))
+  expect_true(is.null(simple$env))
+})
+
+test_that("comm - phy - traits", {
+  trts <<- comparative.comm(phylocom$phy, phylocom$sample, phylocom$traits, warn=FALSE)
+  expect_that(ncol(trts$comm), equals(ncol(simple$comm)))
+  expect_that(nrow(trts$comm), equals(nrow(simple$comm)))
+  expect_that(trts$comm[3,], equals(simple$comm[3,]))
+  expect_that(trts$data[3,], equals(phylocom$traits[3,]))
+  expect_that(trts$env, equals(NULL))
+  expect_that(trts[1:3,]$comm[3,], equals(simple[1:3,]$comm[3,]))
+  expect_that(trts[,1:3]$comm[1,], equals(simple[,1:3]$comm[1,]))
+  expect_that(trts[1:3,]$data[3,], equals(trts$data[3,]))
+  expect_that(trts[,1:2]$data[1,], equals(trts$data[1,]))
+  expect_that(sort(colnames(trts$comm)), equals(sort(trts$phy$tip.label)))
+  expect_that(sort(rownames(trts$data)), equals(sort(trts$phy$tip.label)))
+  expect_that(names(trts), equals(names(simple)))
+  expect_true(is.null(trts$env))
+  expect_that(trts[1:2,], equals(trts[c("clump1","clump2a")]))
+  expect_that(trts[1:2,], equals(trts[c(TRUE,TRUE,FALSE,FALSE,FALSE,FALSE)]))
+  expect_that(trts[,1:10], equals(trts[,species(trts)[1:10]]))
+  expect_that(trts[,1:10], equals(trts[,c(rep(TRUE,10),rep(FALSE,50))]))
+})
+
+test_that("comm - phy - traits - env", {
+  dummy.env <- data.frame(letters=letters[1:6], repeated=rep("A", 6), row.names=rownames(phylocom$sample))
+  env <- comparative.comm(phylocom$phy, phylocom$sample, phylocom$traits, dummy.env, warn=FALSE)
+  expect_that(ncol(env$comm), equals(ncol(simple$comm)))
+  expect_that(nrow(env$comm), equals(nrow(simple$comm)))
+  expect_that(env$comm[3,], equals(simple$comm[3,]))
+  expect_that(env$data[3,], equals(phylocom$traits[3,]))  
+  expect_that(env[1:3,]$comm[3,], equals(simple[1:3,]$comm[3,]))
+  expect_that(env[,1:3]$comm[1,], equals(simple[,1:3]$comm[1,]))
+  expect_that(env[1:3,]$data[3,], equals(trts$data[3,]))
+  expect_that(env[,1:2]$data[1,], equals(trts$data[1,]))
+  expect_that(env[1:3,]$env[,1], equals(dummy.env[1:3,1]))
+  expect_that(env[,1:3]$env[,1], equals(dummy.env[,1]))
+  expect_that(sort(colnames(env$comm)), equals(sort(env$phy$tip.label)))
+  expect_that(rownames(env$comm), equals(rownames(env$env)))
+  expect_that(sort(rownames(env$data)), equals(sort(env$phy$tip.label)))
+  expect_that(names(env), equals(names(simple)))
+  expect_that(env[1:2,], equals(env[c("clump1","clump2a")]))
+  expect_that(env[1:2,], equals(env[c(TRUE,TRUE,FALSE,FALSE,FALSE,FALSE)]))
+  expect_that(env[,1:10], equals(env[,species(env)[1:10]]))
+  expect_that(env[,1:10], equals(env[,c(rep(TRUE,10),rep(FALSE,50))]))
+  
+  t <- env
+  expect_that(species(t), equals(colnames(env$comm)))
+  expect_that(species(t), equals(env$phy$tip.label))
+  expect_that(sites(t), equals(rownames(env$env)))
+  expect_that(species(t), equals(rownames(env$data)))
+  species(t) <- letters[1:25]
+  expect_that(species(t), equals(letters[1:25]))
+  species(t)[1:3] <- c("wa", "ta", "fa")
+  expect_that(species(t), equals(c("wa","ta","fa",letters[4:25])))
+  expect_that(sites(t), equals(rownames(env$comm)))
+  expect_that(sites(t), equals(rownames(env$env)))
+  sites(t) <- letters[1:6]
+  expect_that(sites(t), equals(letters[1:6]))
+  sites(t)[1:3] <- c("w", "t", "fa")
+  expect_that(sites(t), equals(c("w","t","fa",letters[4:6])))
+  expect_that(env.names(env), equals(colnames(env$env)))
+  expect_that(trait.names(env), equals(colnames(env$data)))
+
+  traits(t)$test <- letters[nrow(traits(t))]
+  expect_that(trait.names(t), equals(c(trait.names(env),"test")))
+  env(t)$test <- letters[nrow(comm(t))]
+  expect_that(names(env(t)), equals(c("letters","repeated","test")))
+  expect_that(comm(t), equals(t$comm))
+  tt <- t
+  comm(t) <- comm(t)[-2,]
+  expect_that(comm(t), equals(tt$comm[-2,]))
+  expect_that(phy(t), equals(t$phy))
+  expect_that(phy(t), equals(tree(t)))
+})

@@ -1,0 +1,1 @@
+gridPointsFitError <- function(p, nx, points, ny=NULL) mean(sqrt((points - gridPointsFit(p, nx, ny))^2))

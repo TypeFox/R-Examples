@@ -1,0 +1,1 @@
+coef.orlm <- function(object, ...) object$b.restr

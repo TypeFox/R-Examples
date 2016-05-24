@@ -1,0 +1,1 @@
+yuenContrast <- function(IV, ...) UseMethod("yuenContrast")

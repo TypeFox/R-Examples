@@ -1,0 +1,5 @@
+YPmodel <-
+function(...)
+{
+ UseMethod("YPmodel")
+}

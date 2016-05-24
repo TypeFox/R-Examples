@@ -1,0 +1,1 @@
+globalVariables(c("value", "sigma", "condition", "x", "y", "name", "proflist", "delta"))

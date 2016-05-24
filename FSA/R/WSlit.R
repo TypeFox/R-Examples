@@ -1,0 +1,54 @@
+#' @title All known standard weight equations.
+#'
+#' @description Parameters for all known standard weight equations.
+#'
+#' @details The minimum TL for the English units were derived by rounding the converted minimum TL for the metric units to what seemed like common units (inches, half inches, or quarter inches).
+#'
+#' @name WSlit
+#'
+#' @docType data
+#'
+#' @format A data frame with observations on the following 13 variables:
+#'  \describe{
+#'    \item{species}{Species name.}
+#'    \item{units}{Units of measurements.  \code{Metric} uses lengths in mm and weight in grams.  \code{English} uses lengths in inches and weight in pounds.}
+#'    \item{type}{Type of equation (\code{linear} or \code{quadratic}).}
+#'    \item{ref}{Reference quartile (\code{75}, \code{50}, or \code{25}).}
+#'    \item{measure}{The type of length measurement used -- total length (\code{TL}) or fork length (\code{FL}).}
+#'    \item{method}{The type of method used to derive the equation (\code{RLP},\code{EmP}, or \code{Other}).}
+#'    \item{min.len}{Minimum total length (mm or in, depending on \code{units}) for which the equation should be applied.}
+#'    \item{max.len}{Maximum total length (mm or in, depending on \code{units}) for which the equation should be applied.}
+#'    \item{int}{The intercept for the model.}
+#'    \item{slope}{The slope for the linear models or the linear coefficient for the quadratic equation.}
+#'    \item{quad}{The quadratic coefficient in the quadratic equations.}
+#'    \item{source}{Source of the equation.  These match the sources given in Neumann et al. 2012.}
+#'    \item{comment}{Comments about use of equation.}
+#'  }
+#'
+#' @section Topic(s):
+#'  \itemize{
+#'    \item Relative weight
+#'    \item Standard weight
+#'    \item Condition
+#'  }
+#'
+#' @concept Condition 'Relative Weight' 'Standard Weight'
+#'
+#' @seealso See \code{\link{wsVal}} and \code{\link{wrAdd}} for related functionality.
+#'
+#' @section IFAR Chapter: 8-Condition.
+#'
+#' @references Ogle, D.H.  2016.  \href{http://derekogle.com/IFAR}{Introductory Fisheries Analyses with R}.  Chapman & Hall/CRC, Boca Raton, FL.
+#'
+#' @source Most of these equations can be found in Neumann, R.M., C.S. Guy, and D.W. Willis.  2012.  Length, Weight, and Associated Indices.  Chapter 14 in Zale, A.V., D.L. Parrish, and T.M. Sutton, editors.  Fisheries Techniques.  American Fisheries Society, Bethesda, MD.
+#' 
+#' Some species were not in Neumann et al (2012) and are noted as such in the \code{comments} variable.
+#'
+#' @keywords datasets
+#'
+#' @examples
+#' data(WSlit)
+#' str(WSlit)
+#' head(WSlit)
+#'
+NULL

@@ -1,0 +1,7 @@
+id <- c(1,2,3,4,5,6)
+age <- c(30,32,28,39,20,25)
+edu <- c(0,0,0,0,0,0)
+classname <- c("poor","middle")
+classrep <- rep(classname,c(3,3))
+class <- factor(classrep , level=classname)
+IndianMother <- data.frame(id,age,edu,class=classrep)

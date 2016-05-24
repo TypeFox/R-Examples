@@ -1,0 +1,9 @@
+pyramide0<-function(age,sexe,xxlab=NULL){
+SEXE<-sexe
+AGE<-age
+groupe<-levels(SEXE)
+AGE.groupe1<-AGE[SEXE==groupe[1]]
+AGE.groupe2<-AGE[SEXE==groupe[2]]
+if(is.null(xxlab)){xxlab<-groupe}
+histbackback0(na.omit(AGE.groupe1),na.omit(AGE.groupe2),xlab=xxlab,ylab="Age")
+}

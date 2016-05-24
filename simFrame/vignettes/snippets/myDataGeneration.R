@@ -1,0 +1,3 @@
+myDataGeneration <- function(size, ...) {
+    # computations
+}

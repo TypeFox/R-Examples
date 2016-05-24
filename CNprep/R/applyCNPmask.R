@@ -1,0 +1,13 @@
+applyCNPmask<-function(segtable,chrom,startPos,endPos,startProbe,endProbe,
+	eventIndex,masktable,maskchrom,maskstart,maskend,maskindex,mincover=1,
+	indexvals=c(-1,1)){
+	breakCNPs<-by(segtable,INDICES=as.factor(segtable[,chrom]),
+		FUN=breakIntoCNPs.chrom,chrom=chrom,startPos=startPos,endPos=endPos,
+		startProbe=startProbe,endProbe=endProbe,eventIndex=eventIndex,
+		cnptable=masktable,cnpchrom=maskchrom,cnpstart=maskstart,
+		cnpend=maskend,cnpindex=maskindex,mincover=mincover,indexvals=indexvals,
+		simplify=T)
+	myCNPs<-matrix(ncol=3,byrow=T,data=unlist(lapply(breakCNPs,t)))	
+	dimnames(myCNPs)[[2]]<-c("StartProbe","EndProbe","toremove")
+	return(as.matrix(myCNPs))
+}

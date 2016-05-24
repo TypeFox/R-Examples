@@ -1,0 +1,5 @@
+ca <-
+function(...)
+
+  CountAll(...)
+

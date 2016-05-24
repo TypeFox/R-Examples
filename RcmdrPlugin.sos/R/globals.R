@@ -1,0 +1,1 @@
+globalVariables(c('top', '.grep', '.column', '.ignCase', '.sos', 'top', 'grepButton', 'buttonsFrame'))

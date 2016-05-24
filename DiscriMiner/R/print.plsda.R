@@ -1,0 +1,33 @@
+#' @S3method print plsda
+print.plsda <- 
+function(x, ...)
+{
+  cat("\nPLS Discriminant Analysis\n")
+  cat(rep("-",51), sep="")
+  cat("\n$functions       ", "discrimination functions")
+  cat("\n$confusion       ", "confusion matrix")
+  cat("\n$scores          ", "discriminant scores")
+  cat("\n$classification  ", "assigned class")
+  cat("\n$error_rate      ", "error rate")
+  cat("\n$components      ", "PLS components")
+  cat("\n$Q2              ", "quality of loo cross validation")
+  cat("\n$R2              ", "R-squared coefficients")
+  cat("\n$VIP             ", "variables importance")
+  cat("\n$comp_vars       ", "correlations components-variables")
+  cat("\n$comp_group      ", "correlations components-groups\n")
+  cat(rep("-",51), sep="")
+  cat("\n\n$functions\n")
+  print(format(x$functions, scientific=FALSE, digits=3),
+        print.gap=2, quote=FALSE)
+  cat("\n\n$confusion\n")
+  print(x$confusion, print.gap=2)
+  cat("\n\n$error_rate\n")
+  print(x$error_rate)
+  cat("\n\n$scores\n")
+  print(head(x$scores), print.gap=2)
+  cat("...\n")
+  cat("\n$classification\n")
+  print(head(x$classification))
+  cat("...\n")
+  invisible(x)
+}

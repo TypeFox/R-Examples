@@ -1,0 +1,29 @@
+library(erer);wdNew<-"C:/aErer";setwd(wdNew);getwd();dir()
+daInsNam=read.table("RawDataIns1.csv",header=TRUE,sep=",");daIns=read.table("RawDataIns2.csv",header=TRUE,sep=",");class(daInsNam);dim(daInsNam);print(daInsNam);class(daIns);dim(daIns);head(daIns);tail(daIns);daIns[1:3,1:5]
+(insMean<-round(x=apply(daIns,MARGIN=2,FUN=mean),digits=2))
+(insCorr<-round(x=cor(daIns),digits=3))
+table.3 <- cbind(daInsNam, Mean = I(sprintf(fmt="%.2f", insMean)))[-14, ]
+rownames(table.3)<-1:nrow(table.3);print(table.3,right=FALSE)
+ra<-glm(formula=Y~Injury+HuntYrs+Nonres+Lspman+Lnong+
+Gender+Age+Race+Marital+Edu+Inc+TownPop,family=binomial(link="logit"),data
+=daIns,x=TRUE)
+fm.fish<-Y~Injury+FishYrs+Nonres+Lspman+Lnong+Gender+Age+Race+Marital+
+Edu+Inc+TownPop
+rb<-update(object=ra,formula=fm.fish);names(ra);summary(ra)
+(ca<-data.frame(summary(ra)$coefficients))
+(cb<-data.frame(summary(rb)$coefficients))
+(me<-maBina(w=ra))
+(u1<-bsTab(w=ra,need="2T"));(u2<-bsTab(w=me$out,need="2T"))
+table.4<-cbind(u1,u2)[,-4]
+colnames(table.4)<-c("Variable","Coefficient","t-ratio","Marginaleffect",
+"t-ratio");table.4
+(p1<-maTrend(q=me,nam.c="HuntYrs",nam.d="Nonres"));(p2<-maTrend(q=me,nam.c="Age",nam.d="Nonres"));(p3<-maTrend(q=me,nam.c="Inc",nam.d="Nonres"))
+windows(width=4,height=3,pointsize=9);bringToTop(stay=TRUE)
+par(mai=c(0.7,0.7,0.1,0.1),family="serif");plot(p1)
+fname<-c("insFigure1a.png","insFigure1b.png","insFigure1c.png")
+pname<-list(p1,p2,p3)
+for(i in 1:3){png(file=fname[i],width=4,height=3,
+units="in",pointsize=9,res=300)
+par(mai=c(0.7,0.7,0.1,0.1),family="serif")
+plot(pname[[i]]);dev.off()}
+write.table(x=table.3,file="insTable3.csv",sep=",");write.table(x=table.4,file="insTable4.csv",sep=",")

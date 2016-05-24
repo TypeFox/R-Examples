@@ -1,0 +1,2 @@
+"mktrj" <- function(...)
+  UseMethod("mktrj")

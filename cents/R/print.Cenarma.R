@@ -1,0 +1,1 @@
+print.Cenarma <- function(x, ...) print(x$outarima)

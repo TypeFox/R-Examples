@@ -1,0 +1,66 @@
+doubconetest <-
+function(y,amat,nsim=1000){
+	n=length(y)
+	m=length(amat)/n
+	if(m-trunc(m)>1e-8){print("ERROR: incompatible dimensions")}
+	if(m!=dim(amat)[1]){print("ERROR: incompatible dimensions")}
+	vmat=Null(t(amat))
+	d=dim(vmat)[2]
+	if(d>0){
+		pmat=vmat%*%solve(t(vmat)%*%vmat)%*%t(vmat)
+		p0k=pmat%*%y
+	}else{p0k=y*0}
+	if(nsim>0){tdist=1:nsim}
+	if(d+m==n){
+		delta=t(t(amat)%*%solve(amat%*%t(amat)))
+		p1k=coneB(y,delta,vmat)$yhat
+		p2k=coneB(y,-delta,vmat)$yhat
+		s0=sum((y-p0k)^2)
+		s1=sum((y-p1k)^2)
+		s2=sum((y-p2k)^2)
+		tstat=(s0-min(s1,s2))/s0
+		if(nsim>0){
+			for(isim in 1:nsim){
+				ysim=rnorm(n)
+				if(d>0){
+					p0=pmat%*%ysim
+				}else{p0k=ysim*0}
+				p1=coneB(ysim,delta,vmat)$yhat
+				p2=coneB(ysim,-delta,vmat)$yhat
+				s0=sum((ysim-p0)^2)
+				s1=sum((ysim-p1)^2)
+				s2=sum((ysim-p2)^2)
+				tdist[isim]=(s0-min(s1,s2))/s0
+			}
+			pval=sum(tdist>tstat)/nsim
+		}
+	}else{
+		p1k=coneA(y,amat)$thetahat
+		p2k=coneA(y,-amat)$thetahat
+		s0=sum((y-p0k)^2)
+		s1=sum((y-p1k)^2)
+		s2=sum((y-p2k)^2)
+		tstat=(s0-min(s1,s2))/s0
+		if(nsim>0){
+			for(isim in 1:nsim){
+				ysim=rnorm(n)
+				if(d>0){
+					p0=pmat%*%ysim
+				}else{p0k=ysim*0}
+				p1=coneA(ysim,amat)$thetahat
+				p2=coneA(ysim,-amat)$thetahat
+				s0=sum((ysim-p0)^2)
+				s1=sum((ysim-p1)^2)
+				s2=sum((ysim-p2)^2)
+				tdist[isim]=(s0-min(s1,s2))/s0
+			}
+			pval=sum(tdist>tstat)/nsim
+		}
+	}
+	ans=new.env()
+	ans$p0=p0k
+	ans$p1=p1k
+	ans$p2=p2k
+	if(nsim>0){ans$pval=pval;ans$tdist=tdist;ans$tstat=tstat}
+	ans
+}

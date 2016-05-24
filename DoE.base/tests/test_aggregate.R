@@ -1,0 +1,22 @@
+require(DoE.base)
+set.seed(9890)
+plan <- oa.design(nlevels=c(2,6,2), replications=2, repeat.only=TRUE)
+y <- rnorm(24)
+plan <- reptowide(add.response(plan,y))
+aggregate(plan)
+
+plan <- param.design(oa.design(nlevels=c(2,6,2), factor.names=c("C1","C2","C3")), oa.design(ID=L4.2.3))
+y <- rnorm(48)
+plan <- paramtowide(add.response(plan,y))
+aggregate(plan)
+aggregate(plan,response="y")
+
+plan <- param.design(oa.design(nlevels=c(2,6,2), factor.names=c("C1","C2","C3")), oa.design(ID=L4.2.3))
+plan <- paramtowide(plan)
+aggregate(plan)
+
+plan <- cross.design(oa.design(nlevels=c(2,6,2), factor.names=c("C1","C2","C3")), oa.design(ID=L4.2.3,replications=2,repeat.only=TRUE))
+y <- rnorm(96)
+plan <- reptowide(add.response(plan,y))
+aggregate(plan)
+aggregate(plan,response="y",FUN=sd)

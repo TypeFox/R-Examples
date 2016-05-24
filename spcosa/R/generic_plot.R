@@ -1,0 +1,3 @@
+setGeneric(
+    name = "plot"
+)

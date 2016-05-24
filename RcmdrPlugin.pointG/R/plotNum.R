@@ -1,0 +1,9 @@
+plotNum<-
+function(X,LI,...){
+tab.num<-data.frame(X[,sapply(X,is.numeric)])
+names(tab.num)<-names(X)[sapply(X,is.numeric)]
+if(ncol(tab.num)>0.5){
+dev.new()
+s.corcircle(cor(tab.num,LI,use="pairwise.complete.obs"),...)
+}
+}

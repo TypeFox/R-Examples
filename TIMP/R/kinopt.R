@@ -1,0 +1,5 @@
+"kinopt" <-
+function(...){
+	new("kinopt", ...)
+}
+

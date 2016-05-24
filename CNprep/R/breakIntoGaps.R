@@ -1,0 +1,19 @@
+breakIntoGaps<-function(segtable,gapind,StartProbe,EndProbe){
+	if(sum(segtable[,gapind])==0)
+		return(as.matrix(segtable[,c(StartProbe,EndProbe)]))
+	gapstep<-segtable[,gapind]-c(0,segtable[-nrow(segtable),gapind])
+	gapstart<-which(gapstep==1)
+	gapend<-which(gapstep==-1)-1
+	if(length(gapend)<length(gapstart))gapend<-c(gapend,nrow(segtable))
+	ranfrac<-runif(n=length(gapend))
+	ranfrac[gapstart==1]<-1
+	ranfrac[gapend==nrow(segtable)]<-0
+	midpoint<-round(ranfrac*segtable[gapstart,StartProbe]+
+		(1-ranfrac)*segtable[gapend,EndProbe])
+	segtable[(gapend+1)[gapend!=nrow(segtable)],StartProbe]<-
+		midpoint[gapend!=nrow(segtable)]
+	segtable[(gapstart-1)[gapstart!=1],EndProbe]<-
+		ifelse(gapstart[gapstart!=1]!=nrow(segtable),
+		midpoint[gapstart!=1]-1,midpoint[gapstart!=1])
+	return(as.matrix(segtable[,c(StartProbe,EndProbe)]))
+}

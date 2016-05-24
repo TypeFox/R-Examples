@@ -1,0 +1,32 @@
+minimizePI<-function(prime.out){
+	mat<-prime.out$mat.primes
+	vec.primes<-NULL
+	repeat{
+		ids.row<-which(rowSums(mat)==1)
+		if(length(ids.row)>0){
+			tmp<-matrix(mat[ids.row,],nrow=length(ids.row))
+			ids.prime<-which(diag(t(tmp)%*%tmp)!=0)
+			tmp<-mat[,ids.prime]%*%t(mat[,ids.prime])
+			ids.stay<-rowSums(tmp)==0
+			#ids.stay<-rowSums(matrix(tmp[,ids.row],ncol=length(ids.row)))==0
+			mat<-mat[ids.stay,,drop=FALSE]
+			#ids.prime<-which(colSums(mat)==0)
+			vec.primes<-c(vec.primes,colnames(mat)[ids.prime])
+			if(nrow(mat)==0)
+				break	
+			mat<-mat[,-ids.prime,drop=FALSE]
+			if(ncol(mat)==0)
+				break
+		}
+		dim.mat<-dim(mat)
+		mat<-rm.dom(mat)
+		mat<-rm.dom(mat,col=TRUE,dom=FALSE)
+		if(all(dim(mat)==dim.mat)){
+			vec.primes<-cyclic.covering(mat,vec.primes)
+			break
+		}
+	}
+	class(vec.primes)<-"minDNF"
+	vec.primes
+}
+

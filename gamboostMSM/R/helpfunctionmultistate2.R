@@ -1,0 +1,1 @@
+helpfunctionmultistate2 <- function(x, dummy){sum(1/dummy[x])}

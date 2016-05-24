@@ -1,0 +1,18 @@
+data (thyroid.df)
+thyroid.df
+plot(thyroid~body,main="Thyroid weight versus body weight (by group)",type="n",data=thyroid.df)
+text(thyroid.df$body,thyroid.df$thyroid, thyroid.df$group)
+thyroid.df<-within(thyroid.df,{group1.<-factor(group)})
+thyroid.fit<-lm(thyroid~body+group1.,data=thyroid.df)
+summary(thyroid.fit)
+eovcheck(thyroid.fit)
+plot(thyroid.fit,which=1)
+thyroid.fit1<-lm(thyroid~body+I(body^2)+group1.,data=thyroid.df)
+summary(thyroid.fit1)
+normcheck(thyroid.fit)
+ciReg(thyroid.fit)
+plot(thyroid~body,main="Fitted lines",type="n",data=thyroid.df)
+text(thyroid.df$body,thyroid.df$thyroid,thyroid.df$group1)
+abline(thyroid.fit$coef[1],thyroid.fit$coef[2])
+abline(thyroid.fit$coef[1]+ thyroid.fit$coef[3],thyroid.fit$coef[2])
+

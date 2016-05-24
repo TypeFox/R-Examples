@@ -1,0 +1,23 @@
+mood.median.test<-function(x,y,exact=F){
+   mm<-median(c(x,y))
+   a21<-sum(x>mm)
+   a22<-sum(x<mm)
+   a11<-sum(y>mm)
+   a12<-sum(y<mm)
+   if(exact){
+      p.value<-fisher.test(cbind(c(a11,a12),c(a21,a22)))$p.value
+   }else{
+      rowtot<-c(a11+a12,a21+a22)
+      coltot<-c(a11+a21,a12+a22)
+      nn<-sum(rowtot)
+      v<-prod(rowtot)*prod(coltot)/(nn^2*(nn-1))
+      if(a11>rowtot[1]*coltot[1]/nn){
+         a11<-a11-.5
+      }else{
+         a11<-a11+.5
+      }
+      z<-(a11-rowtot[1]*coltot[1]/nn)/sqrt(v)
+      p.value<-2*pnorm(-abs(z))
+   }
+   return(list(p.value=p.value))
+}

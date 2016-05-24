@@ -1,0 +1,5 @@
+scree <-
+function(...)
+
+  corScree(...)
+

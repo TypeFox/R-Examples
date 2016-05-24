@@ -1,0 +1,75 @@
+analog.mult <-
+function(base,fossil,age,res=100,method="euclidean",
+	binary=FALSE,plot=TRUE,dimension=TRUE,wire=FALSE,
+	aspect=c(0.5,0.3),drape=TRUE)
+{
+library(vegan)
+library(lattice)
+{
+	names.b<-colnames(base)
+	names.f<-colnames(fossil)
+	names.db<-intersect(names.b,names.f)
+	datab<-rbind(base[,names.db],fossil[,names.db])
+	distances<-matrix(nrow=length(age),ncol=(nrow(base)+1))
+	colnames(distances)<-c("Age",rownames(base))
+	distances[,1]<-age
+	if(method=="schord"){
+		for(i in 1:nrow(fossil)){
+			for(j in 1:nrow(base)){
+			distances[i,j+1]<-sum(((base[j,
+				names.db]^0.5)-(fossil[i,
+				names.db]^0.5))^2)
+				}
+			}
+		distances[,]
+		}
+	else{
+		dist.matrix<-as.matrix(vegdist(datab,method=method,
+			binary=binary))
+		distances[,2:ncol(distances)]<-dist.matrix[(nrow(base)
+			+1):nrow(dist.matrix),1:nrow(base)]
+		}
+	as.integer((max(age)-min(age))/res)->n.inter
+	plot.data<-matrix(nrow=n.inter,ncol=ncol(distances))
+	colnames(plot.data)<-c("Age",rownames(base))
+	approx(age,distances[,1],n=n.inter)$x->plot.data[,1]
+	for(i in 2:ncol(plot.data))
+		{
+		approx(age,distances[,i],n=n.inter)$y->plot.data[,i]
+		}
+	results<-list(plot.data,distances)
+	names(results)<-c("plot.data","distances")
+	if(plot==TRUE){
+		pd<-results$plot.data
+		tl<-results$distances
+		if(dimension==TRUE){
+			if(wire==TRUE){
+				plt<-wireframe(pd[,-1],xlab="Age",ylab="Modern",
+					zlab="Distance",aspect=aspect,drape=drape)
+				print(plt)
+				}
+			else{
+				plt<-levelplot(pd[,-1],row.values=pd[,1],
+					aspect=0.4,xlab="Age",ylab="Modern")
+				print(plt)
+			}
+		}
+		else{
+			a<-ncol(tl)-1
+			b<-a*nrow(tl)
+			plot.data<-matrix(nrow=b,ncol=3)
+			colnames(plot.data)<-c("Age","Distance","Base")
+			plot.data<-as.data.frame(plot.data)
+			plot.data[,1]<-rep(tl[,1],a)
+			plot.data[,2]<-as.vector(tl[,2:(a+1)])
+			fact<-colnames(tl[,-1])
+			plot.data[,3]<-rep(fact,each=nrow(tl))
+			plt<-xyplot(Distance~Age|Base,data=plot.data,type="l",
+				layout=c(1,a),col="black")
+			print(plt)
+			}
+		}
+}
+return(results)
+}
+

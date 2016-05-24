@@ -1,0 +1,10 @@
+data (skulls.df)
+boxplot(measurement~year,main="Skull measurements by year",xlab="year",ylab="skull measurement", data=skulls.df)
+summaryStats(measurement~year,data=skulls.df)
+skulls.df<-within(skulls.df,{year.F<-factor(year)})
+skull.fit<-lm(measurement~year.F,data=skulls.df)
+eovcheck(skull.fit)
+normcheck(skull.fit)
+summary1way(skull.fit)
+multipleComp(skull.fit)
+

@@ -1,0 +1,15 @@
+fake.trypsin<-local({
+    set.seed(110359)
+    xrnorm<-function(n,xbar,s){
+	t<-stats::rnorm(n);t<-(t-mean(t))/stats::sd(t);xbar+s*t}
+    g.1<-xrnorm(32,128,50.9)
+    g.2<-xrnorm(137,152,58.5)
+    g.3<-xrnorm(38,194,49.3)
+    g.4<-xrnorm(44,207,66.3)
+    g.5<-xrnorm(16,215,60)
+    g.6<-xrnorm(4,218,14)
+    trypsin<-c(g.1,g.2,g.3,g.4,g.5,g.6)
+    grp<-rep(1:6,c(32,137,38,44,16,4))
+    grpf<-factor(grp)
+    data.frame(trypsin,grp,grpf)
+})

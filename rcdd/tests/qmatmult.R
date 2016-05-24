@@ -1,0 +1,35 @@
+
+ library(rcdd)
+
+ A <- matrix(c("1", "2", "3", "4"), 2, 2)
+ B <- matrix(c("1/1", "1/2", "1/3", "1/4"), 2, 2)
+ C <- qmatmult(A, B)
+ print(A)
+ print(B)
+ print(C)
+ all.equal(q2d(C), q2d(A) %*% q2d(B))
+
+ A <- matrix(paste(1:6), 2, 3)
+ B <- matrix(paste("1/", 1:12, sep = ""), 3, 4)
+ C <- qmatmult(A, B)
+ print(A)
+ print(B)
+ print(C)
+ all.equal(q2d(C), q2d(A) %*% q2d(B))
+
+ A <- matrix(paste(1:6), 3, 2)
+ B <- matrix(paste("1/", 1:8, sep = ""), 2, 4)
+ C <- qmatmult(A, B)
+ print(A)
+ print(B)
+ print(C)
+ all.equal(q2d(C), q2d(A) %*% q2d(B))
+
+ A <- matrix(paste(1:12), 3, 4)
+ B <- matrix(paste("1/", 1:8, sep = ""), 4, 2)
+ C <- qmatmult(A, B)
+ print(A)
+ print(B)
+ print(C)
+ all.equal(q2d(C), q2d(A) %*% q2d(B))
+

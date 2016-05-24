@@ -1,0 +1,36 @@
+context("ichain iterator")
+
+test_that("ichain properly iterates through multiple numeric vectors", {
+  it <- ichain(1:3, 4:5, 6)
+  expect_equal(nextElem(it), 1)
+  expect_equal(nextElem(it), 2)
+  expect_equal(nextElem(it), 3)
+  expect_equal(nextElem(it), 4)
+  expect_equal(nextElem(it), 5)
+  expect_equal(nextElem(it), 6)
+  expect_error(nextElem(it), "StopIteration")
+})
+
+test_that("ichain properly iterates through a numeric vector and a character vector", {
+  it <- ichain(1:3, levels(iris$Species))
+  expect_equal(nextElem(it), 1)
+  expect_equal(nextElem(it), 2)
+  expect_equal(nextElem(it), 3)
+  expect_equal(nextElem(it), "setosa")
+  expect_equal(nextElem(it), "versicolor")
+  expect_equal(nextElem(it), "virginica")
+  expect_error(nextElem(it), "StopIteration")
+})
+
+test_that("ichain properly iterates through a numeric vector and a data.frame's columns", {
+  it <- ichain(1:3, iris)
+  expect_equal(nextElem(it), 1)
+  expect_equal(nextElem(it), 2)
+  expect_equal(nextElem(it), 3)
+  expect_equal(nextElem(it), iris[, 1])
+  expect_equal(nextElem(it), iris[, 2])
+  expect_equal(nextElem(it), iris[, 3])
+  expect_equal(nextElem(it), iris[, 4])
+  expect_equal(nextElem(it), iris[, 5])
+  expect_error(nextElem(it), "StopIteration")
+})

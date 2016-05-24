@@ -1,0 +1,21 @@
+cl.size.H <-
+function(U)
+{
+if (missing(U))
+stop("The membership degree matrix U must be given")
+if (is.null(U))
+stop("The membership degree matrix U is empty")
+U=as.matrix(U)
+if (any(is.na(U)))
+stop("The membership degree matrix U must not contain NA values")
+if (!is.numeric(U)) 
+stop("The membership degree matrix U must be numeric")
+info.U=cl.memb.H(U)
+k=ncol(U)
+clus.size=vector(length(k+1),mode="numeric")
+for (c in 1:k)
+clus.size[c]=length(which(info.U[,1]==c))
+clus.size[k+1]= length(which(info.U[,1]==0))
+names(clus.size)=c(paste("Clus",1:k,sep=" "),"No clus")
+return(clus.size)
+}

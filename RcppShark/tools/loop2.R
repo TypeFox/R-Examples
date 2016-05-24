@@ -1,0 +1,5 @@
+library(RcppShark)
+td = paste("tmp", round(runif(1)*10000000), sep = "")
+RcppShark.package.skeleton(td)
+library(devtools)
+load_all(td)

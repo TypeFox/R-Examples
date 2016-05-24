@@ -1,0 +1,20 @@
+#####Defining parameters 
+Parameter_Define=function(initial_mu_var,pirhopair,choice)
+{
+  parameter=list()
+  parameter$beta0=10
+  parameter$beta1=10
+  parameter$tau0=10
+  parameter$tau1=2
+  parameter$alpha0=parameter$beta0/initial_mu_var$upvar[1]+1
+  parameter$alpha1=parameter$beta1/initial_mu_var$upvar[2]+1
+  parameter$gamma0=initial_mu_var$upmu[1]
+  parameter$gamma1=initial_mu_var$upmu[2]
+  parameter$eta0=initial_mu_var$upvar[1]
+  parameter$eta1=initial_mu_var$upvar[2]
+  parameter$pi0=pirhopair$pi0[choice]
+  parameter$pi1=1-pirhopair$pi0[choice]
+  parameter$rho0=pirhopair$rho0[choice]
+  parameter$rho1=pirhopair$rho1[choice]
+  return(parameter)
+}

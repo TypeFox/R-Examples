@@ -1,0 +1,5 @@
+if(file.access("mars.csv") < 0) setwd("./Examples")
+if(file.access("mars.csv") < 0) stop("To run this example, you must download file mars.csv")
+mars <- read.csv("mars.csv", skip = 5, as.is = TRUE)
+dim(mars)
+sapply(mars, class)

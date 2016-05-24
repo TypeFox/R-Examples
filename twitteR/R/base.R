@@ -1,0 +1,45 @@
+setRefClass('twitterObj',
+            contains='VIRTUAL',
+            methods = list(
+              toDataFrame = function(row.names=NULL, optional=FALSE,
+                stringsAsFactors=FALSE, fieldsToRemove=character()) {
+                fields <- setdiff(names(.self$getRefClass()$fields()),
+                                  fieldsToRemove)
+                fieldList <- lapply(fields, function(x) {
+                  val <- .self$field(x)
+                  if (length(val) == 0) {
+                    NA
+                  } else {
+                    val
+                  }
+                })
+                names(fieldList) <- fields
+                as.data.frame(fieldList, row.names=row.names,
+                              optional=optional, stringsAsFactors=stringsAsFactors)
+              }
+              )
+            )
+
+setMethod('as.data.frame', signature='twitterObj',
+          function(x, row.names=NULL, optional=FALSE, stringsAsFactors=FALSE, ...)
+          x$toDataFrame(row.names, optional, stringsAsFactors))
+
+setRefClass('twitterObjList',
+            contains = 'VIRTUAL',
+            fields = list(
+              objectList = 'list'
+              ),
+            methods = list()
+            )
+
+setMethod('show', signature='twitterObjList', function(object) {
+  print(object$objectList)
+})
+
+setMethod('[[', signature='twitterObjList', function(x, i) {
+  x$objectList[[i]]
+})
+
+listClassValidity <- function(object, objClass) {
+  all(sapply(object$objectList, is, objClass))
+}

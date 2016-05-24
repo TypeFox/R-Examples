@@ -1,0 +1,1 @@
+setClassUnion("Coords", c("numeric", "matrix", "SpatialPoints"))

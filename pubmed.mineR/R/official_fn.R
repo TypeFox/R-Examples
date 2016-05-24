@@ -1,0 +1,3 @@
+official_fn =  function(genes, abs,filename, terms){
+result_genes = NULL; for (i in 1:dim(genes)[1]){ if ((genes[i,1]) != "NONE") {for (j in 1:1) result_genes = Give_Sentences(genes[i,1],abs) ; if (length(result_genes) != 0) {print(c(i,j));write(paste(">>",genes[i,1],sep=" "), file = paste(filename,"official.txt",sep=""), append=T); for (k in 1:length(result_genes)){for(l in 1: length(result_genes[[k]])) {temp = result_genes[[k]][l]; for(s in 1:length(terms)){temp1 = regexpr(terms[s],temp);if (temp1 != -1) write(c(attr(result_genes,"PMID")[k],temp), file = paste(filename,"official.txt",sep=""),append=T)}}}}    }}
+}

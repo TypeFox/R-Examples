@@ -1,0 +1,5 @@
+
+"slope"<-function(x)
+ {
+  x
+ }

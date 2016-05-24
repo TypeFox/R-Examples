@@ -1,0 +1,35 @@
+basis.subset=function(basis.object,subset,...){
+  a=attributes(basis.object)
+  parms=a$parms
+  d=parms$d
+  u1=basis.object[subset,1]
+  n1=norm2(u1)
+  u1=u1/n1
+  if(length(d)==1){
+    u1=matrix(u1)
+    attr(u1,"parms")=parms
+    u1
+  }
+  else{
+  N=nrow(basis.object)  
+  u2=basis.object[subset,-1,drop=FALSE]
+  coefs2=drop(t(u1)%*%u2)
+  u2=scale(u2-u1%o%coefs2,FALSE,sqrt(d[-1]))
+  svdu2=svd(u2)
+  u2=svdu2$u
+  N2=nrow(u2)
+  d2=N2/(N*svdu2$d^2)
+  R=parms$rotate
+  R2=R[-1,-1]
+  M=rbind(-coefs2/n1,R2)
+  M=scale(M, FALSE,sqrt(d[-1]))%*%scale(svdu2$v,FALSE,svdu2$d)
+  R[1,1]=1/n1
+  R[,-1]=M
+  parms$d=c(0,d2)
+  parms$rotate=R
+  u=cbind(u1,u2)
+  attr(u,"parms")=parms
+  u
+}
+}
+  

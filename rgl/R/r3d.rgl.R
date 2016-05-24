@@ -1,0 +1,293 @@
+#
+# R3D rendering functions - rgl implementation
+# $Id: r3d.rgl.R 1252 2015-06-28 05:26:12Z murdoch $
+# 
+
+# Node Management
+
+getr3dDefaults <- function() 
+    tryCatch(get("r3dDefaults", envir=.GlobalEnv),
+	     error = function(e) r3dDefaults)
+
+clear3d     <- function(type = c("shapes", "bboxdeco", "material"), 
+                        defaults=getr3dDefaults(),
+                        subscene = 0) {
+    .check3d()
+    rgl.clear( type, subscene = subscene )
+
+    type <- rgl.enum.nodetype(type)
+    if ( 4 %in% type ) { # userviewpoint
+	do.call("par3d", defaults["FOV"])
+    }
+    if ( 8 %in% type ) { # modelviewpoint
+        do.call("par3d", defaults["userMatrix"])
+    }
+    if ( 5 %in% type ) { # material
+        if (length(defaults$material))
+    	    do.call("material3d", defaults$material)
+    }
+}
+
+pop3d       <- function(...) {.check3d(); rgl.pop(...)}
+
+# Environment
+
+.material3d <- c("color", "alpha", "lit", "ambient", "specular",
+    "emission", "shininess", "smooth", "front", "back", "size", 
+    "lwd", "fog", "point_antialias", "line_antialias",
+    "texture", "textype", "texmipmap",
+    "texminfilter", "texmagfilter", "texenvmap",
+    "depth_mask", "depth_test")
+
+.material3d.writeOnly <- character(0)
+
+# This function expands a list of arguments by putting
+# all entries from Params (i.e. the current settings by default)
+# in place for any entries that are not listed.  
+# Unrecognized args are left in place.
+
+.fixMaterialArgs <- function(..., Params = material3d()) {
+   f <- function(...) list(...)
+   formals(f) <- c(Params, formals(f))
+   names <- as.list(names(Params))
+   names(names) <- names
+   names <- lapply(names, as.name)
+   b <- as.list(body(f))
+   body(f) <- as.call(c(b[1], names, b[-1]))
+   f(...)
+} 
+     
+     
+material3d  <- function (...)
+{
+    args <- list(...)
+    argnames <- names(args)
+    
+    if (!length(args))
+	argnames <- .material3d
+    else {
+	if (is.null(names(args)) && all(unlist(lapply(args, is.character)))) {
+	    argnames <- unlist(args)
+	    args <- NULL
+	}
+	
+	if (length(args) == 1) {
+	    if (is.list(args[[1]]) | is.null(args[[1]])) {
+		args <- args[[1]]
+		argnames <- names(args)
+	    }
+	}
+    }
+    value <- rgl.getmaterial()[argnames]
+    if (length(args)) {
+    	args <- do.call(".fixMaterialArgs", args)
+        do.call("rgl.material", args)
+        return(invisible(value))
+    } else if (length(argnames) == 1) return(value[[1]])
+    else return(value)
+}
+
+bg3d        <- function(...) {
+  .check3d(); save <- material3d(); on.exit(material3d(save))
+  new <- .fixMaterialArgs(sphere = FALSE, fogtype = "none", 
+                          color = c("black", "white"), back = "lines", Params = save)
+  do.call("rgl.bg", .fixMaterialArgs(..., Params = new))
+}
+
+light3d     <- function(theta=0,phi=15,x=NULL, ...) {
+  .check3d()
+  if (is.null(x))
+    rgl.light(theta=theta,phi=phi,x=x, ...)
+  else
+    rgl.light(x=x, ...)
+}
+
+view3d      <- function(theta=0,phi=15,...) {
+  .check3d()
+  rgl.viewpoint(theta=theta,phi=phi,...)
+}
+
+bbox3d	    <- function(xat = NULL, 
+                        yat = NULL, 
+                        zat = NULL, 
+                        xunit = "pretty",
+                        yunit = "pretty",
+                        zunit = "pretty",
+		        expand = 1.03, draw_front = FALSE, ...) {  
+  .check3d(); save <- material3d(); on.exit(material3d(save))
+  ranges <- .getRanges(expand = expand)
+  do.call("rgl.bbox", c(list(xat=xat, yat=yat, zat=zat, 
+                             xunit=xunit, yunit=yunit, zunit=zunit, expand=expand,
+                             draw_front=draw_front), 
+                        .fixMaterialArgs(..., Params = save)))
+}
+
+observer3d <- function(x, y=NULL, z=NULL, auto=FALSE) {
+  if (missing(x))
+    location <- c(NA, NA, NA)
+  else {
+    xyz <- xyz.coords(x,y,z)
+    location <- c(xyz$x, xyz$y, xyz$z)
+    if (length(location) != 3) stop("A single point must be specified for the observer location") 
+  }    
+  prev <- .C(rgl_getObserver, success=integer(1), ddata=numeric(3), NAOK = TRUE)$ddata
+  .C(rgl_setObserver, success=as.integer(auto), ddata=as.numeric(location), NAOK = TRUE)
+  invisible(prev)
+}
+
+# Shapes
+
+points3d    <- function(x,y=NULL,z=NULL,...) {
+  .check3d(); save <- material3d(); on.exit(material3d(save))
+  do.call("rgl.points", c(list(x=x,y=y,z=z), .fixMaterialArgs(..., Params = save)))
+}
+
+lines3d     <- function(x,y=NULL,z=NULL,...) {
+  .check3d(); save <- material3d(); on.exit(material3d(save))
+  do.call("rgl.linestrips", c(list(x=x,y=y,z=z), .fixMaterialArgs(..., Params = save)))
+}
+
+segments3d  <- function(x,y=NULL,z=NULL,...) {
+  .check3d(); save <- material3d(); on.exit(material3d(save))
+  do.call("rgl.lines", c(list(x=x,y=y,z=z), .fixMaterialArgs(..., Params = save)))
+}
+
+triangles3d <- function(x,y=NULL,z=NULL,...) {
+  .check3d(); save <- material3d(); on.exit(material3d(save))
+  do.call("rgl.triangles", c(list(x=x,y=y,z=z), .fixMaterialArgs(..., Params = save)))
+}
+
+quads3d     <- function(x,y=NULL,z=NULL,...) {
+  .check3d(); save <- material3d(); on.exit(material3d(save))
+  do.call("rgl.quads", c(list(x=x,y=y,z=z), .fixMaterialArgs(..., Params = save)))
+}
+
+text3d      <- function(x,y=NULL,z=NULL,texts,adj=0.5,justify,...) {
+  .check3d(); save <- material3d(); on.exit(material3d(save))
+  new <- .fixMaterialArgs(..., Params = save)
+  if (!missing(justify)) new <- c(list(justify=justify), new)
+  do.call("rgl.texts", c(list(x=x,y=y,z=z,text=texts,adj=adj),new))
+}
+texts3d	    <- text3d
+
+spheres3d   <- function(x,y=NULL,z=NULL,radius=1,...) {
+  .check3d(); save <- material3d(); on.exit(material3d(save))
+  do.call("rgl.spheres", c(list(x=x,y=y,z=z,radius=radius), .fixMaterialArgs(..., Params = save)))
+}
+
+planes3d   <- function(a,b=NULL,c=NULL,d=0,...) {
+  .check3d(); save <- material3d(); on.exit(material3d(save))
+  do.call("rgl.planes", c(list(a=a,b=b,c=c,d=d), .fixMaterialArgs(..., Params = save)))
+}
+
+clipplanes3d   <- function(a,b=NULL,c=NULL,d=0) {
+  .check3d()
+  rgl.clipplanes(a=a,b=b,c=c,d=d)
+}
+
+abclines3d   <- function(x,y=NULL,z=NULL,a,b=NULL,c=NULL,...) {
+  .check3d(); save <- material3d(); on.exit(material3d(save))
+  do.call("rgl.abclines", c(list(x=x,y=y,z=z,a=a,b=b,c=c), .fixMaterialArgs(..., Params = save)))
+}
+
+sprites3d   <- function(x,y=NULL,z=NULL,radius=1,shapes=NULL,userMatrix,...) {
+  .check3d(); save <- material3d(); on.exit(material3d(save))
+  if (missing(userMatrix)) {
+    userMatrix <- getr3dDefaults()$userMatrix
+    if (is.null(userMatrix)) userMatrix <- diag(4)
+  }
+  savepar <- par3d(skipRedraw=TRUE, ignoreExtent=TRUE)
+  on.exit(par3d(savepar), add=TRUE)
+  force(shapes)
+  par3d(ignoreExtent=savepar$ignoreExtent)
+
+  do.call("rgl.sprites", c(list(x=x,y=y,z=z,radius=radius,shapes=shapes,
+                                userMatrix=userMatrix), 
+          .fixMaterialArgs(..., Params = save)))
+}
+
+terrain3d   <- function(x,y=NULL,z=NULL,...,normal_x=NULL,normal_y=NULL,normal_z=NULL) {
+  .check3d(); save <- material3d(); on.exit(material3d(save))
+  do.call("rgl.surface", c(list(x=x,y=z,z=y,coords=c(1,3,2),
+                                normal_x=normal_x,normal_y=normal_z,normal_z=normal_y), 
+                           .fixMaterialArgs(..., Params = save)))
+}
+surface3d   <- terrain3d
+
+# Interaction
+
+select3d    <- function(...) {.check3d(); rgl.select3d(...)}
+
+# 3D Generic Object Rendering Attributes
+
+dot3d <- function(x,...) UseMethod("dot3d")
+wire3d  <- function(x,...) UseMethod("wire3d")
+shade3d <- function(x,...) UseMethod("shade3d")
+
+# 3D Generic transformation
+
+
+translate3d <- function(obj,x,y,z,...) UseMethod("translate3d")
+scale3d <- function(obj,x,y,z,...) UseMethod("scale3d")
+rotate3d <- function(obj,angle,x,y,z,matrix,...) UseMethod("rotate3d")
+transform3d <- function(obj,matrix,...) rotate3d(obj, matrix=matrix, ...)
+
+subdivision3d <- function(x,...) UseMethod("subdivision3d")
+
+# 3D Custom shapes
+
+particles3d <- function(x,y=NULL,z=NULL,radius=1,...) sprites3d(
+  x=x,y=y,z=z,radius=radius,
+  lit=FALSE,alpha=0.2,
+  textype="alpha",
+  texture=system.file("textures/particle.png",package="rgl"),
+  ...
+)   
+
+# r3d default settings for new windows
+
+r3dDefaults <- list(userMatrix = rotationMatrix(290*pi/180, 1, 0, 0),
+		  mouseMode = c("trackball", "zoom", "fov"),
+		  FOV = 30,
+		  bg = list(color="white"),
+		  family = "sans",
+		  material = list(color="black", fog=FALSE))
+
+open3d <- function(..., params = getr3dDefaults(), 
+                   useNULL = rgl.useNULL()	)
+{
+    args <- list(...)
+    if (!is.null(args$antialias) 
+        || !is.null(args$antialias <- r3dDefaults$antialias)) {
+    	saveopt <- options(rgl.antialias = args$antialias)
+    	on.exit(options(saveopt))
+    	args$antialias <- NULL
+    }
+    
+    rgl.open(useNULL)
+    
+    if (!is.null(args$material)) {
+    	params$material <- do.call(.fixMaterialArgs, c(args$material, Params=list(params$material)))
+    	args$material <- NULL
+    }
+    
+    params[names(args)] <- args
+        
+    clear3d("material", defaults = params)
+    params$material <- NULL
+    
+    if (!is.null(params$bg)) {
+      do.call("bg3d", params$bg)
+      params$bg <- NULL
+    }
+ 
+    do.call("par3d", params)   
+    return(rgl.cur())
+}
+
+.check3d <- function() {
+    if (result<-rgl.cur()) return(result)
+    else return(open3d())
+}
+
+snapshot3d <- function(...) rgl.snapshot(...)

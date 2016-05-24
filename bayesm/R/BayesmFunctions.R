@@ -1,0 +1,1 @@
+pandterm=function(message) { stop(message,call.=FALSE) }

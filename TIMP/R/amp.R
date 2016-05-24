@@ -1,0 +1,5 @@
+"amp" <-
+function(...){
+	new("amp",...)
+}
+

@@ -1,0 +1,32 @@
+breakIntoCNPs.chrom<-function(segtable,chrom,startPos,endPos,startProbe,
+	endProbe,eventIndex,cnptable,cnpchrom,cnpstart,cnpend,cnpindex,mincover,
+	indexvals){
+	toremove<-rep(0,nrow(segtable))
+	segtable<-cbind(segtable,toremove)
+	chr<-segtable[1,chrom]
+	if(sum(segtable[,eventIndex]!=0)==0|sum(cnptable[,cnpchrom]==chr)==0)
+		return(as.matrix(segtable[,c(startProbe,endProbe,"toremove")]))
+	cnpsinchr<-cnptable[cnptable[,cnpchrom]==chr,,drop=F]
+	for(i in indexvals)
+		if(sum(segtable[,eventIndex]==i)>0&sum(cnpsinchr[,cnpindex]==i)>0){
+		acnpinchr<-cnpsinchr[cnpsinchr[,cnpindex]==i,,drop=F]
+		amps<-which(segtable[,eventIndex]==i)
+		segstartmat<-matrix(ncol=nrow(acnpinchr),
+			data=rep(segtable[amps,startPos],nrow(acnpinchr)))
+		segendmat<-matrix(ncol=nrow(acnpinchr),
+			data=rep(segtable[amps,endPos],nrow(acnpinchr)))
+		cnpstartmat<-t(matrix(ncol=length(amps),
+			data=rep(acnpinchr[,cnpstart],length(amps))))
+		cnpendmat<-t(matrix(ncol=length(amps),
+			data=rep(acnpinchr[,cnpend],length(amps))))
+		cnpcover<-rowSums(pmax(matrix(nrow=nrow(cnpendmat),
+			ncol=ncol(cnpendmat),data=0),(pmin(segendmat,cnpendmat)-
+			pmax(segstartmat,cnpstartmat)+1)))/
+			(segtable[amps,endPos]-segtable[amps,startPos]+1)
+		toremove[amps[cnpcover>mincover]]<-1
+	}
+	segtable[,"toremove"]<-toremove
+	if(sum(toremove)>0)segtable[,c(startProbe,endProbe)]<-
+		breakIntoGaps(segtable,"toremove",startProbe,endProbe)
+	return(as.matrix(segtable[,c(startProbe,endProbe,"toremove")]))
+}

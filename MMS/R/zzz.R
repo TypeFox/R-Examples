@@ -1,0 +1,1 @@
+.onAttach <- function(libname, pkgname){ packageStartupMessage("Loaded MMS ",as.character(packageDescription("MMS")[["Version"]]))}

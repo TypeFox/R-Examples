@@ -1,0 +1,60 @@
+library(wkb)
+library(sp)
+context("Conversion to and from WKB MultiPoint representations")
+
+# create a list of objects of class SpatialPoints
+Sp1 <- SpatialPoints(data.frame(x=1, y=3))
+Sp2 <- SpatialPoints(data.frame(x=2, y=2))
+refobj <- list(Sp1, Sp2)
+
+# create an AsIs list of little-endian WKB geometry representations of type MultiPoint
+refwkb <- I(list(
+  as.raw(c(0x01, 0x04, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x01,
+           0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf0, 0x3f,
+           0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x40)),
+  as.raw(c(0x01, 0x04, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x01,
+           0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40,
+           0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40))
+))
+
+# create an AsIs list of big-endian WKB geometry representations of type MultiPoint
+refwkbbe <- I(list(
+  as.raw(c(0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00,
+           0x00, 0x00, 0x01, 0x3f, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+           0x40, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00)),
+  as.raw(c(0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00,
+           0x00, 0x00, 0x01, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+           0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00))
+))
+
+test_that("little-endian WKB MultiPoint representation converts to list of SpatialPoints objects", {
+  # convert little-endian WKB MultiPoint representation to list of SpatialPoints objects
+  obj <- readWKB(refwkb)
+
+  # test
+  expect_equal(obj, refobj)
+})
+
+test_that("list of SpatialPoints objects converts to little-endian WKB MultiPoint representation", {
+  # convert list of SpatialPoints objects to little-endian WKB MultiPoint representation
+  wkb <- writeWKB(refobj)
+
+  # test
+  expect_equal(wkb, refwkb)
+})
+
+test_that("big-endian WKB MultiPoint representation converts to list of SpatialPoints objects", {
+  # convert big-endian WKB MultiPoint representation to list of SpatialPoints objects
+  obj <- readWKB(refwkbbe)
+
+  # test
+  expect_equal(obj, refobj)
+})
+
+test_that("list of SpatialPoints objects converts to big-endian WKB MultiPoint representation", {
+  # convert list of SpatialPoints objects to big-endian WKB MultiPoint representation
+  wkbbe <- writeWKB(refobj, endian = "big")
+
+  # test
+  expect_equal(wkbbe, refwkbbe)
+})

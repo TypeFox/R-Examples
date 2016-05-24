@@ -1,0 +1,13 @@
+bcmort <- structure(list(age = structure(c(1L, 2L, 3L, 4L, 5L, 6L, 1L,
+2L, 3L, 4L, 5L, 6L, 1L, 2L, 3L, 4L, 5L, 6L, 1L, 2L, 3L, 4L, 5L,
+6L), .Label = c("50-54", "55-59", "60-64", "65-69", "70-74",
+"75-79"), class = "factor"), cohort = structure(c(1L, 1L, 1L,
+1L, 1L, 1L, 2L, 2L, 2L, 2L, 2L, 2L, 3L, 3L, 3L, 3L, 3L, 3L, 4L,
+4L, 4L, 4L, 4L, 4L), .Label = c("Study gr.", "Nat.ctr.", "Hist.ctr.",
+"Hist.nat.ctr."), class = "factor"), bc.deaths = c(9, 34, 43,
+53, 56, 28, 89, 434, 516, 535, 545, 214, 22, 45, 82, 104, 128,
+57, 104, 443, 485, 491, 418, 182), p.yr = c(64144, 92734, 83510,
+87408, 77427, 25600, 767111, 1067778, 906943, 826254, 635385,
+192946, 57669, 113143, 139065, 155697, 128454, 40196, 577528,
+931245, 916923, 838476, 608008, 182824)), .Names = c("age", "cohort",
+"bc.deaths", "p.yr"), row.names = c(NA, -24L), class = "data.frame")

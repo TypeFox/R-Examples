@@ -1,0 +1,20 @@
+print.summ.gpcm <-
+function (x, digits = max(3, getOption("digits") - 4), ...) {
+    if (!inherits(x, "summ.gpcm"))
+        stop("Use only with 'summ.gpcm' objects.\n")
+    cat("\nCall:\n", paste(deparse(x$call), sep = "\n", collapse = "\n"), "\n\n", sep = "")
+    cat("Model Summary:\n")
+    model.sum <- data.frame(log.Lik = x$logLik, AIC = x$AIC, BIC = x$BIC, row.names = "")
+    print(model.sum)
+    cat("\nCoefficients:\n")
+    print(lapply(x$coef, round, digits = digits))
+    cat("\nIntegration:\n")
+    cat("method: Gauss-Hermite\n")
+    cat("quadrature points:", x$control$GHk, "\n")
+    cat("\nOptimization:\n")
+    cat("Convergence:", x$conv, "\n")
+    cat("max(|grad|):", format.pval(x$max.sc, digits = 2, eps = 1e-06), "\n")
+    cat("optimizer:", x$control$optimizer, "\n")
+    cat("\n\n")
+    invisible(x)
+}

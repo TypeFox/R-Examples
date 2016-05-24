@@ -1,0 +1,1 @@
+get.alpha <- function(d){  # estimate alpha from data  rho <- d$y/d$x  n <- length(d$y)  mean(rho)^2/( (n-1)*var(rho)/n - mean(rho)*mean(1/d$x) )}

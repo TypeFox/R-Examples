@@ -1,0 +1,9 @@
+logpoissgamma=function(theta,datapar)
+{
+y=datapar$data
+npar=datapar$par
+lambda=exp(theta)
+loglike=log(dgamma(lambda,shape=sum(y)+1,rate=length(y)))
+logprior=log(dgamma(lambda,shape=npar[1],rate=npar[2])*lambda)
+return(loglike+logprior)
+}

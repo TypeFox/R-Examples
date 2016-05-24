@@ -1,0 +1,4 @@
+tt <-
+function(...)
+
+  ttest(...)

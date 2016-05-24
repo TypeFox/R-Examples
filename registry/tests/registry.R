@@ -1,0 +1,2 @@
+library(registry)
+demo("registry")

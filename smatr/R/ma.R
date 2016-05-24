@@ -1,0 +1,1 @@
+ma <- function(...)sma(..., method="MA")

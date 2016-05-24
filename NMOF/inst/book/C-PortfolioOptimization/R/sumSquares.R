@@ -1,0 +1,6 @@
+trials <- 1000L; n <- 20000L; ee <- rnorm(n)
+system.time(for (i in 1L:trials) z1 <- sum(ee^2))
+system.time(for (i in 1L:trials) z2 <- ee %*% ee)
+system.time(for (i in 1L:trials) z3 <- crossprod(ee))
+stopifnot(all.equal(as.numeric(z1), as.numeric(z2)))
+stopifnot(all.equal(as.numeric(z2), as.numeric(z3)))

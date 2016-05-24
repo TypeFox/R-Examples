@@ -1,0 +1,8 @@
+source('blksch_tests.R')
+source('barrier_tests.R')
+source('implied_test.R')
+source('jump_tests.R')
+source('greeks_tests.R')
+source('binom_tests.R')
+source('asian_tests.R')
+source('bondsimple_test.R')

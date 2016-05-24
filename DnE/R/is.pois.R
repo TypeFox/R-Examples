@@ -1,0 +1,59 @@
+is.pois <-
+function(x,a=10,lambda=NULL)
+{
+	re=1;
+	for(i in 1:length(x))
+		if(x[i]<0||round(x[i])!=x[i])
+			re=-1;
+	di=max(x)-min(x)+1;
+	p=rep(0,di+1);
+	y=rep(0,di+1);
+	q=0;
+	if(re==-1)
+	{
+		return(data.frame("state"=-1,"pvalue"=1));
+	}
+	else
+	{
+		if(is.null(lambda))
+		{
+			lambda=mean(x);
+			df=di-1;
+		}
+		else
+		{
+			df=di;
+		}
+		if(lambda>=0)
+		{
+			for(i in 1:di)
+			{
+				p[i]=dpois(min(x)+i-1,lambda);
+			if(p[i]==0)
+			{
+				break;
+			}
+				for(j in 1:length(x))
+				if(x[j]==min(x)+i-1)
+					y[i]=y[i]+1;
+			q=q+(y[i]-(length(x)*p[i]))^2/(length(x)*p[i]);
+			}
+		p[di+1]=1-ppois(max(x),lambda);
+		q=q+length(x)*p[di+1];
+		q0=qchisq(1-a,df);
+                pvalue=pchisq(q,df);
+		if(q<=q0)
+		{
+			return(data.frame("qchisq"=q,"pvalue"=pvalue));
+		}
+		else
+		{
+			return(data.frame("state"=-1,"pvalue"=1));
+		}
+		}
+		else 
+		{
+			return(data.frame("state"=-1,"pvalue"=1));
+		}
+	}
+}

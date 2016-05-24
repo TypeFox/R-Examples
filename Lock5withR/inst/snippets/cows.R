@@ -1,0 +1,2 @@
+fisher.test(cows)
+

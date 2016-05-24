@@ -1,0 +1,5 @@
+setClass("deeplearning", representation("VIRTUAL"))
+setClass("sda", representation(backend="C++Object"), contains=c("deeplearning"))
+setClass("da", representation(backend="C++Object"), contains=c("deeplearning"))
+setClass("rbm", representation(backend="C++Object"), contains=c("deeplearning"))
+setClass("dbn", representation(backend="C++Object"), contains=c("deeplearning"))

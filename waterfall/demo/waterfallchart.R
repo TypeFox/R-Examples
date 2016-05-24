@@ -1,0 +1,7 @@
+data(rasiel)
+data(jaquith)
+require(grid)
+old.promot <- devAskNewPage(ask = TRUE)
+waterfallchart(value~label, data=rasiel, groups=subtotal)
+waterfallchart(factor~score, data=jaquith)
+devAskNewPage(old.prompt)

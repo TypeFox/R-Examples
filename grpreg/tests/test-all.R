@@ -1,0 +1,7 @@
+# source("~/dev/.grpreg.setup.R")
+# source("~/dev/grpreg/inst/tests/standardization-orthogonalization.R")
+# require(grpreg)
+# source("~/dev/grpreg/inst/tests/basic-functionality.R")
+# source("~/dev/grpreg/inst/tests/agreement.R")
+# source("~/dev/grpreg/inst/tests/extra-features.R")
+# source("~/dev/grpreg/inst/tests/multitask.R")

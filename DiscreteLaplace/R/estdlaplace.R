@@ -1,0 +1,20 @@
+estdlaplace<-function(x)
+{
+xplus<-sum(x[x>0])/length(x)
+xminus<-sum(-x[x<0])/length(x)
+mx<-mean(x)
+if(mx>=0)
+{
+hatq<-2*xminus*(1+mx)/(1+2*xminus*mx+sqrt(1+4*xminus*xplus))
+hatp<-(hatq+mx*(1-hatq))/(1+mx*(1-hatq))
+}
+else if(mx<=0)
+{
+hatp<-2*xplus*(1-mx)/(1-2*xplus*mx+sqrt(1+4*xminus*xplus))
+hatq<-(hatp-mx*(1-hatp))/(1-mx*(1-hatp))
+}
+hatSigma<-matrix(hatp*hatq*(1-hatp)*(1-hatq)/(1+hatp*hatq),2,2)
+hatSigma[1,1]<-hatSigma[1,1]*(1-hatp)*(1-hatp*hatq^2)/hatq/(1-hatq)^2
+hatSigma[2,2]<-hatSigma[2,2]*(1-hatq)*(1-hatq*hatp^2)/hatp/(1-hatp)^2
+return(list(hatp=hatp,hatq=hatq,hatSigma=hatSigma))
+}

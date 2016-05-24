@@ -1,0 +1,1 @@
+blca2mcmc <- function(x) as.mcmc.blca.gibbs(x)

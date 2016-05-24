@@ -1,0 +1,5 @@
+"kin" <-
+function(...){
+	new("kin", ...)
+}
+

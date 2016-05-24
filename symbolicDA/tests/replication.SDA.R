@@ -1,0 +1,5 @@
+library(symbolicDA) 
+data("cars",package="symbolicDA")
+set.seed(123)
+w<-replication.SDA(cars, u=3, method="SClust", S=10)
+print(w)

@@ -1,0 +1,10 @@
+require(GMD)
+
+example("ghist",package="GMD")
+example("plot.mhist",package="GMD")
+example("gdist",package="GMD")
+example("elbow",package="GMD")
+example("heatmap.3",package="GMD")
+example("gmdp",package="GMD")
+example("plot.gmdp",package="GMD")
+example("plot.gmdm",package="GMD")

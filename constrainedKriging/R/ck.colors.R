@@ -1,0 +1,1 @@
+ck.colors <- function(n)###### create a vector of n colors### 20-4-2010; ch{t.hues <- seq( 240, -30, length = n)/360t.hues[t.hues < 0] <- t.hues[t.hues < 0] + 1t.hues <- hsv( h = t.hues, s = 0.8, v = 1)return(t.hues)}

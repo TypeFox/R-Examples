@@ -1,0 +1,6 @@
+str <- c("213", "345")
+fix.semicolon.tree(str)
+str <- c("213;", "345;")
+fix.semicolon.tree(str)
+str <- c("213", "345;")
+fix.semicolon.tree(str)

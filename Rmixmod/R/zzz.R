@@ -1,0 +1,5 @@
+.onAttach <-function(lib,pkg){
+  ver <- read.dcf(file.path(lib, pkg, "DESCRIPTION"),
+  "Version")
+  packageStartupMessage("Rmixmod version ", as.character(ver), " loaded\nR package of mixmodLib version 3.0.1\n\nCondition of use\n----------------\nCopyright (C)  MIXMOD Team - 2001-2015\n\nMIXMOD is publicly available under the GPL license (see www.gnu.org/copyleft/gpl.html)\nYou can redistribute it and/or modify it under the terms of the GPL-3 license.\nPlease understand that there may still be bugs and errors. Use it at your own risk.\nWe take no responsibility for any errors or omissions in this package or for any misfortune that may befall you or others as a result of its use.\n\nPlease report bugs at: http://www.mixmod.org/article.php3?id_article=23\n\nMore information on : www.mixmod.org\n")
+}

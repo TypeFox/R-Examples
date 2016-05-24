@@ -1,0 +1,103 @@
+# This file is part of RStan
+# Copyright (C) 2012, 2013, 2014, 2015 Jiqiang Guo and Benjamin Goodrich
+#
+# RStan is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 3
+# of the License, or (at your option) any later version.
+#
+# RStan is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+##
+## Define rstan plugin for inline package.
+## (original name: inline.R)
+##
+
+inc_path_fun <- function(package) {
+  system.file('include', package = package)
+}
+
+# Using RcppEigen
+eigen_path_fun <- function() {
+  rstan_options("eigen_lib")
+}
+
+boost_path_fun <- function() {
+  rstan_options("boost_lib")
+}
+
+boost_path_fun2 <- function() {
+  rstan_options("boost_lib2")
+}
+
+PKG_CPPFLAGS_env_fun <- function() {
+   paste(' -isystem"', file.path(inc_path_fun("Rcpp"), '" '),
+         ' -isystem"', file.path(eigen_path_fun(), '" '),
+         ' -isystem"', file.path(eigen_path_fun(), 'unsupported" '),
+         ' -isystem"', boost_path_fun2(), '"', # boost_not_in_BH should come 
+         ' -isystem"', boost_path_fun(), '"',  # before BH/include
+         ' -isystem"', file.path(inc_path_fun("StanHeaders"), "src", '" '),
+         ' -isystem"', file.path(inc_path_fun("StanHeaders"), '" '),
+         ' -I"', inc_path_fun("rstan"), '"', 
+         ' -DEIGEN_NO_DEBUG ',
+         ' -DBOOST_RESULT_OF_USE_TR1 -DBOOST_NO_DECLTYPE -DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG', sep = '')
+}
+
+legitimate_space_in_path <- function(path) {
+  # For windows, use the short path name (8.3 format) 
+  # 
+  if (.Platform$OS.type == "windows") { 
+    path <- normalizePath(path)
+    if (grepl(" ", path, fixed = TRUE)) 
+      path <- utils::shortPathName(path)
+    # it is weird that the '\\' in the path name will be gone
+    # when passed to cxxfunction, so change it to '/' 
+    path <- gsub('\\\\', '/', path, perl = TRUE)
+  }
+  path 
+} 
+
+rstanplugin <- function() {
+  Rcpp_plugin <- getPlugin("Rcpp")
+  rcpp_pkg_libs <- Rcpp_plugin$env$PKG_LIBS
+  rcpp_pkg_path <- system.file(package = 'Rcpp')
+  rcpp_pkg_path2 <- legitimate_space_in_path(rcpp_pkg_path) 
+ 
+  # In case  we have space (typicall on windows though not necessarily)
+  # in the file path of Rcpp's library. 
+  
+  # If rcpp_PKG_LIBS contains space without preceding '\\', add `\\'; 
+  # otherwise keept it intact
+  if (grepl('[^\\\\]\\s', rcpp_pkg_libs, perl = TRUE))
+    rcpp_pkg_libs <- gsub(rcpp_pkg_path, rcpp_pkg_path2, rcpp_pkg_libs, fixed = TRUE) 
+
+  # get more info about bus error on SPARC
+  if (is.sparc() && grepl("^g\\+\\+", basename(get_CXX()))) {
+    cat("PKG_LIBS += -lSegFault\n", file = file.path(tempdir(), "Makevars"), append = TRUE)
+    Sys.setenv(SEGFAULT_SIGNALS = "bus abrt")
+  }
+
+  list(includes = '',
+       body = function(x) x,
+       env = list(PKG_LIBS = paste(rcpp_pkg_libs),
+                  PKG_CPPFLAGS = paste(Rcpp_plugin$env$PKG_CPPFLAGS,
+                                        PKG_CPPFLAGS_env_fun(), collapse = " ")))
+}
+
+
+# inlineCxxPlugin would automatically get registered in inline's plugin list.
+# Note that everytime rstan plugin is used, inlineCxxPlugin
+# gets called so we can change some settings on the fly
+# for example now by setting rstan_options(boost_lib=xxx)
+inlineCxxPlugin <- function(...) {
+  settings <- rstanplugin()
+  settings
+}
+

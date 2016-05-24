@@ -1,0 +1,76 @@
+## 
+# @file  zzz.R
+# @brief R file for package loading, attachment, unloading process
+#
+# @author Christophe Dutang
+#
+#
+# Copyright (C) 2009, Christophe Dutang, 
+# All rights reserved.
+#
+# The new BSD License is applied to this software.
+# Copyright (c) 2009 Christophe Dutang. 
+# All rights reserved.
+#
+#      Redistribution and use in source and binary forms, with or without
+#      modification, are permitted provided that the following conditions are
+#      met:
+#      
+#          - Redistributions of source code must retain the above copyright
+#          notice, this list of conditions and the following disclaimer.
+#          - Redistributions in binary form must reproduce the above
+#          copyright notice, this list of conditions and the following
+#          disclaimer in the documentation and/or other materials provided
+#          with the distribution.
+#          - Neither the name of its contributor may be used to endorse or promote 
+#          products derived from this software without specific prior written
+#          permission.
+#     
+#      THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+#      "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+#      LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+#      A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+#      OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#      SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+#      LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+#      DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+#      THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+#      (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+#      OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#  
+#
+#############################################################################
+### unload, attach and load functions
+###
+###			R functions
+### 
+### ideas taken from rgenoud, ash, tree packages
+
+.onUnload <- function(lib) 
+	library.dynam.unload(c("randtoolbox"), lib)
+
+.onLoad <- function(lib, pkg)
+{
+	library.dynam("randtoolbox", pkg, lib)
+	.C("put_user_unif_set_generator", PACKAGE="randtoolbox")
+}
+
+.onAttach <- function(lib, pkg)
+{
+	if(verbose <- getOption("verbose")) 
+	{	
+		randtoolboxLib <- dirname(system.file(package = "randtoolbox"))
+		PkgVersion <- packageDescription("randtoolbox", lib.loc = randtoolboxLib)$Version
+		BuildDate <- packageDescription("randtoolbox", lib.loc = randtoolboxLib)$Date
+		Rversion <- version$version.string
+		OStype <- version$platform
+		
+		packageStartupMessage("<<-- randtoolbox - version ", PkgVersion, " - building date ", BuildDate)
+		packageStartupMessage("with ",Rversion, " on the platform ", OStype) 
+		packageStartupMessage("-->> For overview, type 'help(\"randtoolbox\")'.")
+	}else
+		packageStartupMessage("This is randtoolbox. For overview, type 'help(\"randtoolbox\")'.")
+	
+}
+
+

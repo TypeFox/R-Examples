@@ -1,0 +1,5 @@
+bc <-
+function(...)
+
+  BarChart(...)
+

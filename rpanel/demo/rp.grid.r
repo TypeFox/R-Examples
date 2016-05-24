@@ -1,0 +1,8 @@
+panel <- rp.control()
+rp.grid(panel, pos=list(row=0, column=0, sticky="news"), background="red", name="g0")
+rp.grid(panel, pos=list(row=1, column=1, sticky="news", width=100, height=100), background="navy", name="g1")
+rp.grid(panel, pos=list(row=2, column=2, sticky="news", width=150, height=200), background="green", name="g2")
+rp.button(panel, function(panel) { panel }, "press A", pos=list(row=1, column=1, sticky=""), parentname="g1")
+rp.button(panel, function(panel) { panel }, "press B", pos=list(row=2, column=2, sticky="news"), parentname="g1")
+rp.button(panel, function(panel) { panel }, "press C", pos=list("left",width=50, height=150), parentname="g2")
+rp.grid(panel, pos=list(row=0, column=0, sticky="", width=10, height=10), background="yellow", parentname="g0")

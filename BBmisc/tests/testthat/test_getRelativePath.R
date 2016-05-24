@@ -1,0 +1,21 @@
+context("getRelativePath")
+
+test_that("getRelativePath", {
+  base = tempfile("")
+  a = file.path(base, "foo")
+  b = file.path(base, "bar")
+  c = file.path(base, "bar", "foobar")
+  lapply(c(a, b, c), dir.create, recursive = TRUE)
+
+  expect_equal(getRelativePath(a, from = base), "foo")
+  expect_equal(getRelativePath(b, from = base), "bar")
+  expect_equal(getRelativePath(base, from = a), "..")
+  expect_equal(getRelativePath(base, from = b), "..")
+  expect_equal(getRelativePath(a, from = b), file.path("..", "foo"))
+  expect_equal(getRelativePath(b, from = a), file.path("..", "bar"))
+  expect_equal(getRelativePath(base, from = c), file.path("..", ".."))
+  expect_equal(getRelativePath(c, from = base), file.path("bar", "foobar"))
+  expect_equal(getRelativePath(c, from = a), file.path("..", "bar", "foobar"))
+  if (!isWindows())
+    expect_equal(getRelativePath("/", from = a), do.call(file.path, as.list(rep("..", length(splitPath(a)$path)))))
+})

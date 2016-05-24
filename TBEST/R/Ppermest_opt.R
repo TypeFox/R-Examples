@@ -1,0 +1,28 @@
+Ppermest_opt<-function(x,y,alpha,method,Nexcmax,Z){
+    y<-sort(y,decreasing=T)
+    N<-length(y)
+    M<-sum(y>=x)
+    Nexcmax<-min(Nexcmax,N/4)    
+    if(M>=10){
+        myP<-(M+1)/(N+2)
+        Pci<-c(NA,NA)
+        k<-1
+    }
+    if(M<10){
+    	Nexcvec<-sort(seq(10,Nexcmax,by=10),decreasing=T)
+        LNV<-length(Nexcvec)
+        p<-1
+        myP<-NA
+        Pci<-c(NA,NA)
+        k<-NA
+        while (class(myP)=="logical"&p<=LNV){
+	    Nexc<-Nexcvec[p]
+            iter<-Pgpd(y,x,N,Nexc,method,alpha,Z)
+            myP<-iter[[1]]
+	    Pci<-iter[[2]]
+            k<-iter[[3]]
+            p<-p+1
+        }
+    }
+    return(list(myP,Pci,k))
+}

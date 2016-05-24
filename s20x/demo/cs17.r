@@ -1,0 +1,16 @@
+data (bursary.df)
+bursary.df
+plot(pass.rate~decile,main="Pass rate versus decile",data=bursary.df)
+trendscatter(pass.rate~decile,f=0.95,data=bursary.df)
+bursary.fit<-lm(pass.rate~decile,data=bursary.df)
+residPlot(bursary.fit,f=0.95)
+bursary.df<-within(bursary.df,{fail.rate<-100-pass.rate})
+bursary.fit1<-lm(fail.rate~decile,data=bursary.df)
+residPlot(bursary.fit1,f=0.95)
+bursary.fit2<-lm(log(fail.rate)~decile,data=bursary.df)
+residPlot(bursary.fit2,f=0.95)
+eovcheck(bursary.fit2)
+normcheck(bursary.fit2)
+summary(bursary.fit2)
+exp(ciReg(bursary.fit2))
+

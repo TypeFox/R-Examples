@@ -1,0 +1,55 @@
+context("Consistency of getcdfupdates with updates")
+
+set.seed(129301)
+checkupdates <- function(chart, X){
+    P <- chart@model$Pofdata(X)
+    xi <- chart@model$xiofP(P)
+    sample <- unlist(replicate(500,updates(chart,data=chart@model$resample(P),xi)))
+    f1 <- ecdf(sample)
+    f2 <- getcdfupdates(chart,P,xi)
+    x <- c(sample,rcauchy(100))
+    res <- max(abs(f1(x)-f2(x)))
+    id <-  paste(class(chart)[1],"Maximum  error:",format(res))
+    expect_true(res<0.03,id)
+}
+test_that("Updates/Resample CUSUM Normal",{
+    skip_on_cran()
+    chart <- new("SPCCUSUM",model=SPCModelNormal(Delta=1))
+    checkupdates(chart,rexp(50))
+    checkupdates(chart,rnorm(100))
+    checkupdates(chart,rnorm(1000))
+    checkupdates(chart,runif(1000))
+})
+
+test_that("Updates/Resample CUSUM Nonnpar",{
+    skip_on_cran()
+    chart <- new("SPCCUSUM",model=SPCModelNonparCenterScale(Delta=1))
+    checkupdates(chart,rexp(50))
+    checkupdates(chart,rnorm(100))
+    checkupdates(chart,rnorm(1000))
+    checkupdates(chart,runif(1000))
+})
+
+test_that("Updates/Resample Shewhart Normal",{
+    skip_on_cran()
+    chart <- new("SPCShew",model=SPCModelNormal(),twosided=TRUE)
+    checkupdates(chart,rexp(50))
+    checkupdates(chart,rnorm(100))
+    checkupdates(chart,rnorm(1000))
+    chart <- new("SPCShew",model=SPCModelNormal(),twosided=FALSE)
+    checkupdates(chart,rexp(50))
+    checkupdates(chart,rnorm(100))
+    checkupdates(chart,rnorm(1000))
+})
+
+test_that("Updates/Resample Shewhart Nonnpar",{
+    skip_on_cran()
+    chart <- new("SPCShew",model=SPCModelNonparCenterScale(),twosided=TRUE)
+    checkupdates(chart,rexp(50))
+    checkupdates(chart,rnorm(100))
+    checkupdates(chart,rnorm(1000))
+    chart <- new("SPCShew",model=SPCModelNonparCenterScale(),twosided=FALSE)
+    checkupdates(chart,rexp(50))
+    checkupdates(chart,rnorm(100))
+    checkupdates(chart,rnorm(1000))
+})

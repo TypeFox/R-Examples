@@ -1,0 +1,53 @@
+`print.summary.cca` <-
+function(x, ...){
+   cat("\nCanonical Correlation Analysis - Summary\n\n")
+   #Show the correlations
+   cat("\nCanonical Correlations:\n\n")
+   print(x$corr)
+   cat("\nShared Variance on Each Canonical Variate:\n\n")
+   print(x$corrsq)
+   #Bartlett's chisq test
+   tab<-cbind(x$corrsq,x$chisq,x$df,1-pchisq(x$chisq,df=x$df))
+   colnames(tab)<-c("rho^2","Chisq","df","Pr(>X)")
+   rownames(tab)<-paste("CV",1:length(x$corr))
+   cat("\nBartlett's Chi-Squared Test:\n\n")
+   printCoefmat(tab)
+   #Show the coefficients
+   cat("\n\nCanonical Variate Coefficients:\n")
+   cat("\n\tX Vars:\n")
+   print(x$xcoef)
+   cat("\n\tY Vars:\n")
+   print(x$ycoef)
+   #Structural correlations
+   cat("\n\nStructural Correlations (Loadings):\n")
+   cat("\n\tX Vars:\n")
+   print(x$xstructcorr)
+   cat("\n\tY Vars:\n")
+   print(x$ystructcorr)
+   cat("\n\nFractional Variance Deposition on Canonical Variates:\n")
+   cat("\n\tX Vars:\n")
+   print(x$xstructcorrsq)
+   cat("\n\tY Vars:\n")
+   print(x$ystructcorrsq)
+   #Redundancy measures
+   cat("\n\nCanonical Communalities (Fraction of Total Variance\nExplained for Each Variable, Within Sets):\n")
+   cat("\n\tX Vars:\n")
+   print(x$xcancom)
+   cat("\n\tY Vars:\n")
+   print(x$ycancom)
+   cat("\n\nCanonical Variate Adequacies (Fraction of Total Variance\nExplained by Each CV, Within Sets):\n",fill=TRUE)
+   cat("\n\tX Vars:\n")
+   print(x$xcanvad)
+   cat("\n\tY Vars:\n")
+   print(x$ycanvad)
+   cat("\n\nRedundancy Coefficients (Fraction of Total Variance\nExplained by Each CV, Across Sets):\n",fill=TRUE)
+   cat("\n\tX | Y:\n")
+   print(x$xvrd)
+   cat("\n\tY | X:\n")
+   print(x$yvrd)
+   cat("\n\nAggregate Redundancy Coefficients (Total Variance\nExplained by All CVs, Across Sets):\n",fill=TRUE)
+   cat("\tX | Y:",x$xrd,"\n")
+   cat("\tY | X:",x$yrd,"\n")
+   cat("\n")
+}
+

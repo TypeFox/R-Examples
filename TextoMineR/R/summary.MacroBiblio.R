@@ -1,0 +1,20 @@
+summary.MacroBiblio<-function (object, nword=50, nEig=5, ...) 
+{
+  res1 <- object
+     if (!inherits(res1, "MacroBiblio"))
+     cat("\nBiblioMineR summary\n")
+        cat("\nCORPUS\n")
+	 summary(res1$Corpus, nword)
+   cat("\nCORRESPONDENCE ANALYSIS CA\n")
+       summary(res1$res.CA,nEig)
+      cat("\nMETAKEYS-METADOCS\n")
+       print(res1$Metakeys.Metadocs$Metakeys.Metadocs)
+    cat("\nAGGREGATE CA\n") 
+	 summary(res1$res.CA.Agreg, nEig)
+     cat("\nCHARACTERISTIC WORDS OF AGGREGATED VARIABLE\n") 
+	 print(res1$CharWord$CharWords)
+     cat("\nMOST CONTRIBUTIVE",nword,"WORD IN THE DIM1\n")
+         print(res1$OrdWord$WordMoreContrib[1:nword,])
+    cat("\nPIONEER ARTICLES\n")
+        print(res1$pioneers)
+}

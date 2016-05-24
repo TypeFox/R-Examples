@@ -1,0 +1,1 @@
+trim <- function(str)gsub('^[[:space:]]+', '', gsub('[[:space:]]+$', '', str))

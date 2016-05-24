@@ -1,0 +1,1 @@
+sim.default <- function(x) "Unknown class"

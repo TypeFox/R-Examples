@@ -1,0 +1,145 @@
+##
+## Setting classes for unit root tests
+##
+
+setClass("urca", representation(test.name="character"))
+
+setClass("ur.ers", representation(y="vector",
+                                  yd="vector",
+                                  type="character",
+                                  model="character",
+                                  lag="integer",
+                                  cval="matrix",
+                                  teststat="numeric",
+                                  testreg="ANY"),
+         contains="urca")
+
+setClass("ca.jo", representation(x="ANY",
+                                 Z0="matrix",
+                                 Z1="matrix",
+                                 ZK="matrix",
+                                 type="character",
+                                 model="character",
+                                 ecdet="character",
+                                 lag="integer",
+                                 P="integer",
+                                 season="ANY",
+                                 dumvar="ANY",
+                                 cval="ANY",
+                                 teststat="ANY",
+                                 lambda="vector",
+                                 Vorg="matrix",
+                                 V="matrix",
+                                 W="matrix",
+                                 PI="matrix",
+                                 DELTA="matrix",
+                                 GAMMA="matrix",
+                                 R0="matrix",
+                                 RK="matrix",
+                                 bp="ANY",
+                                 spec="character",
+                                 call="call"),
+         contains="urca")
+
+setClass("cajo.test", representation(Z0="matrix",
+                                     Z1="matrix",
+                                     ZK="matrix",
+                                     H="ANY",
+                                     A="ANY",
+                                     B="ANY",
+                                     type="character",
+                                     ecdet="character",
+                                     teststat="numeric",
+                                     pval="vector",
+                                     lambda="vector",
+                                     Vorg="matrix",
+                                     V="matrix",
+                                     W="matrix",
+                                     PI="matrix",
+                                     DELTA="ANY",
+                                     DELTA.bb="ANY",
+                                     DELTA.ab="ANY",
+                                     DELTA.aa.b="ANY",
+                                     GAMMA="matrix"),
+         contains="urca")
+
+setClass("ur.kpss", representation(y="vector",
+                                   type="character",
+                                   lag="integer",
+                                   cval="matrix",
+                                   teststat="numeric",
+                                   res="vector"),
+         contains="urca")
+
+setClass("ca.po", representation(z="ANY",
+                                 type="character",
+                                 model="character",
+                                 lag="integer",
+                                 cval="matrix",
+                                 res="matrix",
+                                 teststat="numeric",
+                                 testreg="ANY"),
+         contains="urca")
+
+setClass("ur.pp", representation(y="vector",
+                                 type="character",
+                                 model="character",
+                                 lag="integer",
+                                 cval="matrix",
+                                 teststat="numeric",
+                                 testreg="ANY",
+                                 auxstat="matrix",
+                                 res="vector"),
+         contains="urca")
+
+setClass("ur.df", representation(y="vector",
+                                 model="character",
+                                 lags="integer",
+                                 cval="matrix",
+                                 res="vector",
+                                 teststat="matrix",
+                                 testreg="ANY"),
+         contains="urca")
+
+setClass("ur.sp", representation(y="vector",
+                                 type="character",
+                                 polynomial="integer",
+                                 signif="numeric",
+                                 teststat="numeric",
+                                 cval="numeric",
+                                 res="vector",
+                                 testreg="ANY"),
+         contains="urca")
+
+setClass("ur.za", representation(y="vector",
+                                 model="character",
+                                 lag="integer",
+                                 teststat="numeric",
+                                 cval="vector",
+                                 bpoint="integer",
+                                 tstats="vector",
+                                 res="vector",
+                                 testreg="ANY"),
+         contains="urca")
+
+setClassUnion("otherornull", c("ANY", "character", "integer", "matrix", "vector", "NULL")) 
+
+setClass("sumurca", representation(classname="character",
+                                   test.name="character",
+                                   testreg="ANY",
+                                   teststat="otherornull",
+                                   cval="otherornull",
+                                   bpoint="otherornull",
+                                   signif="otherornull",
+                                   model="otherornull",
+                                   type="otherornull",
+                                   auxstat="otherornull",
+                                   lag="otherornull",
+                                   H="otherornull",
+                                   A="otherornull",
+                                   lambda="otherornull",
+                                   pval="otherornull",
+                                   V="otherornull",
+                                   W="otherornull",
+                                   P="otherornull")
+         )

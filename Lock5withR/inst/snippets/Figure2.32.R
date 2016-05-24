@@ -1,0 +1,2 @@
+bwplot( ~ Smokers, data = USStates)
+

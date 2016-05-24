@@ -1,0 +1,1 @@
+"kurt"<-function(x){mean((x-mean(x))^4)/(mean((x-mean(x))^2)^2)}

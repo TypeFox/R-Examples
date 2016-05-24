@@ -1,0 +1,6 @@
+linear <-
+function(x)
+{
+    x
+}
+

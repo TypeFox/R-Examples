@@ -1,0 +1,2 @@
+library(ScripTests)
+ScripTests:::runScripTests()

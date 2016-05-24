@@ -1,0 +1,1 @@
+person.parameter <- function(object)UseMethod("person.parameter")

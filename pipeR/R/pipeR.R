@@ -1,0 +1,47 @@
+#' The pipeR package
+#'
+#' pipeR implements various function chaining methods: \code{\%>>\%} operator,
+#' \code{Pipe} object, and \code{pipeline} function. Each represents a distinct
+#' pipeline model yet shares a common set of features designed to build
+#' easy-to-read/write/maintain pipelines.
+#' To learn more, please visit \href{http://renkun.me/pipeR-tutorial}{pipeR Tutorial}.
+#' @name pipeR-package
+#' @docType package
+#' @details
+#' pipeR package defines a set of syntax tailored for unified, intuitive piping
+#' experience. The package is designed to help organize code as a streamline that
+#' is consistent with logic and intuition.
+#'
+#' The following example shows how traditional code can be written in different
+#' function chaining styles.
+#' @examples
+#' # Traditional code:
+#' plot(density(sample(mtcars$mpg, size = 10000, replace = TRUE),
+#'  kernel = "gaussian"), col = "red", main="density of mpg (bootstrap)")
+#'
+#' # Operator-based pipeline using %>>%:
+#' mtcars$mpg %>>%
+#'   sample(size = 10000, replace = TRUE) %>>%
+#'   density(kernel = "gaussian") %>>%
+#'   plot(col = "red", main = "density of mpg (bootstrap)")
+#'
+#' # Object-based pipeline using Pipe():
+#' Pipe(mtcars$mpg)$
+#'   sample(size = 10000, replace = TRUE)$
+#'   density(kernel = "gaussian")$
+#'   plot(col = "red", main = "density of mpg (bootstrap)")
+#'
+#' # Argument-based pipeline using pipeline():
+#' pipeline(mtcars$mpg,
+#'   sample(size = 10000, replace = TRUE),
+#'   density(kernel = "gaussian"),
+#'   plot(col = "red", main = "density of mpg (bootstrap)"))
+#'
+#' # Expression-based pipeline using pipeline():
+#' pipeline({
+#'   mtcars$mpg
+#'   sample(size = 10000, replace = TRUE)
+#'   density(kernel = "gaussian")
+#'   plot(col = "red", main = "density of mpg (bootstrap)")
+#' })
+NULL

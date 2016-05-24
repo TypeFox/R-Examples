@@ -1,0 +1,45 @@
+tidy.formula.hierarchical <- function(formula) {
+    stopifnot(inherits(formula, "formula"))
+    mt <- terms(formula)
+    if(! is.hierarchical(mt))
+       stop("formula not hierarchical")
+    mf <- attr(mt, "factors")
+    if (! is.matrix(mf)) return(deparse(formula))
+    new.terms <- NULL
+    variables <- rownames(mf)
+    ok <- rep(TRUE, ncol(mf))
+    for (i in ncol(mf):1)
+        if (ok[i]) {
+            foo <- mf[ , i]
+            bar <- variables[foo >= 1]
+            bar <- paste(bar, collapse = "*")
+            new.terms <- c(bar, new.terms)
+            for (j in 1:i)
+                if (all((mf[ , j] >= 1) <= (foo >= 1)))
+                    ok[j] <- FALSE
+        }
+    new.formula <- paste(new.terms, collapse = " + ")
+    mi <- attr(mt, "intercept")
+    if (mi == 0)
+        new.formula <- paste("0 +", new.formula)
+    new.formula <- paste("~", new.formula)
+    mr <- attr(mt, "response")
+    if (mr != 0)
+        new.formula <- paste(variables[mr], new.formula)
+    mt.new <- terms(as.formula(new.formula))
+    mf.new <- attr(mt.new, "factors")
+    mr.new <- attr(mt.new, "response")
+    mi.new <- attr(mt.new, "intercept")
+    variables.new <- rownames(mf.new)
+    stopifnot((mr == 0) == (mr.new == 0))
+    if (mr != 0)
+        stopifnot(variables[mr] == variables.new[mr.new])
+    stopifnot((mi == 0) == (mi.new == 0))
+    stopifnot(sort(variables) == sort(variables.new))
+    mn <- attr(mt, "term.labels")
+    mn.new <- attr(mt.new, "term.labels")
+    mn <- sort(standardize.term.labels(mn))
+    mn.new <- sort(standardize.term.labels(mn.new))
+    stopifnot(all(mn == mn.new))
+    return(new.formula)
+}

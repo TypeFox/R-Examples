@@ -1,0 +1,5 @@
+lr <-
+function(...)
+
+  Logit(...)
+

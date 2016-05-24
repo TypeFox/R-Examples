@@ -1,0 +1,1 @@
+subjscore <- function(x){return(x$subjscore)}

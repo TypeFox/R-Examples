@@ -1,0 +1,30 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
+test.TimeReversedSolution=function(){
+   k=-0.05
+   ydot=function(Y,t){k*Y}
+   start=c(1)
+   tstart=30
+   tend=100
+   tn=100
+   tol=.02/tn
+   times=seq(tstart,tend,(tend-tstart)/tn)
+   forward_sol=solver(times,ydot,start)
+   fs=splinefun(times,forward_sol)
+   bstart=tail(forward_sol,1)#extract last value
+   btimes=sort(times,decreasing=TRUE)
+   print("btimes")
+   print(btimes)
+   backward_sol=solver(btimes,ydot,bstart)
+   bs=splinefun(btimes,backward_sol)
+   pdf(file="runit.test.TimeReversedSolution.pdf",paper="a4r")
+   c=c("black","red")
+   lts=c(1,2)
+   plot(times,fs(times),col=c[1],lty=lts[1])
+   lines(times,bs(times),col=c[2],lty=lts[2])
+   checkEquals(
+    bs(times),
+    fs(times),
+    tolerance=tol
+   )    
+}

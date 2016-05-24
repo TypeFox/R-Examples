@@ -1,0 +1,5 @@
+library(XML)
+z = xmlTree()
+z$addNode("r:data",  namespace = c(r = "http://www.r-project.org", omg = "http://www.omegahat.net"), close = FALSE)
+x = rnorm(3)
+z$addNode("r:numeric", attrs = c("omg:length" = length(x)))

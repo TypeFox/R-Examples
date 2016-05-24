@@ -1,0 +1,1 @@
+standarderror <- function(x) sqrt(stats::var(x,na.rm=TRUE)/length(stats::na.omit(x)))

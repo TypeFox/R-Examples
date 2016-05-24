@@ -1,0 +1,124 @@
+aa_getATestResults <-
+function(FILEPATH,SAMPLESIZES,NUMSUBSETSPERSAMPLESIZE,MEASURES,AA_SIM_RESULTS,ATESTRESULTSFILENAME,LARGEDIFFINDICATOR,TIMEPOINTS=NULL,TIMEPOINTSCALE=NULL,GRAPHNAME=NULL)
+{
+	if(is.null(TIMEPOINTS))
+	{
+		# ALL A-TEST SCORES, FOR ALL SAMPLE SIZES
+		RESULTS<-NULL
+
+		# ATEST SCORES FOR JUST A SAMPLE SIZE - COMPILED FOR GRAPHING
+		SIZE_RESULTS<-NULL
+
+		# READ IN THE SUMMARY FILE
+		RESULT<-read.csv(paste(FILEPATH,"/",AA_SIM_RESULTS,sep=""),sep=",",header=TRUE,check.names=FALSE)
+		print("Generating A-Test Scores for Consistency Analysis")
+		
+		# Table header check no longer needed now that check.names=FALSE in read.csv.
+		# Check the Measures and Parameters for Spaces - R will have replaced these with a dot
+		#MEASURES<-table_header_check(MEASURES)
+
+		# GENERATE COLUMN HEADINGS - WE USE THIS TWICE LATER
+		ATESTRESULTSHEADER<-cbind("Sample Size","Sample")
+
+		for(l in 1:length(MEASURES))
+		{
+			ATESTRESULTSHEADER<-cbind(ATESTRESULTSHEADER,paste("ATest",MEASURES[l],sep=""),paste("ATest",MEASURES[l],"Norm",sep=""))
+		}
+
+		for(s in 1:length(SAMPLESIZES))
+		{
+
+			print(paste("Processing Sample Size: ",SAMPLESIZES[s],sep=""))
+
+			## GET THE FIRST SET, SO THIS CAN BE COMPARED WITH ALL THE OTHERS	
+			## SO SUBSET THE RESULTS
+			SUBSET_CRITERIA<-c("SampleSize","Set")
+			SET1<-subset_results_by_param_value_set(SUBSET_CRITERIA,RESULT,c(SAMPLESIZES[s],1))
+
+			# REST THE SCORES FOR EACH SAMPLE SIZE
+			SIZE_RESULTS<-NULL
+
+			for(m in 2:NUMSUBSETSPERSAMPLESIZE)
+			{
+
+				ALLATESTRESULTS<-cbind(SAMPLESIZES[s],m)
+
+				COMPAREDSET<-subset_results_by_param_value_set(SUBSET_CRITERIA,RESULT,c(SAMPLESIZES[s],m))
+
+				if(nrow(COMPAREDSET)>0)
+				{
+					# Now perform the analysis for each measure
+					# THEN NORMALISE (PUT ABOVE 0.5) AS DIRECTION DOES NOT MATTER
+					for(l in 1:length(MEASURES))
+					{
+						ATESTMEASURERESULT<-atest(as.numeric(as.matrix(SET1[MEASURES[l]][,1])),
+								as.numeric(as.matrix(COMPAREDSET[MEASURES[l]][,1])))
+						# the [,1] is added so the data is extracted	
+						ATESTMEASURENORM <- normaliseATest(ATESTMEASURERESULT)				
+						ALLATESTRESULTS<-cbind(ALLATESTRESULTS,ATESTMEASURERESULT,ATESTMEASURENORM)
+
+					}
+				}
+				else
+				{
+					for(l in 1:length(MEASURES))
+					{
+						ALLATESTRESULTS<-cbind(ALLATESTRESULTS,1,1)
+					}
+				
+				}
+				# ADD THESE TESTS TO THE RESULTS
+				RESULTS<-rbind(RESULTS,ALLATESTRESULTS)
+
+				SIZE_RESULTS<-rbind(SIZE_RESULTS,ALLATESTRESULTS)
+
+			}
+
+			colnames(SIZE_RESULTS)<-ATESTRESULTSHEADER
+			
+			# NOW GRAPH THIS SAMPLE SIZE
+			if(is.null(GRAPHNAME))
+			{
+				GRAPHOUTPUTNAME<-paste(SAMPLESIZES[s],"Samples.pdf",sep="")
+			}else
+			{
+				GRAPHOUTPUTNAME<-paste(SAMPLESIZES[s],"Samples_",GRAPHNAME,".pdf",sep="")
+			}
+			
+			aa_graphATestsForSampleSize(FILEPATH,SIZE_RESULTS,MEASURES,LARGEDIFFINDICATOR,GRAPHOUTPUTNAME,NULL,NULL)
+			print(paste("Summary Graph for Sample Size of ",SAMPLESIZES[s]," Saved to ",FILEPATH,"/",GRAPHOUTPUTNAME,sep=""))
+		}
+
+		
+
+		colnames(RESULTS)<-c(ATESTRESULTSHEADER)
+
+		# NOW WRITE THE FILE OUT
+		write.csv(RESULTS,paste(FILEPATH,"/",ATESTRESULTSFILENAME,sep=""),quote = FALSE,row.names=FALSE)		
+	}
+	else
+	{
+		# PROCESS EACH TIMEPOINT, BY AMENDING THE FILENAMES AND RECALLING THIS FUNCTION
+		for(n in 1:length(TIMEPOINTS))
+		{
+
+			TIMEPOINTPROCESSING<-TIMEPOINTS[n]
+			print(paste("PROCESSING TIMEPOINT: ",TIMEPOINTPROCESSING,sep=""))
+
+			AA_SIM_RESULTS_FORMAT<-substr(AA_SIM_RESULTS,(nchar(AA_SIM_RESULTS)+1)-3,nchar(AA_SIM_RESULTS))
+			AA_SIM_RESULTS_FULL<-paste(substr(AA_SIM_RESULTS,0,nchar(AA_SIM_RESULTS)-4),"_",TIMEPOINTPROCESSING,".",AA_SIM_RESULTS_FORMAT,sep="")
+
+			ATESTRESULTSFILENAME_FORMAT<-substr(ATESTRESULTSFILENAME,(nchar(ATESTRESULTSFILENAME)+1)-3,nchar(ATESTRESULTSFILENAME))
+			ATESTRESULTSFILENAME_FULL<-paste(substr(ATESTRESULTSFILENAME,0,nchar(ATESTRESULTSFILENAME)-4),"_",TIMEPOINTPROCESSING,".",ATESTRESULTSFILENAME_FORMAT,sep="")
+
+			GRAPHOUTPUTNAME<-TIMEPOINTPROCESSING
+
+			aa_getATestResults(FILEPATH,SAMPLESIZES,NUMSUBSETSPERSAMPLESIZE,MEASURES,AA_SIM_RESULTS_FULL,
+						ATESTRESULTSFILENAME_FULL,LARGEDIFFINDICATOR,TIMEPOINTS=NULL,TIMEPOINTSCALE=NULL,GRAPHOUTPUTNAME)
+
+
+		}
+
+
+	}
+}

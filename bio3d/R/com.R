@@ -1,0 +1,2 @@
+"com" <- function(...)
+  UseMethod("com")

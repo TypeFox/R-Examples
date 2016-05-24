@@ -1,0 +1,54 @@
+is.t <-
+function(x,m,a=10,n0=NULL)
+{
+	p=rep(0,m+2);
+	y=rep(0,m+2);
+	q=0;
+		x2=var(x);
+		if(is.null(n0))
+		{
+			n0=2*x2/(x2+1);
+			df=m;
+		}
+		else
+		{
+			df=m+1;
+		}
+		if(n0>0)
+		{
+		di=max(x)-min(x);
+		for(i in 1:m)
+		{
+			p[i]=pt(min(x)+di*i/m,n0)-pt(min(x)+di*(i-1)/m,n0);
+			if(p[i]==0)
+			{
+				break;
+			}
+			for(j in 1:length(x))
+				if(x[j]>(min(x)+di*(i-1)/m) && x[j]<=(min(x)+di*i/m))
+					y[i]=y[i]+1;
+			q=q+(y[i]-(length(x)*p[i]))^2/(length(x)*p[i]);
+		}
+		p[m+1]=pt(Inf,n0)-pt(max(x),n0);
+		p[m+2]=pt(min(x),n0);
+		y[m+2]=length(which(x==min(x)));
+		if(p[m+1]!=0)
+			q=q+(y[m+1]-(length(x)*p[m+1]))^2/(length(x)*p[m+1]);
+		if(p[m+2]!=0)
+			q=q+(y[m+2]-(length(x)*p[m+2]))^2/(length(x)*p[m+2]);
+		q0=qchisq(1-a,df);
+                pvalue=pchisq(q,df);
+		if(q<=q0)
+		{
+			return(data.frame("qchisq"=q,"pvalue"=pvalue));
+		}
+		else
+		{
+			return(data.frame("state"=-1,"pvalue"=1));
+		}
+		}
+		else
+		{
+			return(data.frame("state"=-1,"pvalue"=1));
+		}
+}

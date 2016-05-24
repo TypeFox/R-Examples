@@ -1,0 +1,16 @@
+context("to_html.R")
+
+test_that("tests", {
+  a <- matrix( 0,nrow=4,ncol=4)
+  a[1,2] <- a[1,3] <- a[2,3] <- a[1,4] <-1
+  a <- a + t(a)
+  graph <- as.popgraph( a )
+  
+  expect_that( to_html(FALSE), throws_error() )
+  
+  ret <- to_html(graph)
+  expect_that(ret,is_a("character"))
+  expect_that(nchar(ret),equals(2708))
+  expect_that(ret,is_equivalent_to("<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n    <title>the Dyer Laboratory of Population Genetics: Popgraph</title>\n    <style>\n        .link { stroke: #ccc; }\n        .node text { pointer-events: none; font: 10px sans-serif; }\n\t\t    html {background: #fff url(\"http://dyerlab.bio.vcu.edu/media/bg3.png\") 0 10px repeat-x;}\n\t\t    body {font-family: Cantarell, 'Droid Sans', Ubuntu, 'DejaVu Sans', Arial, Veranda, sans-serif; font-size: 14px;}\n\t\t    h1 {font-family: \"Trebuchet MS\"; font-size: 32px; color: #0489B7;}\n\t\t    #logo { background: #fff; position: fixed; top: 0px; right: 40px; padding: 2px 6px; margin-top: 0px; font-size: 12px; font-weight: bold; line-height: normal; border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; }\n    </style>\n</head>\n<body>\n<div id=\"logo\">dyerlab.bio.vcu.edu</div>\n<h1>Interactive Popgraph</h1>\n<script src=\"http://d3js.org/d3.v2.min.js\"></script>\n<script> var myjson = '{ \"nodes\":[{\"name\":\"node-1\",\"group\":\"All\"}, {\"name\":\"node-2\",\"group\":\"All\"}, {\"name\":\"node-3\",\"group\":\"All\"}, {\"name\":\"node-4\",\"group\":\"All\"}], \"links\":[{\"source\":0,\"target\":1}, {\"source\":0,\"target\":2}, {\"source\":0,\"target\":3}, {\"source\":1,\"target\":2}]}'; var json = JSON.parse( myjson );\n\nvar width = 950,\n    height = 950;\n\nvar colors = d3.scale.category20();\n\nvar svg = d3.select(\"body\").append(\"svg\")\n    .attr(\"width\", width)\n    .attr(\"height\", height);\n\nvar force = d3.layout.force()\n    .charge(-300)\n    .linkDistance(40)\n    .size([width, height]);\n \nvar link = svg.selectAll(\".link\")\n        .data(json.links)\n\t    .enter().append(\"line\")\n\t      .attr(\"class\", \"link\");\n\nvar node = svg.selectAll(\".node\")\n\t      .data(json.nodes)\n\t    .enter().append(\"g\")\n\t      .attr(\"class\", \"node\")\n\t      .call(force.drag);\n\nnode.append(\"circle\")\n\t        .attr(\"r\", function(d) { return d.size; } )\n\t        .attr(\"fill\", function(d) { return colors(d.group); } );\n\nnode.append(\"text\")\n\t      .attr(\"dx\", 12)\n\t      .attr(\"dy\", \".35em\")\n\t      .text(function(d) { return d.name });\n\nforce.on(\"tick\", function() {\n\t    link.attr(\"x1\", function(d) { return d.source.x; })\n\t        .attr(\"y1\", function(d) { return d.source.y; })\n\t        .attr(\"x2\", function(d) { return d.target.x; })\n\t        .attr(\"y2\", function(d) { return d.target.y; });\n\n\t    node.attr(\"transform\", function(d) { return \"translate(\" + d.x + \",\" + d.y + \")\"; });\n});\n  \nforce.nodes(json.nodes)\n      .links(json.links)\n      .start();\n</script>\n\n<p>The following graph was created using the R package <tt>popgraph</tt>. Any questions or comments can be sent to rjdyer@vcu.edu</p>\n</body>\n</html>"))
+
+})

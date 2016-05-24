@@ -1,0 +1,121 @@
+# Copyright (c) 2015-2016 Microsoft Corporation
+# All rights reserved.
+#   
+# The MIT License (MIT)
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#   
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+
+
+stopIfNotWorkspace <- function(x){
+  if(!is.Workspace(x)) {
+    msg <- paste0("Error in ", as.character(sys.call(-1))[1], "()\n",
+                 "ws must be a Workspace object. See ?workspace"
+    )
+    stop(msg, call. = FALSE)
+  }
+}
+
+
+#' Test if an object is an Azure ML Workspace.
+#' 
+#' @param x an R object
+#' @return logical value, TRUE if \code{x} represents an Azure ML workspace.
+#' @export
+is.Workspace <- function(x){
+  inherits(x, "Workspace")
+}
+
+
+#' Test if an object is an Azure ML Service.
+#' 
+#' @param x an R object
+#' @return logical value, TRUE if \code{x} represents an Azure ML web service
+#' @export
+is.Service <- function(x){
+  inherits(x, "Service")
+}
+
+#' Test if an object is an Azure ML Endpoint.
+#' 
+#' @param x an R object
+#' @return logical value, TRUE if \code{x} represents an Azure ML web service endpoint
+#' @export
+is.Endpoint <- function(x){
+  inherits(x, "Endpoint")
+}
+
+#' @export
+print.Workspace =  function(x, detail = FALSE, ...)
+{
+  cat("AzureML Workspace\n")
+  cat("Workspace ID :", x$id, "\n")
+  cat("API endpoint :", x$.api_endpoint, "\n")
+  if(detail){
+    cat("Studio API          :", x$.studioapi, "\n")
+    cat("Management endpoint :", x$.management_endpoint, "\n")
+  }
+}
+
+#' @export
+print.Experiments <- function(x, ...)
+{
+  dots = character()
+  if(nrow(x) > 0) dots = "..."
+  d = data.frame(
+    Description = substr(x[, "Description"], 1, 48),
+    CreationTime = x[, "CreationTime"],
+    `...` = dots
+  )
+  print(d)
+  cat("-------------------------------------------------\n")
+  cat("AzureML experiments data.frame variables include:\n")
+  cat(paste(capture.output(names(x)),collapse="\n"),"\n")
+  d
+}
+
+#' @export
+print.Datasets <- function(x, ...)
+{
+  dots = character()
+  if(nrow(x) > 0) dots = "..."
+  d = data.frame(
+    Name = substr(x[, "Name"], 1, 50), 
+    DataTypeId = x[, "DataTypeId"],
+    Size = x[, "Size"],
+    `...` = dots
+  )
+  print(d)
+  cat("----------------------------------------------\n")
+  cat("AzureML datasets data.frame variables include:\n")
+  cat(paste(capture.output(names(x)),collapse="\n"),"\n")
+  d
+}
+
+#' @export
+str.Workspace <- function(object, ...){
+  NextMethod(object)
+  cat("list with elements:\n")
+  cat(ls(object, all.names = TRUE))
+  cat("\n\n")
+  cat("Values:\n")
+  cat("$ id :", object$id, "\n")
+  cat("$ .api_endpoint        :", object$.api_endpoint, "\n")
+  cat("$ .studioapi           :", object$.studioapi, "\n")
+  cat("$ .management_endpoint :", object$.management_endpoint, "\n")
+}
+

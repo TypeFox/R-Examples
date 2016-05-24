@@ -1,0 +1,87 @@
+.moaknownmodels <- c(
+  ## classification models
+  "AdaHoeffdingOptionTree", "ASHoeffdingTree", "DecisionStump", "HoeffdingAdaptiveTree", "HoeffdingOptionTree","HoeffdingTree", "LimAttHoeffdingTree", "RandomHoeffdingTree", 
+  "NaiveBayes", "NaiveBayesMultinomial",
+  "ActiveClassifier",
+  "AccuracyUpdatedEnsemble","AccuracyWeightedEnsemble","ADACC","DACC","LeveragingBag","LimAttClassifier","OCBoost",
+  "OnlineAccuracyUpdatedEnsemble","OzaBag","OzaBagAdwin","OzaBagASHT","OzaBoost","OzaBoostAdwin","TemporallyAugmentedClassifier","WeightedMajorityAlgorithm",
+  ## regression models
+  "AMRulesRegressor", "FadingTargetMean", "FIMTDD", "ORTO", "Perceptron", "SGD", "TargetMean")
+
+
+
+modelclass <- function(model){  
+  if(!model %in% .moaknownmodels){
+    stop(sprintf("%s not an implemented model", as.character(model)))
+  }
+  recoder(model, 
+          from = c("AdaHoeffdingOptionTree",
+                   "ASHoeffdingTree",
+                   "DecisionStump",
+                   "HoeffdingAdaptiveTree",
+                   "HoeffdingOptionTree",
+                   "HoeffdingTree",
+                   "LimAttHoeffdingTree", 
+                   "RandomHoeffdingTree",
+                   "NaiveBayes",
+                   "NaiveBayesMultinomial",
+                   "ActiveClassifier",
+                   "AccuracyUpdatedEnsemble",
+                   "AccuracyWeightedEnsemble",
+                   "ADACC",
+                   "DACC",
+                   "LeveragingBag",
+                   "LimAttClassifier",
+                   "OCBoost",
+                   "OnlineAccuracyUpdatedEnsemble",
+                   "OzaBag",
+                   "OzaBagAdwin",
+                   "OzaBagASHT",
+                   "OzaBoost",
+                   "OzaBoostAdwin",
+                   "TemporallyAugmentedClassifier",
+                   "WeightedMajorityAlgorithm",
+                   ## regression
+                   "AMRulesRegressor", 
+                   "FadingTargetMean", 
+                   "FIMTDD", 
+                   "ORTO", 
+                   "Perceptron", 
+                   "SGD", 
+                   "TargetMean"),
+          to = c("moa/classifiers/trees/AdaHoeffdingOptionTree",
+                 "moa/classifiers/trees/ASHoeffdingTree",
+                 "moa/classifiers/trees/DecisionStump",
+                 "moa/classifiers/trees/HoeffdingAdaptiveTree",
+                 "moa/classifiers/trees/HoeffdingOptionTree",
+                 "moa/classifiers/trees/HoeffdingTree", 
+                 "moa/classifiers/trees/LimAttHoeffdingTree", 
+                 "moa/classifiers/trees/RandomHoeffdingTree", 
+                 "moa/classifiers/bayes/NaiveBayes",
+                 "moa/classifiers/bayes/NaiveBayesMultinomial",
+                 "moa/classifiers/active/ActiveClassifier",
+                 "moa/classifiers/meta/AccuracyUpdatedEnsemble",
+                 "moa/classifiers/meta/AccuracyWeightedEnsemble",
+                 "moa/classifiers/meta/ADACC",
+                 "moa/classifiers/meta/DACC",
+                 "moa/classifiers/meta/LeveragingBag",
+                 "moa/classifiers/meta/LimAttClassifier",
+                 "moa/classifiers/meta/OCBoost",
+                 "moa/classifiers/meta/OnlineAccuracyUpdatedEnsemble",
+                 "moa/classifiers/meta/OzaBag",
+                 "moa/classifiers/meta/OzaBagAdwin",
+                 "moa/classifiers/meta/OzaBagASHT",
+                 "moa/classifiers/meta/OzaBoost",
+                 "moa/classifiers/meta/OzaBoostAdwin",
+                 "moa/classifiers/meta/TemporallyAugmentedClassifier",
+                 "moa/classifiers/meta/WeightedMajorityAlgorithm",
+                 ## regression
+                 "moa/classifiers/rules/AMRulesRegressor",
+                 "moa/classifiers/rules/functions/FadingTargetMean",
+                 "moa/classifiers/trees/FIMTDD",
+                 "moa/classifiers/trees/ORTO",
+                 "moa/classifiers/rules/functions/Perceptron",
+                 "moa/classifiers/functions/SGD",
+                 "moa/classifiers/rules/functions/TargetMean"))
+}
+

@@ -1,0 +1,41 @@
+bf.test <- function (y, group, na.rm = TRUE){
+  if (na.rm){
+    completeObs <- complete.cases(y, group)
+    y <- y[completeObs]
+    group <- group[completeObs]
+  }
+  df <- data.frame(Response = y, Group = group)
+  DNAME <- "y vs group"
+  METHOD <- "Brown-Forshyte Test"
+  n <- length(y)
+  x.levels <- levels(factor(group))
+  y.vars <- y.means <- m <- y.n <- NULL
+  y.mean = mean(y)
+  for (i in x.levels) {
+    y.vars[i] <- var(y[group == i])
+    y.means[i] <- mean(y[group == i])
+    y.n[i] <- length(y[group == i])
+  }
+  for (j in x.levels) {
+    m[j] <- (1 - y.n[j]/n) * (y.vars[j])/sum((1 - y.n/n) * 
+                                               (y.vars))
+  }
+  SSb = sum(y.n * ((y.means - y.mean)^2))
+  denom = sum((1 - y.n/n) * (y.vars))
+  Ftest = SSb/denom
+  df1 = length(x.levels) - 1
+  df2 = 1/(sum(m^2/(y.n - 1)))
+  p.value = pf(Ftest, df1, df2, lower.tail = F)
+  
+  names(Ftest) <- "F"
+  PARAMETER <- c(df1, df2)
+  names(PARAMETER) <- c("num df", "denom df")
+  
+ if(sum(!completeObs) > 0){
+if(sum(!completeObs)==1){cat("\n", paste("NOTE: ", sum(!completeObs), " of ", sum(!completeObs)+length(y), "observations was removed due to missingness."), "\n")
+}else  {cat("\n", paste("NOTE: ", sum(!completeObs), " of ", sum(!completeObs)+length(y), "observations were removed due to missingness."), "\n")}
+}
+  
+  structure(list(statistic = Ftest, parameter = PARAMETER, 
+                 p.value = p.value, method = METHOD, data.name = DNAME), class = "htest")
+}

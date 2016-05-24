@@ -1,0 +1,25 @@
+flashy.plot <- function(x,y,facteur,family="HersheyScript",xlab="Taille",ylab="Poids"){
+  par(bg="#768594",tck=1)
+  plot.new()
+  mx <- min(x)
+  Mx <- max(x)
+  my <- min(y)
+  My <- max(y)
+  plot.window(xlim=c(mx,Mx),ylim=c(my,My))
+  text(145,95,"@",cex=10,col="#404F5E",xpd=TRUE)
+  text(mx,my-8,xlab,col="#cbd0d5",cex=3,xpd=TRUE,adj=0)
+  text(mx-4,my,ylab,col="#cbd0d5",cex=3,xpd=TRUE,srt=90,adj=c(0,0))
+  axis(1,pos=my,font=2)
+  axis(2,pos=mx,col.axis="white")
+  polygon(c(mx,Mx,Mx,mx),c(my,my,My,My),col=rgb(0.2,0.25,0.29,0.4))
+  segments(mx,my,Mx,my,col="black",lwd=4)
+  points(x[which(facteur==levels(facteur)[1])],y[which(facteur==levels(facteur)[1])],new=TRUE,col=rgb(0.5333333,1,0),pch=16)
+  abline(lsfit(x[which(facteur==levels(facteur)[1])],y[which(facteur==levels(facteur)[1])]),col=rgb(0.5333333,1,0,0.7),lwd=2)
+  points(x[which(facteur==levels(facteur)[2])],y[which(facteur==levels(facteur)[2])],new=TRUE,col=rgb(1,0.5294118,0),pch=16)
+  abline(lsfit(x[which(facteur==levels(facteur)[2])],y[which(facteur==levels(facteur)[2])]),col=rgb(1,0.5294118,0,0.7),lwd=2)
+  title("Nuage de points",family=family)
+  legend(140,90,legend=c(levels(facteur)[1],levels(facteur)[2]),box.lty=0,fill=c(rgb(0.5333333,1,0),rgb(1,0.5294118,0)),
+         bg=rgb(0,0,0,0))
+  fleches()
+}
+

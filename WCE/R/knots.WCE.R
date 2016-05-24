@@ -1,0 +1,1 @@
+knots.WCE <- function(Fn, ...){Fn$knotsmat} # obtain knots placement from WCE object

@@ -1,0 +1,12 @@
+detach("package:GeneralizedHyperbolic")
+detach("package:HyperbolicDist")
+library(GeneralizedHyperbolic)
+gParam <- c(0, 1, 3, 1, 0.5)
+hParam <- c(0.5, 3, 1, 1, 0)
+gResult <- ghypCalcRange(param = gParam)
+detach("package:GeneralizedHyperbolic")
+library(HyperbolicDist)
+hResult <- ghypCalcRange(Theta = hParam)
+detach("package:HyperbolicDist")
+
+checkEqual(gResult, hResult, "ghypCalcRange")

@@ -1,0 +1,9 @@
+bestmatchl<-function(rsize,size){
+        z<-cbind(c(rsize,size),c(rep(1,length(rsize)),rep(0,length(size))))
+	z<-z[order(z[,1],decreasing=TRUE),]
+        osize<-order(size,decreasing=TRUE)
+        orsize<-order(rsize,decreasing=TRUE)
+        mymatchl<-rep(NA,length(size))
+        mymatchl[osize]<-orsize[cumsum(z[,2])[z[,2]==0]]
+ 	return(mymatchl)
+}

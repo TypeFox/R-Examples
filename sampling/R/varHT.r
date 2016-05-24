@@ -1,0 +1,25 @@
+varHT<-function(y, pikl, method=1)
+{ if(any(is.na(pikl))) 
+        stop("there are missing values in pikl")
+    if (any(is.na(y))) 
+        stop("there are missing values in y")
+    if(!(is.data.frame(pikl) | is.matrix(pikl)))
+     stop("pikl should be a matrix or a data frame")
+    if(is.data.frame(pikl) | is.matrix(pikl))
+     if(nrow(pikl)!=ncol(pikl)) stop("pikl is not a square matrix")
+    if (length(y) != nrow(pikl)) 
+        stop("y and pik have different sizes")
+    if(!missing(method) & !(method %in% c(1,2))) 
+       stop("the method should be 1 or 2")
+if(is.data.frame(pikl)) pikl=as.matrix(pikl)       
+pik=diag(pikl)
+pik1=outer(pik,pik,"*")
+delta=pikl-pik1
+diag(delta)=pik*(1-pik)
+y1=outer(y,y,"*")
+if(method==1)return(sum(y1*delta/(pik1*pikl)))
+if(method==2)
+      {y2=outer(y/pik,y/pik,"-")^2
+      return(0.5*sum(y2*(pik1-pikl)/pikl))
+      }
+}

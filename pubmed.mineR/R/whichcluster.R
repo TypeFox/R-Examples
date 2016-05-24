@@ -1,0 +1,2 @@
+whichcluster = function(clusterobject, y){
+rescheck = unlist(lapply(1:length(clusterobject), function(x){tempou = which(clusterobject[[x]] == as.character(y));if (length(tempou) != 0) return(x)}));return(rescheck)   }

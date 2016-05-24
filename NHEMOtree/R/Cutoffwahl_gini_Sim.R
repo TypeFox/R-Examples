@@ -1,0 +1,110 @@
+Cutoffwahl_gini_Sim <-
+function(Tree, Daten, CV.Lauf, AnzCO){
+  Tree_neu <- Werte_Reduktion_ZHT2(Tree=Tree)
+  ZHT      <- Tree_neu$Zusammenhangstabelle
+  Knoten   <- Tree_neu$Knoten
+  Varis    <- Tree_neu$Varis
+  CO       <- Tree_neu$CO
+  CV_Laeufe<- CV.Lauf
+    
+  # Auspraegungen
+    Auspr      <- sort(unique(ZHT[,1]))
+    PCuts      <- calc_N_Pot_Cuts_Sim(Daten=Daten, AnzCO=AnzCO)
+    q          <- list()
+    q[[1]]     <- list()
+    q[[1]][[1]]<- Auspr[1]
+    q[[1]][[2]]<- 1:nrow(Daten)
+    
+    while (length(q)>0){
+      # Erster Knoten ist auf jeden Fall ein Knoten, fuer den ein OptCut bestimmt wird.
+      # => Der Status der Kindsknoten kann spaeter abgefragt werden.
+      
+      # Welcher Knoten aus dem Baum wird jetzt betrachtet?
+        vari_index<- q[[1]][[1]]
+      
+      # Beobachtungen, die in diesem Knoten aufgeteilt werden
+        akt_index<- q[[1]][[2]]
+      
+      # Welche Variable aus den Daten gehoert zu dem Knoten im Baum?
+        variab<- Varis[which(Varis[,1]==vari_index), 2]
+      
+      # Loeschen des aktuellen Knotens aus q
+        q[[1]]<- NULL
+      
+      # Welche potentielle Cutoffs hat die aktuelle Variable aus den Daten 
+        pc    <- PCuts[[variab]]
+      
+      # maximalen Gini-Koeff auf Null setzen
+        max_gini_red<- 0
+     
+      # Bestehender Cutoff ist zunaechst optimaler Cutoff
+        optc<- Tree_neu$CO[which(CO[,1]==vari_index), 2]
+      
+      # Sampling fuer die Kreuzvalidierung      
+        if (CV_Laeufe==nrow(Daten)){ 
+          fold<- 1:nrow(Daten)
+        }else {
+          fold  <- sample(x=(1:CV_Laeufe), size=length(akt_index), replace=TRUE)  
+        }
+      
+      # Fuer jeden poteniellen Cutoff wird die Gini-Impurity-Reduktion bestimmt
+      for(i in 1:length(pc)){
+        # Initialisierung
+          gini_cv<- c()
+          cutoff <- pc[i]
+        
+        # Fuer jeden Lauf der Kreuzvalidierung
+          for(cv in 1:CV_Laeufe){
+          
+          # Bestimmen der Indexmenge fuer diesen fold
+            learning_set_cv<- akt_index[which(fold!=cv)]
+            len            <- length(learning_set_cv)
+          
+            if(len!=0){
+               temp<- gini_impurity_red_Sim(Daten=Daten, index_set=learning_set_cv, 
+                                            vari_index=vari_index, Varis=Varis, cutoff=cutoff)
+               gini_cv[cv]<- temp
+            }else{
+             gini_cv[cv]<- 0
+            }
+          }    
+        
+        # Mittlere Fehlklassifikationsrate
+          gini_red_mean<- mean(gini_cv)
+        
+        # Bestimmung des optimalen Cutoffs 
+        # Die Reduzierung im Gini-Index soll gesteigert werden!
+        # --> gini_red_mean moeglichst GROSS!
+        if(gini_red_mean > max_gini_red){
+           max_gini_red<- gini_red_mean
+           optc        <- cutoff
+        }                    
+      }
+      
+      # Verteilung der Beobachtungen in den linken und rechten Tochterknoten
+        left_index_opt <- intersect(akt_index, which(Daten[, variab]<=optc))
+        right_index_opt<- intersect(akt_index, which(Daten[, variab] >optc))
+      
+      # Setze optimalen Cut
+        Tree_neu$CO[which(CO[,1]==vari_index), 2]<- optc
+      
+      # Hinzufuegen des linken und rechten Knotens
+        wurzel<- ZHT[which(ZHT[,1]==vari_index),]
+        left  <- wurzel[which(wurzel[,2]==0),]
+        right <- wurzel[which(wurzel[,2]==1),]
+      
+      # Fuege linken Knoten ggf. der Queue hinzu
+        if(left[3]!=-99 & length(left_index_opt)!=0){
+          q[[(length(q)+1)]]<- list(left[3], left_index_opt)
+        } 
+      
+      # Fuege rechten Knoten ggf. der Queue hinzu        
+        if(right[3]!=-99 & length(right_index_opt)!=0){
+          q[[length(q)+1]]<- list(right[3], right_index_opt)
+        } 
+      
+    } # Ende Schleife fuer alle Knoten
+
+  # Ausgabe:
+    return(Tree_neu)
+}

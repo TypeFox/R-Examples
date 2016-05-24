@@ -1,0 +1,1 @@
+anova(eband.model)

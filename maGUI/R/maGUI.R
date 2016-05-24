@@ -1,0 +1,3799 @@
+maGUI<-function(h,...){
+data.matrix_series=NULL;new_data.matrix=NULL;data.matrixLog=NULL;na.length=NULL;data.matrixImp=NULL;
+gse_no=NULL;
+new_data.matrix_online=NULL;data.matrix_onlineLog=NULL;data.matrix_onlineImp=NULL;
+norm_w=NULL;
+view_w=NULL;
+aqc=NULL;
+design_Affy=NULL;design_Ag1=NULL;design_Ag2=NULL;design_Il_B=NULL;design_Il_L=NULL;
+design_N=NULL;design_S=NULL;design_O=NULL;
+en=NULL;out=NULL;
+file=NULL;file_soft=NULL;file_series_mat=NULL;new_y=NULL;new_data.matrix=NULL;
+folder_Affy=NULL;folder_Ag1=NULL;folder_Ag2=NULL;folder_Il_B=NULL;folder_Il_L=NULL;
+folder_N=NULL;folder_S=NULL;folder_O=NULL;
+datAffy=NULL;datAgOne=NULL;datAgTwo=NULL;datIllBA=NULL;lumi_data=NULL;data.matrix_Nimblegen=NULL;
+data.matrix=NULL;data.matrix_online=NULL;
+new_datAffy=NULL;new_datAgOne=NULL;new_datAgTwo=NULL;new_datIllBA=NULL;new_lumi_data=NULL;
+new_data.matrix_Nimblegen=NULL;new_data.matrix=NULL;new_data.matrix_online=NULL;
+new_rawData=NULL;
+dat2Affy=NULL;datAgOne2=NULL;datAgTwo2=NULL;datIllBA2=NULL;lumi_NQ=NULL;data.matrix_Nimblegen2=NULL;
+data.matrix=NULL;data.matrix_online=NULL;
+dat2Affy.m=NULL;datAgOne2.m=NULL;datAgTwo2.m=NULL;datIllBA2.m2=NULL;lumi_NQ.m=NULL;data.matrix_Nimblegen2.m=NULL;
+data.matrixNorm.m=NULL;data.matrix_onlineNorm.m=NULL;dgeF=NULL
+dgeF=NULL
+dat2Affy.f=NULL;datAgOne2.f=NULL;datAgTwo2.f=NULL;datIllBA2.f=NULL;lumi_NQ.f=NULL;data.matrix_Nimblegen2.f=NULL;
+data.matrixNorm.f=NULL;data.matrix_onlineNorm.f=NULL
+dat2Affy.s=NULL;datAgOne2.s=NULL;datAgTwo2.s=NULL;datIllBA2.s=NULL;lumi_NQ.s=NULL;data.matrix_Nimblegen2.s=NULL;
+data.matrixNorm.s=NULL;data.matrix_onlineNorm.s=NULL;
+DE_Affy=NULL;DE_Ag1=NULL;DE_Ag2=NULL;DE_Il_B=NULL;DE_Il_L=NULL;DE_N=NULL;DE_S=NULL;DE_O=NULL;
+pca_Affy=NULL;pca_Ag1=NULL;pca_Ag2=NULL;pca_Il_B=NULL;pca_Il_L=NULL;pca_N=NULL;pca_S=NULL;pca_O=NULL;
+sample.dist_Affy=NULL;sample.dist_Ag1=NULL;sample.dist_Ag2=NULL;sample.dist_Il_B=NULL;sample.dist_Il_L=NULL;
+sample.dist_N=NULL;sample.dist_S=NULL;sample.dist_O=NULL;
+sample.clust_Affy=NULL;sample.clust_Ag1=NULL;sample.clust_Ag2=NULL;sample.clust_Il_B=NULL;sample.clust_Il_L=NULL;
+sample.clust_N=NULL;sample.clust_S=NULL;sample.clust_O=NULL;
+Clas_Affy=NULL;Clas_Ag1=NULL;Clas_Ag2=NULL;Clas_Il_B=NULL;Clas_Il_L=NULL;Clas_N=NULL;Clas_S=NULL;Clas_O=NULL;
+GOresultBP_Affy=NULL;GOresultMF_Affy=NULL;GOresultCC_Affy=NULL;
+GOresultBP_Ag1=NULL;GOresultMF_Ag1=NULL;GOresultCC_Ag1=NULL;
+GOresultBP_Ag2=NULL;GOresultMF_Ag2=NULL;GOresultCC_Ag2=NULL;
+GOresultBP_Il_B=NULL;GOresultMF_Il_B=NULL;GOresultCC_Il_B=NULL;
+GOresultBP_Il_L=NULL;GOresultMF_Il_L=NULL;GOresultCC_Il_L=NULL;
+GOresultBP_N=NULL;GOresultMF_N=NULL;GOresultCC_N=NULL;
+GOresultBP_S=NULL;GOresultMF_S=NULL;GOresultCC_S=NULL;
+GOresultBP_O=NULL;GOresultMF_O=NULL;GOresultCC_O=NULL;
+KEGGresult_Affy=NULL;KEGGresult_Ag1=NULL;KEGGresult_Ag2=NULL;KEGGresult_Il_B=NULL;KEGGresult_Il_L=NULL;
+KEGGresult_N=NULL;KEGGresult_S=NULL;KEGGresult_O=NULL;
+GOtable.outBP_Affy=NULL;GOtable.outBP_Ag1=NULL;GOtable.outBP_Ag2=NULL;GOtable.outBP_Il_B=NULL;GOtable.outBP_Il_L=NULL;
+GOtable.outBP_N=NULL;GOtable.outBP_S=NULL;GOtable.outBP_O=NULL;
+GOtable.outMF_Affy=NULL;GOtable.outMF_Ag1=NULL;GOtable.outMF_Ag2=NULL;GOtable.outMF_Il_B=NULL;GOtable.outMF_Il_L=NULL;
+GOtable.outMF_N=NULL;GOtable.outMF_S=NULL;GOtable.outMF_O=NULL;
+GOtable.outCC_Affy=NULL;GOtable.outCC_Ag1=NULL;GOtable.outCC_Ag2=NULL;GOtable.outCC_Il_B=NULL;GOtable.outCC_Il_L=NULL;
+GOtable.outCC_N=NULL;GOtable.outCC_S=NULL;GOtable.outCC_O=NULL;
+KEGGtable.out_Affy=NULL;KEGGtable.out_Ag1=NULL;KEGGtable.out_Ag2=NULL;KEGGtable.out_Il_B=NULL;KEGGtable.out_Il_L=NULL;
+KEGGtable.out_N=NULL;KEGGtable.out_S=NULL;KEGGtable.out_O=NULL;
+size_Affy=NULL;myGraph_Affy=NULL
+size_Ag1=NULL;myGraph_Ag1=NULL
+size_Ag2=NULL;myGraph_Ag2=NULL
+size_Il_B=NULL;myGraph_Il_B=NULL
+size_Il_L=NULL;myGraph_Il_L=NULL
+size_N=NULL;myGraph_N=NULL
+size_S=NULL;myGraph_S=NULL
+size_O=NULL;myGraph_O=NULL
+ann_Affy=NULL;ann_Ag1=NULL;ann_Ag2=NULL;ann_Il_B=NULL;ann_Il_L=NULL;ann_N=NULL;ann_S=NULL;ann_O=NULL;
+genes_Affy=NULL;genes_Ag1=NULL;genes_Ag2=NULL;genes_Il_B=NULL;genes_Il_L=NULL;genes_N=NULL;genes_S=NULL;genes_O=NULL;
+ppis_result=NULL;ppis_1=NULL;ppis_2=NULL;
+o=NULL;
+f_oo=NULL
+rs=NULL
+con=NULL;
+folder_Ann=NULL;
+tree_x=NULL
+err_x=NULL;err=NULL;err1=NULL;err2=NULL;err3=NULL;err4=NULL
+z1=NULL;z2=NULL;dd=NULL;yy=NULL;
+test.goBP=NULL;test.goMF=NULL;test.goCC=NULL;
+rawData=NULL
+x=NULL;y=NULL
+l=NULL;tree=NULL;
+rm(tree)
+rm(l)
+l<<-list()
+tree<<-function(path,...){
+	ll<-l
+	if(length(path)>0){
+		for(i in path)ll<-ll[[i]]
+		}
+	out<<-data.frame(name=names(ll),hasOffspring=!sapply(ll,is.atomic),value=as.character(sapply(ll,function(i)ifelse(is.atomic	(i),i,""))),stringsAsFactors=FALSE)
+	out
+	}
+
+pair2xys<-function(pairFiles,outdir=getwd(),verbose=TRUE){
+	if(verbose)message('Output directory:',outdir)
+	for(pairFile in pairFiles)
+	{
+		if(verbose)message('Processing',basename(pairFile))
+		header<-readLines(pairFile,n=1)
+		pair<-read.delim(pairFile,header=TRUE,sep='\t',stringsAsFactors=FALSE,comment.char='#')
+		maxX<-max(pair$X)
+		maxY<-max(pair$Y)
+		xys<-expand.grid(X=1:maxX,Y=1:maxY)
+		xys<-merge(xys,pair[,c('X','Y','PM')],all.x=TRUE)
+		xys<-pair[,c('X','Y','PM')]
+		names(xys)<-c('X','Y','SIGNAL')
+		xys$COUNT<-ifelse(is.na(xys$SIGNAL),NA_integer_,1L)
+		xys<-xys[with(xys,order(Y,X)),]
+		rownames(xys)<-NULL
+		xysFile<-file.path(outdir,gsub('\\.pair$','\\.xys',basename(pairFile)))
+		if(verbose)message('Writing',basename(xysFile))
+		writeLines(header,con=xysFile)
+		suppressWarnings(write.table(xys,file=xysFile,sep='\t',row.names=FALSE,quote=FALSE,append=TRUE))
+	}
+}
+
+options(guiToolkit="RGtk2")
+cur_dir=NULL;
+rm(cur_dir)
+cur_dir<<-getwd()
+
+g1=NULL;g2=NULL;g1_1=NULL;g2_1=NULL;
+w<-gwindow("GUI for MA Analysis",visible=FALSE,width=1000,height=500,,horizontal=FALSE,parent=c(20,60))
+rm(g1)
+g1<<-ggroup(container=w)
+glabel(" ",container=g1)
+rm(g2)
+g2<<-ggroup(container=w)
+glabel(" ",container=g2)
+rm(g1_1)
+g1_1<<-ggroup(horizontal=FALSE,container=g1)
+glabel(" ",container=g1_1)
+visible(g1_1)<-FALSE
+rm(g2_1)
+g2_1<<-ggroup(container=g2,horizontal=FALSE)
+size(g2_1)<-c(650,400)
+plotarea<-ggraphics(ps=5,use.scrollwindow=TRUE,horizontal=FALSE,container=g2_1)
+sb<<-gstatusbar("Ready",container=w)
+
+try(({rm(
+gse_no,data.matrix_onlineLog,data.matrix_onlineImp,data.matrixLog,data.matrixImp,norm_w,view_w,
+design_Affy,design_Ag1,design_Ag2,design_Il_B,design_Il_L,design_N,design_S,design_O,
+en,out,
+file,file_soft,file_series_mat,new_y,
+folder_Affy,folder_Ag1,folder_Ag2,folder_Il_B,folder_Il_L,
+folder_N,folder_S,folder_O,
+datAffy,datAgOne,datAgTwo,datIllBA,lumi_data,data.matrix_Nimblegen,data.matrix,data.matrix_online,
+new_datAffy,new_datAgOne,new_datAgTwo,new_datIllBA,new_lumi_data,new_data.matrix_Nimblegen,
+new_data.matrix,new_data.matrix_online,
+new_rawData,dat2Affy,datAgOne2,datAgTwo2,datIllBA2,lumi_NQ,data.matrix_Nimblegen2,
+dat2Affy.m,datAgOne2.m,datAgTwo2.m,datIllBA2.m2,lumi_NQ.m,data.matrix_Nimblegen2.m,
+data.matrixNorm.m,data.matrix_onlineNorm.m,
+dgeF,
+dat2Affy.f,datAgOne2.f,datAgTwo2.f,datIllBA2.f,lumi_NQ.f,data.matrix_Nimblegen2.f,
+data.matrixNorm.f,data.matrix_onlineNorm.f,
+dat2Affy.s,datAgOne2.s,datAgTwo2.s,datIllBA2.s,lumi_NQ.s,data.matrix_Nimblegen2.s,
+data.matrixNorm.s,data.matrix_onlineNorm.s,
+DE_Affy,DE_Ag1,DE_Ag2,DE_Il_B,DE_Il_L,DE_N,DE_S,DE_O,
+pca_Affy,pca_Ag1,pca_Ag2,pca_Il_B,pca_Il_L,pca_N,pca_S,pca_O,
+sample.dist_Affy,sample.dist_Ag1,sample.dist_Ag2,sample.dist_Il_B,sample.dist_Il_L,
+sample.dist_N,sample.dist_S,sample.dist_O,
+sample.clust_Affy,sample.clust_Ag1,sample.clust_Ag2,sample.clust_Il_B,sample.clust_Il_L,
+sample.clust_N,sample.clust_S,sample.clust_O,
+Clas_Affy,Clas_Ag1,Clas_Ag2,Clas_Il_B,Clas_Il_L,Clas_N,Clas_S,Clas_O,
+GOresultBP_Affy,GOresultMF_Affy,GOresultCC_Affy,
+GOresultBP_Ag1,GOresultMF_Ag1,GOresultCC_Ag1,
+GOresultBP_Ag2,GOresultMF_Ag2,GOresultCC_Ag2,
+GOresultBP_Il_B,GOresultMF_Il_B,GOresultCC_Il_B,
+GOresultBP_Il_L,GOresultMF_Il_L,GOresultCC_Il_L,
+GOresultBP_N,GOresultMF_N,GOresultCC_N,
+GOresultBP_S,GOresultMF_S,GOresultCC_S,
+GOresultBP_O,GOresultMF_O,GOresultCC_O,
+KEGGresult_Affy,KEGGresult_Ag1,KEGGresult_Ag2,KEGGresult_Il_B,KEGGresult_Il_L,
+KEGGresult_N,KEGGresult_S,KEGGresult_O,
+GOtable.outBP_Affy,GOtable.outBP_Ag1,GOtable.outBP_Ag2,GOtable.outBP_Il_B,GOtable.outBP_Il_L,
+GOtable.outBP_N,GOtable.outBP_S,GOtable.outBP_O,
+GOtable.outMF_Affy,GOtable.outMF_Ag1,GOtable.outMF_Ag2,GOtable.outMF_Il_B,GOtable.outMF_Il_L,
+GOtable.outMF_N,GOtable.outMF_S,GOtable.outMF_O,
+GOtable.outCC_Affy,GOtable.outCC_Ag1,GOtable.outCC_Ag2,GOtable.outCC_Il_B,GOtable.outCC_Il_L,
+GOtable.outCC_N,GOtable.outCC_S,GOtable.outCC_O,
+KEGGtable.out_Affy,KEGGtable.out_Ag1,KEGGtable.out_Ag2,KEGGtable.out_Il_B,KEGGtable.out_Il_L,
+KEGGtable.out_N,KEGGtable.out_S,KEGGtable.out_O,
+size_Affy,myGraph_Affy,
+size_Ag1,myGraph_Ag1,
+size_Ag2,myGraph_Ag2,
+size_Il_B,myGraph_Il_B,
+size_Il_L,myGraph_Il_L,
+size_N,myGraph_N,
+size_S,myGraph_S,
+size_O,myGraph_O,
+ann_Affy,ann_Ag1,ann_Ag2,ann_Il_B,ann_Il_L,ann_N,ann_S,ann_O,
+genes_Affy,genes_Ag1,genes_Ag2,genes_Il_B,genes_Il_L,genes_N,genes_S,genes_O,
+ppis_result,ppis_1,ppis_2,
+o,rs,con,folder_Ann,tree_x,
+err_x,err,err1,err2,err3,err4,
+z1,z2,dd,yy,
+test.goBP,test.goMF,test.goCC,
+rawData,x,y)}),silent=TRUE)
+
+mbl<-list()
+
+mbl$File$New$handler=function(h,...)
+{
+	if(gconfirm("This will clear the previous informations!!!")==TRUE){
+try(({rm(gse_no,data.matrix_onlineLog,data.matrix_onlineImp,data.matrixLog,data.matrixImp,norm_w,view_w,design_Affy,
+design_Ag1,design_Ag2,design_Il_B,design_Il_L,design_N,design_S,design_O,en,out,file,file_soft,file_series_mat,new_y,
+folder_Affy,folder_Ag1,folder_Ag2,folder_Il_B,folder_Il_L,folder_N,folder_S,folder_O,datAffy,datAgOne,datAgTwo,datIllBA,
+lumi_data,data.matrix_Nimblegen,data.matrix,data.matrix_online,new_datAffy,new_datAgOne,new_datAgTwo,new_datIllBA,
+new_lumi_data,new_data.matrix_Nimblegen,new_data.matrix,new_data.matrix_online,new_rawData,dat2Affy,datAgOne2,datAgTwo2,
+datIllBA2,lumi_NQ,data.matrix_Nimblegen2,dat2Affy.m,datAgOne2.m,datAgTwo2.m,datIllBA2.m2,lumi_NQ.m,data.matrix_Nimblegen2.m,
+data.matrixNorm.m,data.matrix_onlineNorm.m,dgeF,dat2Affy.f,datAgOne2.f,datAgTwo2.f,datIllBA2.f,lumi_NQ.f,data.matrix_Nimblegen2.f,
+data.matrixNorm.f,data.matrix_onlineNorm.f,dat2Affy.s,datAgOne2.s,datAgTwo2.s,datIllBA2.s,lumi_NQ.s,data.matrix_Nimblegen2.s,
+data.matrixNorm.s,data.matrix_onlineNorm.s,DE_Affy,DE_Ag1,DE_Ag2,DE_Il_B,DE_Il_L,DE_N,DE_S,DE_O,pca_Affy,pca_Ag1,pca_Ag2,pca_Il_B,
+pca_Il_L,pca_N,pca_S,pca_O,sample.dist_Affy,sample.dist_Ag1,sample.dist_Ag2,sample.dist_Il_B,sample.dist_Il_L,sample.dist_N,
+sample.dist_S,sample.dist_O,sample.clust_Affy,sample.clust_Ag1,sample.clust_Ag2,sample.clust_Il_B,sample.clust_Il_L,
+sample.clust_N,sample.clust_S,sample.clust_O,
+Clas_Affy,Clas_Ag1,Clas_Ag2,Clas_Il_B,Clas_Il_L,Clas_N,Clas_S,Clas_O,GOresultBP_Affy,GOresultMF_Affy,
+GOresultCC_Affy,GOresultBP_Ag1,GOresultMF_Ag1,GOresultCC_Ag1,GOresultBP_Ag2,GOresultMF_Ag2,GOresultCC_Ag2,GOresultBP_Il_B,
+GOresultMF_Il_B,GOresultCC_Il_B,GOresultBP_Il_L,GOresultMF_Il_L,GOresultCC_Il_L,GOresultBP_N,GOresultMF_N,GOresultCC_N,
+GOresultBP_S,GOresultMF_S,GOresultCC_S,GOresultBP_O,GOresultMF_O,GOresultCC_O,KEGGresult_Affy,KEGGresult_Ag1,KEGGresult_Ag2,
+KEGGresult_Il_B,KEGGresult_Il_L,KEGGresult_N,KEGGresult_S,KEGGresult_O,GOtable.outBP_Affy,GOtable.outBP_Ag1,GOtable.outBP_Ag2,
+GOtable.outBP_Il_B,GOtable.outBP_Il_L,GOtable.outBP_N,GOtable.outBP_S,GOtable.outBP_O,GOtable.outMF_Affy,GOtable.outMF_Ag1,
+GOtable.outMF_Ag2,GOtable.outMF_Il_B,GOtable.outMF_Il_L,GOtable.outMF_N,GOtable.outMF_S,GOtable.outMF_O,GOtable.outCC_Affy,
+GOtable.outCC_Ag1,GOtable.outCC_Ag2,GOtable.outCC_Il_B,GOtable.outCC_Il_L,GOtable.outCC_N,GOtable.outCC_S,GOtable.outCC_O,
+KEGGtable.out_Affy,KEGGtable.out_Ag1,KEGGtable.out_Ag2,KEGGtable.out_Il_B,KEGGtable.out_Il_L,KEGGtable.out_N,KEGGtable.out_S,
+KEGGtable.out_O,size_Affy,myGraph_Affy,size_Ag1,myGraph_Ag1,size_Ag2,myGraph_Ag2,
+size_Il_B,myGraph_Il_B,size_Il_L,myGraph_Il_L,size_N,myGraph_N,
+size_S,myGraph_S,size_O,myGraph_O,ann_Affy,ann_Ag1,ann_Ag2,ann_Il_B,ann_Il_L,ann_N,ann_S,ann_O,genes_Affy,genes_Ag1,
+genes_Ag2,genes_Il_B,genes_Il_L,genes_N,genes_S,genes_O,ppis_result,ppis_1,ppis_2,o,rs,con,folder_Ann,tree_x,err_x,
+err,err1,err2,err3,err4,z1,z2,dd,yy,test.goBP,test.goMF,test.goCC,
+rawData,x,y)}),silent=TRUE)
+
+data.matrix_series=NULL;new_data.matrix=NULL;data.matrixLog=NULL;na.length=NULL;data.matrixImp=NULL;gse_no=NULL;
+new_data.matrix_online=NULL;data.matrix_onlineLog=NULL;data.matrix_onlineImp=NULL;norm_w=NULL;view_w=NULL;aqc=NULL;
+design_Affy=NULL;design_Ag1=NULL;design_Ag2=NULL;design_Il_B=NULL;design_Il_L=NULL;design_N=NULL;design_S=NULL;design_O=NULL;
+en=NULL;out=NULL;file=NULL;file_soft=NULL;file_series_mat=NULL;new_y=NULL;new_data.matrix=NULL;folder_Affy=NULL;folder_Ag1=NULL;
+folder_Ag2=NULL;folder_Il_B=NULL;folder_Il_L=NULL;folder_N=NULL;folder_S=NULL;folder_O=NULL;datAffy=NULL;datAgOne=NULL;
+datAgTwo=NULL;datIllBA=NULL;lumi_data=NULL;data.matrix_Nimblegen=NULL;data.matrix=NULL;data.matrix_online=NULL;new_datAffy=NULL;
+new_datAgOne=NULL;new_datAgTwo=NULL;new_datIllBA=NULL;new_lumi_data=NULL;new_data.matrix_Nimblegen=NULL;new_data.matrix=NULL;
+new_data.matrix_online=NULL;new_rawData=NULL;dat2Affy=NULL;datAgOne2=NULL;datAgTwo2=NULL;datIllBA2=NULL;lumi_NQ=NULL;
+data.matrix_Nimblegen2=NULL;data.matrix=NULL;data.matrix_online=NULL;dat2Affy.m=NULL;datAgOne2.m=NULL;datAgTwo2.m=NULL;
+datIllBA2.m2=NULL;lumi_NQ.m=NULL;data.matrix_Nimblegen2.m=NULL;data.matrixNorm.m=NULL;data.matrix_onlineNorm.m=NULL;dgeF=NULL;
+dat2Affy.f=NULL;datAgOne2.f=NULL;datAgTwo2.f=NULL;datIllBA2.f=NULL;lumi_NQ.f=NULL;data.matrix_Nimblegen2.f=NULL;
+data.matrixNorm.f=NULL;data.matrix_onlineNorm.f=NULL;dat2Affy.s=NULL;datAgOne2.s=NULL;datAgTwo2.s=NULL;datIllBA2.s=NULL;
+lumi_NQ.s=NULL;data.matrix_Nimblegen2.s=NULL;data.matrixNorm.s=NULL;data.matrix_onlineNorm.s=NULL;DE_Affy=NULL;DE_Ag1=NULL;
+DE_Ag2=NULL;DE_Il_B=NULL;DE_Il_L=NULL;DE_N=NULL;DE_S=NULL;DE_O=NULL;pca_Affy=NULL;pca_Ag1=NULL;pca_Ag2=NULL;pca_Il_B=NULL;
+pca_Il_L=NULL;pca_N=NULL;pca_S=NULL;pca_O=NULL;sample.dist_Affy=NULL;sample.dist_Ag1=NULL;sample.dist_Ag2=NULL;
+sample.dist_Il_B=NULL;sample.dist_Il_L=NULL;sample.dist_N=NULL;sample.dist_S=NULL;sample.dist_O=NULL;sample.clust_Affy=NULL;
+sample.clust_Ag1=NULL;sample.clust_Ag2=NULL;sample.clust_Il_B=NULL;sample.clust_Il_L=NULL;sample.clust_N=NULL;sample.clust_S=NULL;
+sample.clust_O=NULL;Clas_Affy=NULL;Clas_Ag1=NULL;Clas_Ag2=NULL;Clas_Il_B=NULL;Clas_Il_L=NULL;Clas_N=NULL;Clas_S=NULL;Clas_O=NULL;
+GOresultBP_Affy=NULL;GOresultMF_Affy=NULL;GOresultCC_Affy=NULL;GOresultBP_Ag1=NULL;GOresultMF_Ag1=NULL;GOresultCC_Ag1=NULL;
+GOresultBP_Ag2=NULL;GOresultMF_Ag2=NULL;GOresultCC_Ag2=NULL;GOresultBP_Il_B=NULL;GOresultMF_Il_B=NULL;GOresultCC_Il_B=NULL;
+GOresultBP_Il_L=NULL;GOresultMF_Il_L=NULL;GOresultCC_Il_L=NULL;GOresultBP_N=NULL;GOresultMF_N=NULL;GOresultCC_N=NULL;
+GOresultBP_S=NULL;GOresultMF_S=NULL;GOresultCC_S=NULL;GOresultBP_O=NULL;GOresultMF_O=NULL;GOresultCC_O=NULL;KEGGresult_Affy=NULL;
+KEGGresult_Ag1=NULL;KEGGresult_Ag2=NULL;KEGGresult_Il_B=NULL;KEGGresult_Il_L=NULL;KEGGresult_N=NULL;KEGGresult_S=NULL;
+KEGGresult_O=NULL;GOtable.outBP_Affy=NULL;GOtable.outBP_Ag1=NULL;GOtable.outBP_Ag2=NULL;GOtable.outBP_Il_B=NULL;
+GOtable.outBP_Il_L=NULL;GOtable.outBP_N=NULL;GOtable.outBP_S=NULL;GOtable.outBP_O=NULL;GOtable.outMF_Affy=NULL;
+GOtable.outMF_Ag1=NULL;GOtable.outMF_Ag2=NULL;GOtable.outMF_Il_B=NULL;GOtable.outMF_Il_L=NULL;GOtable.outMF_N=NULL;
+GOtable.outMF_S=NULL;GOtable.outMF_O=NULL;GOtable.outCC_Affy=NULL;GOtable.outCC_Ag1=NULL;GOtable.outCC_Ag2=NULL;
+GOtable.outCC_Il_B=NULL;GOtable.outCC_Il_L=NULL;GOtable.outCC_N=NULL;GOtable.outCC_S=NULL;GOtable.outCC_O=NULL;
+KEGGtable.out_Affy=NULL;KEGGtable.out_Ag1=NULL;KEGGtable.out_Ag2=NULL;KEGGtable.out_Il_B=NULL;KEGGtable.out_Il_L=NULL;
+KEGGtable.out_N=NULL;KEGGtable.out_S=NULL;KEGGtable.out_O=NULL;size_Affy=NULL;myGraph_Affy=NULL;
+size_Ag1=NULL;myGraph_Ag1=NULL;size_Ag2=NULL;myGraph_Ag2=NULL;
+size_Il_B=NULL;myGraph_Il_B=NULL;size_Il_L=NULL;myGraph_Il_L=NULL;size_N=NULL;
+myGraph_N=NULL;size_S=NULL;myGraph_S=NULL;size_O=NULL;myGraph_O=NULL;ann_Affy=NULL;
+ann_Ag1=NULL;ann_Ag2=NULL;ann_Il_B=NULL;ann_Il_L=NULL;ann_N=NULL;ann_S=NULL;ann_O=NULL;genes_Affy=NULL;genes_Ag1=NULL;
+genes_Ag2=NULL;genes_Il_B=NULL;genes_Il_L=NULL;genes_N=NULL;genes_S=NULL;genes_O=NULL;ppis_result=NULL;ppis_1=NULL;ppis_2=NULL;
+o=NULL;f_oo=NULL;rs=NULL;con=NULL;folder_Ann=NULL;tree_x=NULL;err_x=NULL;err=NULL;err1=NULL;err2=NULL;err3=NULL;err4=NULL;
+z1=NULL;z2=NULL;dd=NULL;yy=NULL;test.goBP=NULL;test.goMF=NULL;test.goCC=NULL;rawData=NULL;x=NULL;y=NULL;
+		setwd(cur_dir)
+		}
+}	
+mbl$File$Open$handler=function(h,...)
+{
+	f_oo<<-NULL
+	if(gconfirm("Data tree will not be available for this..!")==TRUE){
+		choose_file()
+		f_oo<<-filechoose
+		filechoose=NULL
+		if(!is.na(f_oo) && length(grep(".Rdata",f_oo))!=0)
+		{
+			try(delete(g1,g1_1),silent=TRUE)
+			try(delete(g2,g2_1),silent=TRUE)
+			load(f_oo,.GlobalEnv)
+		}
+		else
+		{
+			gmessage("Could not load this type of file..!",title="Error",icon="error")
+		}
+	}
+	setwd(cur_dir)	
+}
+mbl$File$Load$Affymetrix$handler=function(h,...)
+{
+	choose_folder()
+	folder_Affy<<-folderchoose
+	folderchoose=NULL
+	new_datAffy<<-NULL
+	if(folder_Affy==""){
+		folder_Affy<<-NULL
+		} else { try(({
+	setwd(folder_Affy)
+	galert("Plz.. wait while loading",title="Loading",delay=5,parent=c(600,400))
+	svalue(sb)<-"Loading... Plz wait..."
+	Sys.sleep(1)
+	new_datAffy<<-ReadAffy()
+	if(length(new_datAffy)!=0){datAffy<<-new_datAffy}
+	ann_Affy<<-annotation(datAffy)
+	 }),silent=TRUE)
+	if(length(new_datAffy)==0)gmessage("Could not load this type of data..!\nTry Series_matrix or Online_Data methods",title="Loading error",icon="error")
+	 }
+	if(length(datAffy)!=0){
+		delete(g1,g1_1)
+		l$Affymetrix<<-list()
+		g1_1<<-ggroup(container=g1)
+		tr<<-gtree(offspring=tree,container=g1_1)
+		size(tr)<-c(300,400)
+		if(length(new_datAffy)!=0)
+		{
+			if(gconfirm("Do you want to pre-process and analyze automatically",icon="question")==TRUE)affym()
+			}
+		} 
+	galert("Done",title="Loading",delay=5,parent=c(600,400))
+	svalue(sb)<-"Done"
+	setwd(cur_dir)
+}
+mbl$File$Load$Agilent$One_Color$handler=function(h,...)
+{
+	choose_folder()
+	folder_Ag1<<-folderchoose
+	folderchoose=NULL
+	new_datAgOne<<-NULL
+	if(folder_Ag1==""){
+		folder_Ag1<<-NULL
+		} else { try(({
+	setwd(folder_Ag1)
+	galert("Please wait while loading",title="Loading",delay=5,parent=c(600,400))
+	svalue(sb)<-"Loading... Plz wait..."
+	Sys.sleep(1)
+	new_datAgOne<<-read.maimages(files=dir(folder_Ag1),columns=list(G="gMeanSignal",Gb="gBGMedianSignal",R="gMeanSignal",Rb="gBGMedianSignal"))
+	if(length(new_datAgOne)!=0){datAgOne<<-new_datAgOne}
+	z<-as(datAgOne,"NChannelSet")
+	ann_Ag1<<-annotation(z)
+	 }),silent=TRUE)
+	if(length(new_datAgOne)==0)gmessage("Could not load this type of data..!\nTry Series_matrix or Online_Data methods",title="Loading error",icon="error")
+	}
+	if(length(datAgOne)!=0){
+		delete(g1,g1_1)
+		l$Agilent_OneColor<<-list()
+		g1_1<<-ggroup(container=g1)
+		tr<<-gtree(offspring=tree,container=g1_1)
+		size(tr)<-c(300,400)
+		if(length(new_datAgOne)!=0)
+		{
+			if(gconfirm("Do you want to pre-process and analyze automatically",icon="question")==TRUE)agone()
+			}
+		}
+	galert("Done",title="Loading",delay=5,parent=c(600,400))
+	svalue(sb)<-"Done"
+	setwd(cur_dir)
+}
+mbl$File$Load$Agilent$Two_Color$handler=function(h,...)
+{
+	choose_folder()
+	folder_Ag2<<-folderchoose
+	folderchoose=NULL
+	new_datAgTwo<<-NULL
+	if(folder_Ag2==""){
+		folder_Ag2<<-NULL
+		} else { try(({
+	setwd(folder_Ag2)
+	galert("Please wait while loading",title="Loading",delay=5,parent=c(600,400))
+	svalue(sb)<-"Loading... Plz wait..."
+	Sys.sleep(1)
+	new_datAgTwo<<-read.maimages(files=dir(folder_Ag2),source="agilent")
+	if(length(new_datAgTwo)!=0){datAgTwo<<-new_datAgTwo}
+	z<-as(datAgTwo,"NChannelSet")
+	ann_Ag2<<-annotation(z)
+	 }),silent=TRUE)
+	if(length(new_datAgTwo)==0)gmessage("Could not load this type of data..!\nTry Series_matrix or Online_Data methods",title="Loading error",icon="error")
+	 }
+	if(length(datAgTwo)!=0){
+		delete(g1,g1_1)
+		l$Agilent_TwoColor<<-list()
+		g1_1<<-ggroup(container=g1)
+		tr<<-gtree(offspring=tree,container=g1_1)
+		size(tr)<-c(300,400)
+		if(length(new_datAgTwo)!=0)
+		{
+			if(gconfirm("Do you want to pre-process and analyze automatically",icon="question")==TRUE)agtwo()
+			}
+		}
+	galert("Done",title="Loading",delay=5,parent=c(600,400))
+	svalue(sb)<-"Done"
+	setwd(cur_dir)
+}
+mbl$File$Load$Illumina$BeadArray$handler=function(h,...)
+{
+	choose_file()
+	file<-filechoose
+	filechoose=NULL
+	new_datIllBA<<-NULL
+	if(file==""){
+		file<<-NULL
+		} else { try(({
+	folder_Il_B<<-dirname(file)
+	setwd(folder_Il_B)
+	galert("Please wait while loading",title="Loading",delay=5,parent=c(600,400))
+	svalue(sb)<-"Loading... Plz wait..."
+	Sys.sleep(1)
+	probes<-c("ProbeID","TargetID","ProbeId","TargetId","Probe_ID","Probe_Id","Target_ID","Target_Id","ID_REF","Id_Ref")
+	x<-read.table(file,sep="\t",fill=TRUE)
+	y<-which(x[,4]!="")
+	ToSkip<-y[1]-1
+	x2<-read.table(file,sep="\t",header=TRUE,skip=ToSkip,fill=TRUE)
+	ProbeID=probes[which(probes %in% colnames(x2))]
+	new_datIllBA<<-readBeadSummaryData(file,sep="\t",skip=ToSkip,ProbeID=ProbeID)
+	if(length(new_datIllBA)!=0){datIllBA<<-new_datIllBA}
+	ann_Il_B<<-annotation(datIllBA)
+	 }),silent=TRUE)
+	if(length(new_datIllBA)==0)gmessage("Could not load this type of file..!\nTry Series_matrix or Online_Data methods",title="Loading error",icon="error")
+	 }
+	if(length(datIllBA)!=0){
+		delete(g1,g1_1)
+		l$Illumina_Beadarray<<-list()
+		g1_1<<-ggroup(container=g1)
+		tr<<-gtree(offspring=tree,container=g1_1)
+		size(tr)<-c(300,400)
+		if(length(new_datIllBA)!=0)
+		{
+			if(gconfirm("Do you want to pre-process and analyze automatically",icon="question")==TRUE)illbead()
+			}
+		}
+	galert("Done",title="Loading",delay=5,parent=c(600,400))
+	svalue(sb)<-"Done"
+	setwd(cur_dir)
+}
+mbl$File$Load$Illumina$Lumi$handler=function(h,...)
+{
+	choose_file()
+	file<-filechoose
+	filechoose=NULL
+	new_lumi_data<<-NULL
+	if(file==""){
+		file<<-NULL
+		} else { try(({
+	folder_Il_L<<-dirname(file)
+	setwd(folder_Il_L)
+	galert("Please wait while loading",title="Loading",delay=5,parent=c(600,400))
+	svalue(sb)<-"Loading... Plz wait..."
+	Sys.sleep(1)
+	new_lumi_data<<-lumiR(file)
+	summary(new_lumi_data,'QC')
+	if(length(new_lumi_data)!=0){lumi_data<<-new_lumi_data}
+	ann_Il_L<<-annotation(lumi_data)
+	 }),silent=TRUE)
+	if(length(new_lumi_data)==0)gmessage("Could not load this type of file..!\nTry Series_matrix or Online_Data methods",title="Loading error",icon="error")
+	 }
+	if(length(lumi_data)!=0){
+		delete(g1,g1_1)
+		l$Illumina_Lumi<<-list()
+		g1_1<<-ggroup(container=g1)
+		tr<<-gtree(offspring=tree,container=g1_1)
+		size(tr)<-c(300,400)
+		if(length(new_lumi_data)!=0)
+		{
+			if(gconfirm("Do you want to pre-process and analyze automatically",icon="question")==TRUE)illlumi()
+			}
+		}
+	galert("Done",title="Loading",delay=5,parent=c(600,400))
+	svalue(sb)<-"Done"
+	setwd(cur_dir)
+}
+mbl$File$Load$Nimblegen$handler=function(h,...)
+{
+	choose_folder()
+	folder_N<<-folderchoose
+	folderchoose=NULL
+	new_data.matrix_Nimblegen<<-NULL
+	if(folder_N==""){
+		folder_Ag2<<-NULL
+		} else { try(({
+	setwd(folder_N)
+	galert("Please wait while loading",title="Loading",delay=5,parent=c(600,400))
+	svalue(sb)<-"Loading... Plz wait..."
+	Sys.sleep(1)
+	pair2xys(list.files(pattern='\\.pair$'))
+	ndf<-list.files(pattern=".ndf")
+	seed<-new("NgsExpressionPDInfoPkgSeed",ndfFile=ndf,xysFile=list.files(pattern='xys$')[1])
+	ndf2=gsub(".ndf","",ndf)
+	ndf3=gsub("_",".",ndf2)
+	pkg=paste("pd",ndf3,sep=".")
+	pkg2<-tolower(pkg)
+	if(length(dir(pkg2))==0)makePdInfoPackage(seed,destDir=".")	
+	install.packages(pkg2,type='source',repos=NULL)
+	pkg3<-pkg2
+	xys=list.xysfiles()
+	new_rawData<<-read.xysfiles(xys,pkgname=pkg3)
+	if(length(new_rawData)!=0)rawData<<-new_rawData
+	z<-annotation(rawData)
+	z1<-strsplit(z,"\\.")
+	zz<-z1[[1]][2]
+	ann_N<<-toupper(zz)
+	res<-rma(rawData)
+	new_data.matrix_Nimblegen<<-exprs(res)
+	if(length(new_data.matrix_Nimblegen)!=0){data.matrix_Nimblegen<<-new_data.matrix_Nimblegen}
+	 }),silent=TRUE)
+	if(length(new_data.matrix_Nimblegen)==0)gmessage("Could not load this type of data..!\nTry Series_matrix or Online_Data methods",title="Loading error",icon="error")
+	 }
+	if(length(data.matrix_Nimblegen)!=0){
+		delete(g1,g1_1)
+		l$Nimblegen<<-list()
+		g1_1<<-ggroup(container=g1)
+		tr<<-gtree(offspring=tree,container=g1_1)
+		size(tr)<-c(300,400)
+		if(length(new_data.matrix_Nimblegen)!=0)
+		{
+			if(gconfirm("Do you want to pre-process and analyze automatically",icon="question")==TRUE)nimblg()
+			}
+		}
+	galert("Done",title="Loading",delay=5,parent=c(600,400))
+	svalue(sb)<-"Done"
+	setwd(cur_dir)
+}
+mbl$File$Load$Series_Matrix$handler=function(h,...)
+{
+	gmessage("Select Platform Soft file followed by Series Matrix file",title="Loading",icon="info")
+	choose_file()
+	file_soft<<-filechoose
+	if(file_soft==""){
+		file_soft<<-NULL
+		} else { try(({
+	folder_S<<-dirname(file_soft)
+	setwd(folder_S)	
+	galert("Please wait while loading",title="Loading",delay=5,parent=c(600,400))
+	svalue(sb)<-"Loading... Plz wait...."
+	Sys.sleep(1)
+	a2=readLines(file_soft)
+	b2=length(a2)
+	begin2<-which(gsub("\t","",a2)=="!platform_table_begin")
+	end2<-which(gsub("\t","",a2)=="!platform_table_end")-1
+	size2=end2-begin2-1
+	new_y<<-NULL
+	new_y<<-read.table(file_soft,skip=begin2,nrows=size2,header=TRUE,sep="\t",row.names=NULL)
+	if(length(new_y)!=0){y<<-new_y}
+	if(length(new_y)==0)gmessage("Could not load this type of file..!",title="Loading error",icon="error")
+	}),silent=TRUE)
+	}
+	
+	choose_file()
+	file_series_mat<<-filechoose
+	filechoose=NULL
+	if(file_series_mat==""){
+		file_series_mat<<-NULL
+		} else { try(({
+	directory1<-dirname(file_series_mat)
+	setwd(directory1)
+	new_data.matrix<<-NULL;
+	galert("Please wait while loading",title="Loading",delay=5,parent=c(600,400))
+	svalue(sb)<-"Loading... Plz wait..."
+	Sys.sleep(1)
+	a=readLines(file_series_mat)
+	b=length(a)
+	begin<-which(gsub("\t","",a)=="!series_matrix_table_begin")
+	end<-which(gsub("\t","",a)=="series_matrix_ends!")-1
+	size=end-begin-1
+	x=read.table(file_series_mat,skip=begin,nrows=size,header=TRUE,sep="\t",row.names=NULL)
+	row.names(x)=x[,1]
+	x=x[,-1]
+	new_gse<-NULL
+	new_gse<-new("ExpressionSet",exprs=as.matrix(x))
+	if(length(new_gse)!=0){
+	gse<-new_gse
+	ann_S<<-annotation(gse)
+	}
+	table=exprs(gse)
+	orf_ids<-cbind(y$ID,as.character(y$ORF))
+	table2=table
+	for(i in 1:length(orf_ids[,1]))
+	{
+		for(j in 1:length(orf_ids[,1]))
+		{
+			if(rownames(table2)[i]==orf_ids[j,1])
+			{
+				rownames(table2)[i]<-orf_ids[j,2]
+				break
+			}
+		}
+	}	
+	table3<-table2[-(which(row.names(table2)=="")),]
+	new_data.matrix<<-table3
+	data.matrix_series<<-table3
+	if(length(new_data.matrix)!=0){data.matrix_series<<-new_data.matrix}
+	if(length(new_data.matrix)==0)gmessage("Could not load this type of file..!",title="Loading error",icon="error")
+	  }),silent=TRUE)
+	}
+	if(length(data.matrix_series)!=0){
+		delete(g1,g1_1)
+		l$Series_Matrix<<-list()
+		g1_1<<-ggroup(container=g1)
+		tr<<-gtree(offspring=tree,container=g1_1)
+		size(tr)<-c(300,400)
+		if(length(data.matrix_series)!=0)
+		{
+		if(gconfirm("Do you want to pre-process and analyze automatically",icon="question")==TRUE)
+		{
+			galert("Please wait while log tranforming",title="Pre-processing",delay=5,parent=c(600,400))
+			svalue(sb)<-"Working... Plz wait..."
+			Sys.sleep(1)
+			Med<-median(data.matrix_series,na.rm=TRUE)
+			if(Med>16)
+			{
+				data.matrixLog<<-log2(data.matrix_series)
+				} else {
+				data.matrixLog<<-data.matrix_series
+				}
+			rm(Med)
+			galert("Done",title="Pre-processing",delay=3,parent=c(600,400))
+			svalue(sb)<-"Done"
+	
+			galert("Please wait while imputing",title="Pre-processing",delay=5,parent=c(600,400))
+			svalue(sb)<-"Working... Plz wait..."
+			Sys.sleep(1)
+			na.length<<-length(which(is.na(data.matrixLog)==TRUE))
+			if(na.length > 0)data.matrixImp<<-impute.knn(data.matrixLog,k=10,rowmax=0.5,colmax=0.3)$data
+			if(na.length <= 0)data.matrixImp<<-data.matrixLog
+			galert("Done",title="Pre-processing",delay=10,parent=c(600,400))
+			svalue(sb)<-"Done"
+			dmsm()
+		}
+		}
+	}
+	galert("Done",title="Loading",delay=5,parent=c(600,400))
+	svalue(sb)<-"Done"
+	setwd(cur_dir)
+}
+mbl$File$Load$Get_Data_Online$handler=function(h,...)
+{	
+	ginput("Enter GSE Name",icon="question",handler=function(h,...)gse_no<<-h$input)
+	if(length(grep("GSE",gse_no))!=0)
+	{
+		galert("Please wait while loading",title="Loading",delay=5,parent=c(600,400))
+		svalue(sb)<-"Loading... Plz wait..."
+		Sys.sleep(1)
+		new_data.matrix_online<<-NULL
+		try(({
+		err<-try(new_gse<-getGEO(gse_no,GSEMatrix=TRUE)[[1]],silent=TRUE)
+		if(length(new_gse)!=0){
+		gse<-new_gse
+		ann_O<<-annotation(gse)
+		}
+		ORF<-featureData(gse)@data$ORF
+		use_probe<-which(is.na(ORF)==F & match(ORF,"",nomatch=0)==0)
+		new_data.matrix_online<<-exprs(gse)[use_probe,]
+		data.matrix_online<<-exprs(gse)[use_probe,]
+		rownames(new_data.matrix_online)<<-ORF[use_probe]
+		if(length(new_data.matrix_online)!=0){data.matrix_online<<-new_data.matrix_online}
+		rm(ORF,use_probe)
+	 	}),silent=TRUE)
+		if(length(new_data.matrix_online)==0)gmessage("Could not load this type of data..!",title="Loading error",icon="error")
+		galert("Done",title="Loading",delay=5,parent=c(600,400))
+		svalue(sb)<-"Done"
+	 }
+	if(length(data.matrix_online)!=0){
+		delete(g1,g1_1)
+		l$Online_Data<<-list()
+		g1_1<<-ggroup(container=g1)
+		tr<<-gtree(offspring=tree,container=g1_1)
+		size(tr)<-c(300,400)
+		if(length(new_data.matrix_online)!=0)
+		{
+		if(gconfirm("Do you want to pre-process and analyze automatically",icon="question")==TRUE)
+		{
+			galert("Please wait while log tranforming",title="Pre-processing",delay=5,parent=c(600,400))
+			svalue(sb)<-"Working... Plz wait..."
+			Sys.sleep(1)
+			Med<-median(data.matrix_online,na.rm=TRUE)
+			if(Med>16)
+			{
+				data.matrix_onlineLog<<-log2(data.matrix_online)
+				} else {
+					data.matrix_onlineLog<<-data.matrix_online
+					}
+			rm(Med)
+			galert("Done",title="Pre-processing",delay=3,parent=c(600,400))
+			svalue(sb)<-"Done"
+			
+			galert("Please wait while imputing",title="Pre-processing",delay=5,parent=c(600,400))
+			svalue(sb)<-"Working... Plz wait..."
+			Sys.sleep(1)
+			na.length<-length(which(is.na(data.matrix_onlineLog)==TRUE))
+			if(na.length > 0)data.matrix_onlineImp<<-impute.knn(data.matrix_onlineLog,k=10,rowmax=0.5,colmax=0.3)$data
+			if(na.length < 0)data.matrix_onlineImp<<-data.matrix_onlineLog
+			galert("Done",title="Pre-processing",delay=3,parent=c(600,400))
+			svalue(sb)<-"Done"
+			dmo()
+			}
+			}
+		}
+	galert("Done",title="Loading",delay=5,parent=c(600,400))
+	svalue(sb)<-"Done"
+	setwd(cur_dir)	
+}
+mbl$File$Save$handler=function(h,...)
+{
+	ret<-ginput("Give a name",icon="info")
+	if(!is.na(ret))
+	{
+		name<-paste(ret,"Rdata",sep=".")
+		choose_folder()
+		folder<-folderchoose
+		folderchoose=NULL
+		setwd(folder)
+		save.image(name)
+	}
+	setwd(cur_dir)	
+}
+mbl$File$Quit$handler=function(h,...)
+{
+	setwd(cur_dir)
+	if(length(f_oo)!=0)
+	{
+		gmessage("\n\nPlease press Alt+F4 to quit","Close",icon="info")
+	}
+	else
+	{
+		dispose(w)
+	}
+}
+
+mbl$Preprocessing$Log_Transformation$Series_Matrix$handler=function(h,...)
+{
+	setwd(folder_S)
+	galert("Please wait while log tranforming",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Working... Plz wait..."
+	Sys.sleep(1)
+	Med<-median(data.matrix_series,na.rm=T)
+	if(Med>16)
+	{
+		data.matrixLog<<-log2(data.matrix_series)
+		} else {
+			data.matrixLog<<-data.matrix_series
+			}
+		
+	galert("Done",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Done"
+	setwd(cur_dir)	
+}
+mbl$Preprocessing$Log_Transformation$Online_Data$handler=function(h,...)
+{
+	galert("Please wait while log tranforming",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Working... Plz wait..."
+	Sys.sleep(1)
+	Med<-median(data.matrix_online,na.rm=T)
+	if(Med>16)
+	{
+		data.matrix_onlineLog<<-log2(data.matrix_online)
+		} else {
+			data.matrix_onlineLog<<-data.matrix_online
+			}
+			
+	galert("Done",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Done"
+	setwd(cur_dir)	
+}
+mbl$Preprocessing$KNN_Imputation$Series_Matrix$handler=function(h,...)
+{
+	setwd(folder_S)
+	na.length=0;
+	if(length(data.matrixLog)!=0)
+	{
+		na.length<-length(which(is.na(data.matrixLog)==T))
+	}
+	if(na.length>0){
+		w_imp<-gwindow("Radio example",width=300,height=200,horizontal=TRUE)
+		x1_imp=10;x2_imp=0.5;x3_imp=0.8
+		gp_imp<-ggroup(horizontal=FALSE,spacing=5,use.scrollwindow=FALSE,container=w_imp)
+		glabel("KNN",container=gp_imp,anchor=c(-1,1))
+		r1_imp<-gradio(c(2,5,10,50),selected=3,horizontal=FALSE,
+			handler=function(h,...){
+			x<-svalue(h$obj)
+			x1_imp<<-x
+			},container=gp_imp)
+		gp2_imp<-ggroup(horizontal=FALSE,spacing=5,use.scrollwindow=FALSE,container=w_imp)
+		glabel("Row Max",container=gp2_imp,anchor=c(-1,1))
+		r2_imp<-gradio(c(0.3,0.5,0.8),selected=2,horizontal=FALSE,
+			handler=function(h,...){
+			x<-svalue(h$obj)
+			x2_imp<<-x
+			},container=gp2_imp)
+		gp3_imp<-ggroup(horizontal=FALSE,spacing=5,use.scrollwindow=FALSE,container=w_imp)
+		glabel("Col Max",container=gp3_imp,anchor=c(-1,1))
+		r3_imp<-gradio(c(0.3,0.5,0.8),selected=3,horizontal=FALSE,
+			handler=function(h,...){
+			x<-svalue(h$obj)
+			x3_imp<<-x
+			},container=gp3_imp)
+		addSpring(gp3_imp)
+		addSpace(gp3_imp,50)
+		y_imp<-gbutton("OK",border=TRUE,handler=function(h,...){
+			dispose(w_imp)
+			galert("Please wait while imputing",title="Pre-processing",delay=5,parent=c(600,400))
+			svalue(sb)<-"Working... Plz wait..."
+			Sys.sleep(1)
+			data.matrixImp<<-impute.knn(data.matrixLog,k=x1_imp,rowmax=x2_imp,colmax=x3_imp)$data
+			galert("Done",title="Pre-processing",delay=5,parent=c(600,400))
+			svalue(sb)<-"Done"
+			setwd(cur_dir)	
+			},container=gp3_imp)
+		size(y_imp)=c(10,30)
+		}
+}
+mbl$Preprocessing$KNN_Imputation$Online_Data$handler=function(h,...)
+{
+	na.length=0;
+	if(length(data.matrix_onlineLog)!=0)
+	{
+		na.length<-length(which(is.na(data.matrix_online)==T))
+	}
+	if(na.length>0){
+		w_imp<-gwindow("Radio example",width=300,height=200,horizontal=TRUE)
+		x1_imp=10;x2_imp=0.5;x3_imp=0.8
+		gp_imp<-ggroup(horizontal=FALSE,spacing=5,use.scrollwindow=FALSE,container=w_imp)
+		glabel("KNN",container=gp_imp,anchor=c(-1,1))
+		r1_imp<-gradio(c(2,5,10,50),selected=3,horizontal=FALSE,
+			handler=function(h,...){
+			x<-svalue(h$obj)
+			x1_imp<<-x
+			},container=gp_imp)
+		gp2_imp<-ggroup(horizontal=FALSE,spacing=5,use.scrollwindow=FALSE,container=w_imp)
+		glabel("Row Max",container=gp2_imp,anchor=c(-1,1))
+		r2_imp<-gradio(c(0.3,0.5,0.8),selected=2,horizontal=FALSE,
+			handler=function(h,...){
+			x<-svalue(h$obj)
+			x2_imp<<-x
+			},container=gp2_imp)
+		gp3_imp<-ggroup(horizontal=FALSE,spacing=5,use.scrollwindow=FALSE,container=w_imp)
+		glabel("Col Max",container=gp3_imp,anchor=c(-1,1))
+		r3_imp<-gradio(c(0.3,0.5,0.8),selected=3,horizontal=FALSE,
+			handler=function(h,...){
+			x<-svalue(h$obj)
+			x3_imp<<-x
+			},container=gp3_imp)
+		addSpring(gp3_imp)
+		addSpace(gp3_imp,50)
+		y_imp<-gbutton("OK",border=TRUE,handler=function(h,...){
+			dispose(w_imp)
+			galert("Please wait while imputing",title="Pre-processing",delay=5,parent=c(600,400))
+			svalue(sb)<-"Working... Plz wait..."
+			Sys.sleep(1)
+			data.matrix_onlineImp<<-impute.knn(data.matrix_onlineLog,k=x1_imp,rowmax=x2_imp,colmax=x3_imp)$data
+			galert("Done",title="Pre-processing",delay=5,parent=c(600,400))
+			svalue(sb)<-"Done"
+			setwd(cur_dir)	
+			},container=gp3_imp)
+		size(y_imp)=c(10,30)
+		}
+		else {
+			data.matrixImp<<-data.matrixLog
+			}
+}
+mbl$Preprocessing$Normalization$Affymetrix$handler=function(h,...)
+{
+	setwd(folder_Affy)	
+	galert("Please wait while normalizing",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Working... Plz wait..."
+	Sys.sleep(1)
+	dat2Affy<<-justRMA()
+	dat2Affy.m<<-exprs(dat2Affy)
+	dat2Affy.m<<-as.matrix(dat2Affy.m)
+	rownames(dat2Affy.m)<<-as.character(rownames(dat2Affy.m))
+	try(if(length(rownames(dat2Affy.m))==0)rownames(dat2Affy.m)<<-1:length(dat2Affy.m[,1]),silent=TRUE)
+	if(length(dat2Affy.m)==0)gmessage("Could not Normalize this type of data..!\n",title="Analysis",icon="error")
+	if(length(dat2Affy.m)!=0){	
+
+		delete(g1,g1_1)
+		l$Affymetrix$Normalization<<-list()
+		g1_1<<-ggroup(container=g1,visible=FALSE)
+		tr<<-gtree(offspring=tree,container=g1_1)
+		size(tr)<-c(300,400)
+		visible(g1_1)<-TRUE
+		}
+		display()
+	galert("Done",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Done"
+	setwd(cur_dir)	
+}
+mbl$Preprocessing$Normalization$Agilent$OneColor$handler=function(h,...)
+{	
+	setwd(folder_Ag1)	
+	norm_xx=NULL
+	norm_methods=c("none","scale","quantile","cyclicloess")
+	norm_w<<-gwindow("Methods",width=300,height=150)
+	norm_gp<-ggroup(container=norm_w,horizontal=FALSE)
+	norm_x<-gtable(norm_methods,chosencol=1,container=norm_gp)
+	size(norm_x)=c(200,120)
+	norm_gp2<-ggroup(container=norm_gp,width=30,height=15,horizontal=TRUE)
+	addHandlerClicked(norm_x,handler=function(h,...){
+		norm_x2<-svalue(h$obj)
+		norm_xx<<-norm_x2
+		}
+	)
+	addSpring(norm_gp2)
+	norm_y<-gbutton("CANCEL",border=TRUE,handler=function(h,...){
+		dispose(norm_w)
+		},container=norm_gp2,anchor=c(1,-1)
+	)
+	norm_y2<-gbutton("OK",border=TRUE,handler=function(h,...){
+		dispose(norm_w)
+		galert("Please wait while normalizing",title="Pre-processing",delay=5,parent=c(600,400))
+		svalue(sb)<-"Working... Plz wait..."
+		Sys.sleep(1)
+		datAgOne2=NULL
+		try(datAgOne2<<-backgroundCorrect(datAgOne,"normexp"),silent=TRUE)
+		if(length(datAgOne2)==0)datAgOne2<-datAgOne
+		datAgOne2<-normalizeBetweenArrays(datAgOne2$R,method=norm_xx)
+		datAgOne2<-log(datAgOne2)
+		datAgOne2.m<<-datAgOne2
+		datAgOne2.m<<-as.matrix(datAgOne2.m)
+		rownames(datAgOne2.m)<<-as.character(rownames(datAgOne2.m))
+		try(if(length(rownames(datAgOne2.m))==0)rownames(datAgOne2.m)<<-1:length(datAgOne2.m[,1]),silent=TRUE)
+		if(length(datAgOne2.m)==0)gmessage("Could not Normalize this type of data..!\n",title="Analysis",icon="error")
+		if(length(datAgOne2.m)!=0){
+			delete(g1,g1_1)
+			l$Agilent_OneColor$Normalization<<-list()
+			g1_1<<-ggroup(container=g1)
+			tr<<-gtree(offspring=tree,container=g1_1)
+			size(tr)<-c(300,400)
+			}
+		display()
+		galert("Done",title="Pre-processing",delay=5,parent=c(600,400))
+		svalue(sb)<-"Done"
+		},container=norm_gp2,anchor=c(1,-1)
+	)
+	setwd(cur_dir)	
+}
+mbl$Preprocessing$Normalization$Agilent$TwoColor$handler=function(h,...)
+{
+	setwd(folder_Ag2)	
+	norm_xx=NULL
+	norm_methods=c("none","median","loess","printtiploess","composite","control","robustspline")
+	norm_w<-gwindow("Methods",width=300,height=300)
+	norm_gp<-ggroup(container=norm_w,horizontal=FALSE)
+	norm_x<-gtable(norm_methods,chosencol=1,container=norm_gp)
+	size(norm_x)=c(200,250)
+	norm_gp2<-ggroup(container=norm_gp,width=30,height=15,horizontal=TRUE)
+	addHandlerClicked(norm_x,handler=function(h,...){
+		norm_x2<-svalue(h$obj)
+		norm_xx<<-norm_x2
+		}
+	)
+	addSpring(norm_gp2)
+	norm_y<-gbutton("CANCEL",border=TRUE,handler=function(h,...){
+		dispose(norm_w)
+		},container=norm_gp2,anchor=c(1,-1)
+	)
+	norm_y2<-gbutton("OK",border=TRUE,handler=function(h,...){
+		dispose(norm_w)
+		galert("Please wait while normalizing",title="Pre-processing",delay=5,parent=c(600,400))
+		svalue(sb)<-"Working... Plz wait..."
+		Sys.sleep(1)
+		galert("Please wait while normalizing",title="Pre-processing",delay=5)
+		datAgTwo2<<-normalizeWithinArrays(datAgTwo,method=norm_xx,"normexp")
+		datAgTwo2.m<<-datAgTwo2$M
+		rownames(datAgTwo2.m)<<-datAgTwo2$genes$ProbeName
+		datAgTwo2.m<<-as.matrix(datAgTwo2.m)
+		rownames(datAgTwo2.m)<<-as.character(rownames(datAgTwo2.m))
+		try(if(length(rownames(datAgTwo2.m))==0)rownames(datAgTwo2.m)<<-1:length(datAgTwo2.m[,1]),silent=TRUE)
+		if(length(datAgTwo2.m)==0)gmessage("Could not Normalize this type of data..!\n",title="Analysis",icon="error")
+		if(length(datAgTwo2.m)!=0){
+			delete(g1,g1_1)
+			l$Agilent_TwoColor$Normalization<<-list()
+			g1_1<<-ggroup(container=g1)
+			tr<<-gtree(offspring=tree,container=g1_1)
+			size(tr)<-c(300,400)
+			}
+		display()
+		galert("Done",title="Pre-processing",delay=5,parent=c(600,400))
+		svalue(sb)<-"Done"
+		},container=norm_gp2,anchor=c(1,-1)
+	)
+	setwd(cur_dir)	
+}
+mbl$Preprocessing$Normalization$Illumina$BeadArray$handler=function(h,...)
+{
+	setwd(folder_Il_B)	
+	norm_xx=NULL
+	norm_methods=c("quantile","qspline","vsn","rankInvariant","median","none","nesq","rsn")
+	norm_w<-gwindow("Methods",width=300,height=200)
+	norm_gp<-ggroup(container=norm_w,horizontal=FALSE)
+	norm_x<-gtable(norm_methods,chosencol=1,container=norm_gp)
+	size(norm_x)=c(200,160)
+	norm_gp2<-ggroup(container=norm_gp,width=30,height=15,horizontal=TRUE)
+	addHandlerClicked(norm_x,handler=function(h,...){
+		norm_x2<-svalue(h$obj)
+		norm_xx<<-norm_x2
+		}
+	)
+	addSpring(norm_gp2)
+	norm_y<-gbutton("CANCEL",border=TRUE,handler=function(h,...){
+		dispose(norm_w)
+		},container=norm_gp2,anchor=c(1,-1)
+	)
+	norm_y2<-gbutton("OK",border=TRUE,handler=function(h,...){
+		dispose(norm_w)
+		galert("Please wait while normalizing",title="Pre-processing",delay=5,parent=c(600,400))
+		svalue(sb)<-"Working... Plz wait..."
+		Sys.sleep(1)
+		datIllBA2<-normaliseIllumina(datIllBA,method=norm_xx)
+		datIllBA2.m<-exprs(datIllBA2)
+		datIllBA2.m2<<-log2(datIllBA2.m)
+		datIllBA2.m2<<-as.matrix(datIllBA2.m2)
+		rownames(datIllBA2.m2)<<-as.character(rownames(datIllBA2.m2))
+		try(if(length(rownames(datIllBA2.m2))==0)rownames(datIllBA2.m2)<<-1:length(datIllBA2.m2[,1]),silent=TRUE)
+		if(length(datIllBA2.m)==0)gmessage("Could not Normalize this type of data..!\n",title="Analysis",icon="error")
+		if(length(datIllBA2.m)!=0){
+			delete(g1,g1_1)
+			l$Illumina_Beadarray$Normalization<<-list()
+			g1_1<<-ggroup(container=g1)
+			tr<<-gtree(offspring=tree,container=g1_1)
+			size(tr)<-c(300,400)
+			}
+		display()
+		galert("Done",title="Pre-processing",delay=5,parent=c(600,400))
+		svalue(sb)<-"Done"
+		},container=norm_gp2,anchor=c(1,-1)
+	)
+	setwd(cur_dir)	
+}
+mbl$Preprocessing$Normalization$Illumina$Lumi$handler=function(h,...)
+{
+	setwd(folder_Il_L)	
+	galert("Please wait while normalizing",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Working... Plz wait..."
+	Sys.sleep(1)
+	lumi_NQ<<-lumiExpresso(lumi_data,QC.evaluation=TRUE)
+	summary(lumi_NQ,'QC')
+	lumi_NQ.m<<-lumi_NQ
+	lumi_NQ.m<<-as.matrix(lumi_NQ.m)
+	rownames(lumi_NQ.m)<<-as.character(rownames(lumi_NQ.m))
+	try(if(length(rownames(lumi_NQ.m))==0)rownames(lumi_NQ.m)<<-1:length(lumi_NQ.m[,1]),silent=TRUE)
+	if(length(lumi_NQ.m)==0)gmessage("Could not Normalize this type of data..!\n",title="Analysis",icon="error")
+	if(length(lumi_NQ.m)!=0){
+		delete(g1,g1_1)
+		l$Illumina_Lumi$Normalization<<-list()
+		g1_1<<-ggroup(container=g1)
+		tr<<-gtree(offspring=tree,container=g1_1)
+		size(tr)<-c(300,400)
+		}
+	display()
+	galert("Done",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Done"
+	setwd(cur_dir)	
+}
+mbl$Preprocessing$Normalization$Nimblegen$handler=function(h,...)
+{
+	setwd(folder_N)	
+	norm_xx=NULL
+	norm_methods=c("none","scale","quantile","cyclicloess")
+	norm_w<-gwindow("Methods",width=300,height=150)
+	norm_gp<-ggroup(container=norm_w,horizontal=FALSE)
+	norm_x<-gtable(norm_methods,chosencol=1,container=norm_gp)
+	size(norm_x)=c(200,120)
+	norm_gp2<-ggroup(container=norm_gp,width=30,height=15,horizontal=TRUE)
+	addHandlerClicked(norm_x,handler=function(h,...){
+		norm_x2<-svalue(h$obj)
+		norm_xx<<-norm_x2
+		}
+	)
+	addSpring(norm_gp2)
+	norm_y<-gbutton("CANCEL",border=TRUE,handler=function(h,...){
+		dispose(norm_w)
+		},container=norm_gp2,anchor=c(1,-1)
+	)
+	norm_y2<-gbutton("OK",border=TRUE,handler=function(h,...){
+		dispose(norm_w)
+		galert("Please wait while normalizing",title="Pre-processing",delay=5,parent=c(600,400))
+		svalue(sb)<-"Working... Plz wait..."
+		Sys.sleep(1)
+		data.matrix_Nimblegen2<<-normalizeBetweenArrays(data.matrix_Nimblegen,method=norm_xx)
+		data.matrix_Nimblegen2.m<<-data.matrix_Nimblegen2
+		data.matrix_Nimblegen2.m<<-as.matrix(data.matrix_Nimblegen2.m)
+		rownames(data.matrix_Nimblegen2.m)<<-as.character(rownames(data.matrix_Nimblegen2.m))
+		try(if(length(rownames(data.matrix_Nimblegen2.m))==0)rownames(data.matrix_Nimblegen2.m)<<-1:length(data.matrix_Nimblegen2.m[,1]),silent=TRUE)
+		if(length(data.matrix_Nimblegen2.m)==0)gmessage("Could not Normalize this type of data..!\n",title="Analysis",icon="error")
+		if(length(data.matrix_Nimblegen2.m)!=0){
+			delete(g1,g1_1)
+			l$Nimblegen$Normalization<<-list()
+			g1_1<<-ggroup(container=g1)
+			tr<<-gtree(offspring=tree,container=g1_1)
+			size(tr)<-c(300,400)
+			}
+		display()
+		galert("Done",title="Pre-processing",delay=5,parent=c(600,400))
+		svalue(sb)<-"Done"
+		},container=norm_gp2,anchor=c(1,-1)
+	)
+	setwd(cur_dir)	
+}
+mbl$Preprocessing$Normalization$Series_Matrix$handler=function(h,...)
+{
+	setwd(folder_S)	
+	norm_xx=NULL
+	norm_methods=c("none","scale","quantile","cyclicloess")
+	norm_w<-gwindow("Methods",width=300,height=150)
+	norm_gp<-ggroup(container=norm_w,horizontal=FALSE)
+	norm_x<-gtable(norm_methods,chosencol=1,container=norm_gp)
+	size(norm_x)=c(200,120)
+	norm_gp2<-ggroup(container=norm_gp,width=30,height=15,horizontal=TRUE)
+	addHandlerClicked(norm_x,handler=function(h,...){
+		norm_x2<-svalue(h$obj)
+		norm_xx<<-norm_x2
+		}
+	)
+	addSpring(norm_gp2)
+	norm_y<-gbutton("CANCEL",border=TRUE,handler=function(h,...){
+		dispose(norm_w)
+		},container=norm_gp2,anchor=c(1,-1)
+	)
+	norm_y2<-gbutton("OK",border=TRUE,handler=function(h,...){
+		dispose(norm_w)
+		galert("Please wait while normalizing",title="Pre-processing",delay=5,parent=c(600,400))
+		svalue(sb)<-"Working... Plz wait..."
+		Sys.sleep(1)
+		data.matrixNorm<-normalizeBetweenArrays(data.matrixImp,method=norm_xx)
+		tmp<-aggregate(data.matrixNorm,list(rownames(data.matrixNorm)),median)
+		data.matrixNorm<<-as.matrix(tmp[,-1])
+		rownames(data.matrixNorm)<<-tmp[,1]
+		data.matrixNorm.m<<-data.matrixNorm
+		data.matrixNorm.m<<-as.matrix(data.matrixNorm.m)
+		try(if(length(rownames(data.matrixNorm.m))==0)rownames(data.matrixNorm.m)<<-1:length(data.matrixNorm.m[,1]),silent=TRUE)
+		if(length(data.matrixNorm.m)==0)gmessage("Could not Normalize this type of data..!\n",title="Analysis",icon="error")
+		if(length(data.matrixNorm.m)!=0){
+			delete(g1,g1_1)
+			l$Series_Matrix$Normalization<<-list()
+			g1_1<<-ggroup(container=g1)
+			tr<<-gtree(offspring=tree,container=g1_1)
+			size(tr)<-c(300,400)
+			}
+		display()
+		galert("Done",title="Pre-processing",delay=5,parent=c(600,400))
+		svalue(sb)<-"Done"
+		},container=norm_gp2,anchor=c(1,-1)
+	)
+	setwd(cur_dir)	
+}
+mbl$Preprocessing$Normalization$Online_Data$handler=function(h,...)
+{
+	norm_xx=NULL
+	norm_methods=c("none","scale","quantile","cyclicloess")
+	norm_w<-gwindow("Methods",width=300,height=150)
+	norm_gp<-ggroup(container=norm_w,horizontal=FALSE)
+	norm_x<-gtable(norm_methods,chosencol=1,container=norm_gp)
+	size(norm_x)=c(200,120)
+	norm_gp2<-ggroup(container=norm_gp,width=30,height=15,horizontal=TRUE)
+	addHandlerClicked(norm_x,handler=function(h,...){
+		norm_x2<-svalue(h$obj)
+		norm_xx<<-norm_x2
+		}
+	)
+	addSpring(norm_gp2)
+	norm_y<-gbutton("CANCEL",border=TRUE,handler=function(h,...){
+		dispose(norm_w)
+		},container=norm_gp2,anchor=c(1,-1)
+	)
+	norm_y2<-gbutton("OK",border=TRUE,handler=function(h,...){
+		dispose(norm_w)
+		galert("Please wait while normalizing",title="Pre-processing",delay=5,parent=c(600,400))
+		svalue(sb)<-"Working... Plz wait..."
+		Sys.sleep(1)
+		data.matrix_onlineNorm<-normalizeBetweenArrays(data.matrix_onlineImp,method=norm_xx)
+		tmp<-aggregate(data.matrix_onlineNorm,list(rownames(data.matrix_onlineNorm)),median)
+		data.matrix_onlineNorm<-as.matrix(tmp[,-1])
+		rownames(data.matrix_onlineNorm)<<-tmp[,1]
+		data.matrix_onlineNorm.m<<-data.matrix_onlineNorm
+		data.matrix_onlineNorm.m<<-as.matrix(data.matrix_onlineNorm.m)
+		rownames(data.matrix_onlineNorm.m)<<-as.character(rownames(data.matrix_onlineNorm.m))
+		try(if(length(rownames(data.matrix_onlineNorm.m))==0)rownames(data.matrix_onlineNorm.m)<<-1:length(data.matrix_onlineNorm.m[,1]),silent=TRUE)
+		if(length(data.matrix_onlineNorm.m)==0)gmessage("Could not Normalize this type of data..!\n",title="Analysis",icon="error")
+		if(length(data.matrix_onlineNorm.m)!=0){
+			delete(g1,g1_1)
+			l$Online_Data$Normalization<<-list()
+			g1_1<<-ggroup(container=g1)
+			tr<<-gtree(offspring=tree,container=g1_1)
+			size(tr)<-c(300,400)
+			}
+		display()
+		galert("Done",title="Pre-processing",delay=5,parent=c(600,400))
+		svalue(sb)<-"Done"
+			},container=norm_gp2,anchor=c(1,-1)
+	)
+	setwd(cur_dir)	
+}
+
+mbl$Preprocessing$Quality_Control$Affymetrix$handler=function(h,...)
+{
+	setwd(folder_Affy)	
+	galert("Please wait while QC check",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Working... Plz wait..."
+	Sys.sleep(1)
+	err<-try(({
+	aqc<<-qc(datAffy)
+	plot(aqc)
+	}),silent=TRUE)
+	if(length(grep("Error",err))!=0)plot(dat2Affy.m)
+	if(length(dat2Affy.m)!=0){
+		delete(g1,g1_1)
+		l$Affymetrix$QC_Plot<<-list()
+		g1_1<<-ggroup(container=g1)
+		tr<<-gtree(offspring=tree,container=g1_1)
+		size(tr)<-c(300,400)
+		}
+		display()
+	galert("Done",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Done"
+	setwd(cur_dir)	
+}
+mbl$Preprocessing$Quality_Control$Agilent$OneColor$handler=function(h,...)
+{
+	setwd(folder_Ag1)	
+	galert("Please wait while QC check",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Working... Plz wait..."
+	Sys.sleep(1)
+	boxplot(datAgOne2.m)
+	if(length(datAgOne2.m)!=0){
+		delete(g1,g1_1)
+		l$Agilent_OneColor$QC_Plot<<-list()
+		g1_1<<-ggroup(container=g1)
+		tr<<-gtree(offspring=tree,container=g1_1)
+		size(tr)<-c(300,400)
+		}
+		display()	
+	galert("Done",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Done"
+	setwd(cur_dir)	
+}
+mbl$Preprocessing$Quality_Control$Agilent$TwoColor$handler=function(h,...)
+{
+	setwd(folder_Ag2)	
+	galert("Please wait while QC check",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Working... Plz wait..."
+	Sys.sleep(1)
+	boxplot(datAgTwo2.m)
+	if(length(datAgTwo2.m)!=0){
+		delete(g1,g1_1)
+		l$Agilent_TwoColor$QC_Plot<<-list()
+		g1_1<<-ggroup(container=g1)
+		tr<<-gtree(offspring=tree,container=g1_1)
+		size(tr)<-c(300,400)
+		}
+		display()	
+	galert("Done",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Done"
+	setwd(cur_dir)	
+}
+mbl$Preprocessing$Quality_Control$Illumina$BeadArray$handler=function(h,...)
+{
+	setwd(folder_Il_B)	
+	galert("Please wait while QC check",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Working... Plz wait..."
+	Sys.sleep(1)
+	boxplot(datIllBA2.m2)
+	if(length(datIllBA2.m2)!=0){
+		delete(g1,g1_1)
+		l$Illumina_Beadarray$QC_Plot<<-list()
+		g1_1<<-ggroup(container=g1)
+		tr<<-gtree(offspring=tree,container=g1_1)
+		size(tr)<-c(300,400)
+		}
+		display()	
+	galert("Done",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Done"
+	setwd(cur_dir)	
+}
+mbl$Preprocessing$Quality_Control$Illumina$Lumi$handler=function(h,...)
+{
+	setwd(folder_Il_L)	
+	galert("Please wait while QC check",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Working... Plz wait..."
+	Sys.sleep(1)
+	plot(lumi_NQ.m,what="boxplot")
+	if(length(lumi_NQ.m)!=0){
+		delete(g1,g1_1)
+		l$Illumina_Lumi$QC_Plot<<-list()
+		g1_1<<-ggroup(container=g1)
+		tr<<-gtree(offspring=tree,container=g1_1)
+		size(tr)<-c(300,400)
+		}
+		display()	
+	galert("Done",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Done"
+	setwd(cur_dir)	
+}
+mbl$Preprocessing$Quality_Control$Nimblegen$handler=function(h,...)
+{
+	setwd(folder_N)	
+	galert("Please wait while QC check",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Working... Plz wait..."
+	Sys.sleep(1)
+	boxplot(data.matrix_Nimblegen2.m)
+	if(length(data.matrix_Nimblegen2.m)!=0){
+		delete(g1,g1_1)
+		l$Nimblegen$QC_Plot<<-list()
+		g1_1<<-ggroup(container=g1)
+		tr<<-gtree(offspring=tree,container=g1_1)
+		size(tr)<-c(300,400)
+		}
+		display()	
+	galert("Done",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Done"
+	setwd(cur_dir)	
+}
+mbl$Preprocessing$Quality_Control$Series_Matrix$handler=function(h,...)
+{
+	setwd(folder_S)	
+	galert("Please wait while QC check",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Working... Plz wait..."
+	Sys.sleep(1)
+	boxplot(data.matrixNorm.m)
+	if(length(data.matrixNorm.m)!=0){
+		delete(g1,g1_1)
+		l$Series_Matrix$QC_Plot<<-list()
+		g1_1<<-ggroup(container=g1)
+		tr<<-gtree(offspring=tree,container=g1_1)
+		size(tr)<-c(300,400)
+		}
+		display()	
+	galert("Done",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Done"
+	setwd(cur_dir)	
+}
+mbl$Preprocessing$Quality_Control$Online_Data$handler=function(h,...)
+{
+	galert("Please wait while QC check",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Working... Plz wait..."
+	Sys.sleep(1)
+	boxplot(data.matrix_onlineNorm.m)
+	if(length(data.matrix_onlineNorm.m)!=0){
+		delete(g1,g1_1)
+		l$Online_Data$QC_Plot<<-list()
+		g1_1<<-ggroup(container=g1)
+		tr<<-gtree(offspring=tree,container=g1_1)
+		size(tr)<-c(300,400)
+		}
+		display()	
+	galert("Done",title="Pre-processing",delay=5,parent=c(600,400))
+	svalue(sb)<-"Done"
+	setwd(cur_dir)	
+}
+
+mbl$Analysis$Filtering_and_Statistical_Analysis$Specific$handler=function(h,...)
+{
+	filter_sp()
+	setwd(cur_dir)	
+}
+mbl$Analysis$Filtering_and_Statistical_Analysis$UnSpecific$handler=function(h,...)
+{
+	filter_unsp()
+	setwd(cur_dir)	
+}
+mbl$Analysis$Differential_Gene_Expressions$handler=function(h,...)
+{
+	dge()
+	setwd(cur_dir)	
+}
+mbl$Analysis$Principal_Component_Analysis_Unsupervized$handler=function(h,...)
+{
+	pca()
+	setwd(cur_dir)	
+}
+mbl$Analysis$Clustering_and_Visualization_Unsupervized$handler=function(h,...)
+{
+	clust()
+	setwd(cur_dir)	
+}
+mbl$Analysis$Classification_and_Visualization_Supervized$handler=function(h,...)
+{
+	clas()
+	setwd(cur_dir)	
+}
+mbl$Miscellaneous$Gene_Set_Enrichment_Analysis$handler=function(h,...)
+{
+	gsea()
+	setwd(cur_dir)	
+}
+mbl$Miscellaneous$Gene_Set_Test_Analysis$handler=function(h,...)
+{
+	gsta()
+	setwd(cur_dir)	
+}
+mbl$Miscellaneous$Identifier_Symbol$handler=function(h,...)
+{
+	symbol()
+	setwd(cur_dir)
+}
+mbl$Miscellaneous$Sample_Size_Estimation$handler=function(h,...)
+{
+	sse()
+	setwd(cur_dir)	
+}
+mbl$Miscellaneous$Coexpression_Network$handler=function(h,...)
+{
+	ntwk()
+	setwd(cur_dir)	
+}
+
+mbl$Miscellaneous$PPIs_Prediction$handler=function(h,...)
+{
+	ppis()
+	setwd(cur_dir)
+}
+mbl$View$Normalized_Data$Affymetrix$handler=function(h,...)
+{
+	view_w<-gwindow("Normalized_Data_Affymetrix",visible=FALSE,height=400,width=600)
+	gtable(dat2Affy.m,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Normalized_Data$Agilent_OneColor$handler=function(h,...)
+{
+	view_w<-gwindow("Normalized_Data_Agilent_OneColor",visible=FALSE,height=400,width=600)
+	gtable(datAgOne2.m,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Normalized_Data$Agilent_TwoColor$handler=function(h,...)
+{
+	view_w<-gwindow("Normalized_Data_Agilent_TwoColor",visible=FALSE,height=400,width=600)
+	gtable(datAgTwo2.m,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Normalized_Data$Illumina_Beadarray$handler=function(h,...)
+{
+	view_w<-gwindow("Normalized_Data_Illumina_Beadarray",visible=FALSE,height=400,width=600)
+	gtable(datIllBA2.m2,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Normalized_Data$Illumina_Lumi$handler=function(h,...)
+{
+	view_w<-gwindow("Normalized_Data_Illumina_Lumi",visible=FALSE,height=400,width=600)
+	gtable(lumi_NQ.m,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Normalized_Data$Nimblegen$handler=function(h,...)
+{	
+	view_w<-gwindow("Normalized_Data_Nimblegen",visible=FALSE,height=400,width=600)
+	gtable(data.matrix_Nimblegen2.m,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Normalized_Data$Series_Matrix$handler=function(h,...)
+{
+	view_w<-gwindow("Normalized_Data_Series_Matrix",visible=FALSE,height=400,width=600)
+	gtable(data.matrixNorm.m,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Normalized_Data$Online_Data$handler=function(h,...)
+{
+	view_w<-gwindow("Normalized_Data_Series_Matrix",visible=FALSE,height=400,width=600)
+	gtable(data.matrix_onlineNorm.m,container=view_w)
+	visible(view_w)<-TRUE
+}
+
+mbl$View$QC_Data$Affymetrix$handler=function(h,...)
+{	
+	plot(aqc)
+}
+mbl$View$QC_Data$Agilent_OneColor$handler=function(h,...)
+{	
+	boxplot(datAgOne2.m)
+}
+mbl$View$QC_Data$Agilent_TwoColor$handler=function(h,...)
+{
+	plotMA3by2(datAgTwo2.m,device="png")
+}
+mbl$View$QC_Data$Illumina_Beadarray$handler=function(h,...)
+{
+	boxplot(datIllBA2.m2)
+}
+mbl$View$QC_Data$Illumina_Lumi$handler=function(h,...)
+{
+	plot(lumi_NQ.m,what="boxplot")
+}
+mbl$View$QC_Data$Nimblegen$handler=function(h,...)
+{
+	boxplot(data.matrix_Nimblegen2.m)
+}
+mbl$View$QC_Data$Series_Matrix$handler=function(h,...)
+{
+	boxplot(data.matrixNorm.m)
+}
+mbl$View$QC_Data$Online_Data$handler=function(h,...)
+{
+	boxplot(data.matrix_onlineNorm.m)
+}
+
+mbl$View$Filtered_Data$Affymetrix$handler=function(h,...)
+{
+	view_w<-gwindow("Filtered_Data_Affymetrix",visible=FALSE,height=400,width=600)
+	ps1<-as.data.frame(dat2Affy.f)	
+	gtable(ps1,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Filtered_Data$Agilent_OneColor$handler=function(h,...)
+{
+	view_w<-gwindow("Filtered_Data_Agilent_OneColor",visible=FALSE,height=400,width=600)
+	ps1<-as.data.frame(datAgOne2.f)	
+	gtable(ps1,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Filtered_Data$Agilent_TwoColor$handler=function(h,...)
+{
+	view_w<-gwindow("Filtered_Data_Agilent_TwoColor",visible=FALSE,height=400,width=600)
+	ps1<-as.data.frame(datAgTwo2.f)	
+	gtable(ps1,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Filtered_Data$Illumina_Beadarray$handler=function(h,...)
+{
+	view_w<-gwindow("Filtered_Data_Illumina_Beadarray",visible=FALSE,height=400,width=600)
+	ps1<-as.data.frame(datIllBA2.f)	
+	gtable(ps1,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Filtered_Data$Illumina_Lumi$handler=function(h,...)
+{
+	view_w<-gwindow("Filtered_Data_Illumina_Lumi",visible=FALSE,height=400,width=600)
+	ps1<-as.data.frame(lumi_NQ.f)	
+	gtable(ps1,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Filtered_Data$Nimblegen$handler=function(h,...)
+{
+	view_w<-gwindow("Filtered_Data_Nimblegen",visible=FALSE,height=400,width=600)
+	ps1<-as.data.frame(data.matrix_Nimblegen2.f)	
+	gtable(ps1,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Filtered_Data$Series_Matrix$handler=function(h,...)
+{
+	view_w<-gwindow("Filtered_Data_Series_Matrix",visible=FALSE,height=400,width=600)
+	ps1<-as.data.frame(data.matrixNorm.f)	
+	gtable(ps1,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Filtered_Data$Online_Data$handler=function(h,...)
+{
+	view_w<-gwindow("Filtered_Data_Online_Data",visible=FALSE,height=400,width=600)
+	ps1<-as.data.frame(data.matrix_onlineNorm.f)	
+	gtable(ps1,container=view_w)
+	visible(view_w)<-TRUE
+}
+
+mbl$View$Stat_Significant_Data$Affymetrix$handler=function(h,...)
+{
+	view_w<-gwindow("Stat_Significant_Data_Affymetrix",visible=FALSE,height=400,width=600)
+	gtable(dat2Affy.s,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Stat_Significant_Data$Agilent_OneColor$handler=function(h,...)
+{
+	view_w<-gwindow("Stat_Significant_Data_Agilent_OneColor",visible=FALSE,height=400,width=600)
+	gtable(datAgOne2.s,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Stat_Significant_Data$Agilent_TwoColor$handler=function(h,...)
+{
+	view_w<-gwindow("Stat_Significant_Data_Agilent_TwoColor",visible=FALSE,height=400,width=600)
+	gtable(datAgTwo2.s,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Stat_Significant_Data$Illumina_Beadarray$handler=function(h,...)
+{
+	view_w<-gwindow("Stat_Significant_Data_Illumina_Beadarray",visible=FALSE,height=400,width=600)
+	gtable(datIllBA2.s,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Stat_Significant_Data$Illumina_Lumi$handler=function(h,...)
+{
+	view_w<-gwindow("Stat_Significant_Data_Illumina_Lumi",visible=FALSE,height=400,width=600)
+	gtable(lumi_NQ.s,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Stat_Significant_Data$Nimblegen$handler=function(h,...)
+{
+	view_w<-gwindow("Stat_Significant_Data_Nimblegen",visible=FALSE,height=400,width=600)
+	gtable(data.matrix_Nimblegen2.s,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Stat_Significant_Data$Series_Matrix$handler=function(h,...)
+{
+	view_w<-gwindow("Stat_Significant_Data_Series_Matrix",visible=FALSE,height=400,width=600)
+	gtable(data.matrixNorm.s,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Stat_Significant_Data$Online_Data$handler=function(h,...)
+{
+	view_w<-gwindow("Stat_Significant_Data_Online_Data",visible=FALSE,height=400,width=600)
+	gtable(data.matrix_onlineNorm.s,container=view_w)
+	visible(view_w)<-TRUE
+}
+
+mbl$View$DGE_Data$Affymetrix$handler=function(h,...)
+{
+	view_w<-gwindow("DGE_Data_Affymetrix",visible=FALSE,height=400,width=600)
+	gtable(DE_Affy,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$DGE_Data$Agilent_OneColor$handler=function(h,...)
+{
+	view_w<-gwindow("DGE_Data_Agilent_OneColor",visible=FALSE,height=400,width=600)
+	gtable(DE_Ag1,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$DGE_Data$Agilent_TwoColor$handler=function(h,...)
+{
+	view_w<-gwindow("DGE_Data_Agilent_TwoColor",visible=FALSE,height=400,width=600)
+	gtable(DE_Ag2,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$DGE_Data$Illumina_Beadarray$handler=function(h,...)
+{
+	view_w<-gwindow("DGE_Data_Illumina_Beadarray",visible=FALSE,height=400,width=600)
+	gtable(DE_Il_B,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$DGE_Data$Illumina_Lumi$handler=function(h,...)
+{
+	view_w<-gwindow("DGE_Data_Illumina_Lumi",visible=FALSE,height=400,width=600)
+	gtable(DE_Il_L,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$DGE_Data$Nimblegen$handler=function(h,...)
+{
+	view_w<-gwindow("DGE_Data_Nimblegen",visible=FALSE,height=400,width=600)
+	gtable(DE_N,container=view_w)
+	visible(view_w)<-TRUE
+}
+
+mbl$View$DGE_Data$Series_Matrix$handler=function(h,...)
+{
+	view_w<-gwindow("DGE_Data_Series_Matrix",visible=FALSE,height=400,width=600)
+	gtable(DE_S,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$DGE_Data$Online_Data$handler=function(h,...)
+{
+	view_w<-gwindow("DGE_Data_Online_Data",visible=FALSE,height=400,width=600)
+	gtable(DE_O,container=view_w)
+	visible(view_w)<-TRUE
+}
+
+mbl$View$PCA_Data$Affymetrix$handler=function(h,...)
+{
+	plot(pca_Affy,main="Affymetrix PCA")
+}
+mbl$View$PCA_Data$Agilent_OneColor$handler=function(h,...)
+{
+	plot(pca_Ag1,main="Agilent_OneColor PCA")
+}
+mbl$View$PCA_Data$Agilent_TwoColor$handler=function(h,...)
+{
+	plot(pca_Ag2,main="Agilent_TwoColor PCA")
+}
+mbl$View$PCA_Data$Illumina_Beadarray$handler=function(h,...)
+{
+	plot(pca_Il_B,main="Illumina_Beadarray PCA")
+}
+mbl$View$PCA_Data$Illumina_Lumi$handler=function(h,...)
+{
+	plot(pca_Il_L,main="Illumina_Lumi PCA")
+}
+mbl$View$PCA_Data$Nimblegen$handler=function(h,...)
+{
+	plot(pca_N,main="Nimblegen PCA")
+}
+mbl$View$PCA_Data$Series_Matrix$handler=function(h,...)
+{
+	plot(pca_S,main="Series_Matrix PCA")
+}
+mbl$View$PCA_Data$Online_Data$handler=function(h,...)
+{
+	plot(pca_O,main="Online_Data PCA")
+}
+
+mbl$View$Clustered_Data$Affymetrix$handler=function(h,...)
+{
+	plot(hclust(sample.dist_Affy,method="complete"))
+}
+mbl$View$Clustered_Data$Agilent_OneColor$handler=function(h,...)
+{
+	plot(hclust(sample.dist_Ag1,method="complete"))
+}
+mbl$View$Clustered_Data$Agilent_TwoColor$handler=function(h,...)
+{
+	plot(hclust(sample.dist_Ag2,method="complete"))
+}
+mbl$View$Clustered_Data$Illumina_Beadarray$handler=function(h,...)
+{
+	plot(hclust(sample.dist_Il_B,method="complete"))
+}
+mbl$View$Clustered_Data$Illumina_Lumi$handler=function(h,...)
+{
+	plot(hclust(sample.dist_Il_L,method="complete"))
+}
+mbl$View$Clustered_Data$Nimblegen$handler=function(h,...)
+{
+	plot(hclust(sample.dist_N,method="complete"))
+}
+mbl$View$Clustered_Data$Series_Matrix$handler=function(h,...)
+{
+	plot(hclust(sample.dist_S,method="complete"))
+}
+mbl$View$Clustered_Data$Online_Data$handler=function(h,...)
+{
+	plot(hclust(sample.dist_O,method="complete"))
+}
+
+mbl$View$Classification_Data$Affymetrix$handler=function(h,...)
+{
+	heatmap(Clas_Affy,Rowv=NA)
+}
+mbl$View$Classification_Data$Agilent_OneColor$handler=function(h,...)
+{
+	heatmap(Clas_Ag1,Rowv=NA)
+}
+mbl$View$Classification_Data$Agilent_TwoColor$handler=function(h,...)
+{
+	heatmap(Clas_Ag2,container=view_w)
+}
+mbl$View$Classification_Data$Illumina_Beadarray$handler=function(h,...)
+{
+	heatmap(Clas_Il_B,container=view_w)
+}
+mbl$View$Classification_Data$Illumina_Lumi$handler=function(h,...)
+{
+	heatmap(Clas_Il_L,container=view_w)
+}
+mbl$View$Classification_Data$Nimblegen$handler=function(h,...)
+{
+	heatmap(Clas_N,container=view_w)
+}
+mbl$View$Classification_Data$Series_Matrix$handler=function(h,...)
+{
+	heatmap(Clas_S,container=view_w)
+}
+mbl$View$Classification_Data$Online_Data$handler=function(h,...)
+{
+	heatmap(Clas_S,container=view_w)
+}
+
+mbl$View$GSEA$GO_Data$BP$Affymetrix$handler=function(h,...)
+{
+	if(length(GOresultBP_Affy)!=0)
+	{
+		gmessage("Generating Html Report","GSEA_GO_Biological_Process")
+		htmlReport(GOresultBP_Affy,"hypergeoBP_Affymetrix.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$MF$Affymetrix$handler=function(h,...)
+{
+	if(length(GOresultMF_Affy)!=0)
+	{
+		gmessage("Generating Html Report","GSEA_GO_Molecular_Function")
+		htmlReport(GOresultMF_Affy,"hypergeoML_Affymetrix.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$CC$Affymetrix$handler=function(h,...)
+{
+	if(length(GOresultCC_Affy)!=0)
+	{
+		gmessage("Generating Html Report","GSEA_GO_Cellular_Component")
+		htmlReport(GOresultCC_Affy,"hypergeoCC_Affymetrix.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$BP$Agilent_OneColor$handler=function(h,...)
+{
+	if(length(GOresultBP_Ag1)!=0)
+	{
+		gmessage("Generating Html Report","GSEA_GO_Biological_Process")
+		htmlReport(GOresultBP_Ag1,"hypergeoBP_Agilent_OneColor.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$MF$Agilent_OneColor$handler=function(h,...)
+{
+	if(length(GOresultMF_Ag1)!=0)
+	{
+		gmessage("Generating Html Report","GSEA_GO_Molecular_Function")
+		htmlReport(GOresultMF_Ag1,"hypergeoML_Agilent_OneColor.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$CC$Agilent_OneColor$handler=function(h,...)
+{
+	if(length(GOresultCC_Ag1)!=0)
+	{
+		gmessage("Generating Html Report","GSEA_GO_Cellular_Component")
+		htmlReport(GOresultCC_Ag1,"hypergeoCC_Agilent_OneColor.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$BP$Agilent_TwoColor$handler=function(h,...)
+{
+	if(length(GOresultBP_Ag2)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_GO_Biological_Process")
+		htmlReport(GOresultBP_Ag2,"hypergeoBP_Agilent_TwoColor.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$MF$Agilent_TwoColor$handler=function(h,...)
+{
+	if(length(GOresultMF_Ag2)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_GO_Molecular_Function")
+		htmlReport(GOresultMF_Ag2,"hypergeoML_Agilent_TwoColor.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$CC$Agilent_TwoColor$handler=function(h,...)
+{
+	if(length(GOresultCC_Ag2)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_GO_Cellular_Component")
+		htmlReport(GOresultCC_Ag2,"hypergeoCC_Agilent_TwoColor.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$BP$Illumina_Beadarray$handler=function(h,...)
+{
+	if(length(GOresultBP_Il_B)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_GO_Biological_Process")
+		htmlReport(GOresultBP_Il_B,"hypergeoBP_Illumina_Beadarray.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$MF$Illumina_Beadarray$handler=function(h,...)
+{
+	if(length(GOresultMF_Il_B)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_GO_Molecular_Function")
+		htmlReport(GOresultMF_Il_B,"hypergeoML_Illumina_Beadarray.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$CC$Illumina_Beadarray$handler=function(h,...)
+{
+	if(length(GOresultCC_Il_B)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_GO_Cellular_Component")
+		htmlReport(GOresultCC_Il_B,"hypergeoCC_Illumina_Beadarray.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$BP$Illumina_Lumi$handler=function(h,...)
+{
+	if(length(GOresultBP_Il_L)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_GO_Biological_Process")
+		htmlReport(GOresultBP_Il_L,"hypergeoBP_Illumina_Lumi.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$MF$Illumina_Lumi$handler=function(h,...)
+{
+	if(length(GOresultMF_Il_L)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_GO_Molecular_Function")
+		htmlReport(GOresultMF_Il_L,"hypergeoML_Illumina_Lumi.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$CC$Illumina_Lumi$handler=function(h,...)
+{
+	if(length(GOresultCC_Il_L)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_GO_Cellular_Component")
+		htmlReport(GOresultCC_Il_L,"hypergeoCC_Illumina_Lumi.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$BP$Nimblegen$handler=function(h,...)
+{
+	if(length(GOresultBP_N)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_GO_Biological_Process")
+		htmlReport(GOresultBP_N,"hypergeoBP_Nimblegen.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$MF$Nimblegen$handler=function(h,...)
+{
+	if(length(GOresultMF_N)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_GO_Molecular_Function")
+		htmlReport(GOresultMF_N,"hypergeoML_Nimblegen.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$CC$Nimblegen$handler=function(h,...)
+{
+	if(length(GOresultCC_N)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_GO_Cellular_Component")
+		htmlReport(GOresultCC_N,"hypergeoCC_Nimblegen.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$BP$Series_Matrix$handler=function(h,...)
+{
+	if(length(GOresultBP_S)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_GO_Biological_Process")
+		htmlReport(GOresultBP_S,"hypergeoBP_Series_Matrix.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$MF$Series_Matrix$handler=function(h,...)
+{
+	if(length(GOresultMF_S)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_GO_Molecular_Function")
+		htmlReport(GOresultMF_S,"hypergeoML_Series_Matrix.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$CC$Series_Matrix$handler=function(h,...)
+{
+	if(length(GOresultCC_S)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_GO_Cellular_Component")
+		htmlReport(GOresultCC_S,"hypergeoCC_Series_Matrix.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$BP$Online_Data$handler=function(h,...)
+{
+	if(length(GOresultBP_O)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_GO_Biological_Process")
+		htmlReport(GOresultBP_O,"hypergeoBP_Online_Data.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$MF$Online_Data$handler=function(h,...)
+{
+	if(length(GOresultMF_O)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_GO_Molecular_Function")
+		htmlReport(GOresultMF_O,"hypergeoML_Online_Data.html",append=T)
+	}
+}
+mbl$View$GSEA$GO_Data$CC$Online_Data$handler=function(h,...)
+{
+	if(length(GOresultCC_O)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_GO_Cellular_Component")
+		htmlReport(GOresultCC_O,"hypergeoCC_Online_Data.html",append=T)
+	}
+}
+
+mbl$View$GSEA$KEGG_Data$Affymetrix$handler=function(h,...)
+{
+	if(length(KEGGresult_Affy)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_KEGG")
+		htmlReport(KEGGresult_Affy,"hypergeoKEGG_Affymetrix.html",append=T)
+	}
+}
+mbl$View$GSEA$KEGG_Data$Agilent_OneColor$handler=function(h,...)
+{
+	if(length(KEGGresult_Ag1)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_KEGG")
+		htmlReport(KEGGresult_Ag1,"hypergeoKEGG_Agilent_OneColor.html",append=T)
+	}
+}
+mbl$View$GSEA$KEGG_Data$Agilent_TwoColor$handler=function(h,...)
+{
+	if(length(KEGGresult_Ag2)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_KEGG")
+		htmlReport(KEGGresult_Ag2,"hypergeoKEGG_Agilent_TwoColor.html",append=T)
+	}
+}
+mbl$View$GSEA$KEGG_Data$Illumina_Beadarray$handler=function(h,...)
+{
+	if(length(KEGGresult_Il_B)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_KEGG")
+		htmlReport(KEGGresult_Il_B,"hypergeoKEGG_Illumina_Beadarray.html",append=T)
+	}
+}
+mbl$View$GSEA$KEGG_Data$Illumina_Lumi$handler=function(h,...)
+{
+	if(length(KEGGresult_Il_L)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_KEGG")
+		htmlReport(KEGGresult_Il_L,"hypergeoKEGG_Illumina_Lumi.html",append=T)
+	}
+}
+mbl$View$GSEA$KEGG_Data$Nimblegen$handler=function(h,...)
+{
+	if(length(KEGGresult_N)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_KEGG")
+		htmlReport(KEGGresult_N,"hypergeoKEGG_Nimblegen.html",append=T)
+	}
+}
+mbl$View$GSEA$KEGG_Data$Series_Matrix$handler=function(h,...)
+{
+	if(length(KEGGresult_S)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_KEGG")
+		htmlReport(KEGGresult_S,"hypergeoKEGG_Series_Matrix.html",append=T)
+	}
+}
+mbl$View$GSEA$KEGG_Data$Online_Data$handler=function(h,...)
+{
+	if(length(KEGGresult_O)!=0)
+	{	
+		gmessage("Generating Html Report","GSEA_KEGG")
+		htmlReport(KEGGresult_O,"hypergeoKEGG_Online_Data.html",append=T)
+	}
+}
+
+mbl$View$GSTA$GO_Data$BP$Affymetrix$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Affymetrix",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outBP_Affy,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$MF$Affymetrix$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Affymetrix",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outMF_Affy,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$CC$Affymetrix$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Affymetrix",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outCC_Affy,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$BP$Agilent_OneColor$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Agilent_OneColor",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outBP_Ag1,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$MF$Agilent_OneColor$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Agilent_OneColor",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outMF_Ag1,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$CC$Agilent_OneColor$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Agilent_OneColor",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outCC_Ag1,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$BP$Agilent_TwoColor$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Agilent_TwoColor",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outBP_Ag2,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$MF$Agilent_TwoColor$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Agilent_TwoColor",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outMF_Ag2,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$CC$Agilent_TwoColor$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Agilent_TwoColor",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outCC_Ag2,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$BP$Illumina_Beadarray$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Illumina_Beadarray",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outBP_Il_B,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$MF$Illumina_Beadarray$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Illumina_Beadarray",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outMF_Il_B,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$CC$Illumina_Beadarray$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Illumina_Beadarray",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outCC_Il_B,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$BP$Illumina_Lumi$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Illumina_Lumi",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outBP_Il_L,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$MF$Illumina_Lumi$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Illumina_Lumi",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outMF_Il_L,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$CC$Illumina_Lumi$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Illumina_Lumi",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outCC_Il_L,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$BP$Nimblegen$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Nimblegen",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outBP_N,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$MF$Nimblegen$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Nimblegen",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outMF_N,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$CC$Nimblegen$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Nimblegen",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outCC_N,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$BP$Series_Matrix$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Series_Matrix",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outBP_S,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$MF$Series_Matrix$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Series_Matrix",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outMF_S,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$CC$Series_Matrix$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Series_Matrix",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outCC_S,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$BP$Online_Data$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Online_Data",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outBP_O,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$MF$Online_Data$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Online_Data",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outMF_O,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$GO_Data$CC$Online_Data$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_GO_Data_Online_Data",visible=FALSE,height=400,width=600)
+	gtable(GOtable.outCC_O,container=view_w)
+	visible(view_w)<-TRUE
+}
+
+mbl$View$GSTA$KEGG_Data$Affymetrix$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_KEGG_Data_Affymetrix",visible=FALSE,height=400,width=600)
+	gtable(KEGGtable.out_Affy,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$KEGG_Data$Agilent_OneColor$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_KEGG_Data_Agilent_OneColor",visible=FALSE,height=400,width=600)
+	gtable(KEGGtable.out_Ag1,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$KEGG_Data$Agilent_TwoColor$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_KEGG_Data_Agilent_TwoColor",visible=FALSE,height=400,width=600)
+	gtable(KEGGtable.out_Ag2,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$KEGG_Data$Illumina_Beadarray$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_KEGG_Data_Illumina_Beadarray",visible=FALSE,height=400,width=600)
+	gtable(KEGGtable.out_Il_B,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$KEGG_Data$Illumina_Lumi$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_KEGG_Data_Illumina_Lumi",visible=FALSE,height=400,width=600)
+	gtable(KEGGtable.out_Il_L,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$KEGG_Data$Nimblegen$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_KEGG_Data_Nimblegen",visible=FALSE,height=400,width=600)
+	gtable(KEGGtable.out_N,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$KEGG_Data$Series_Matrix$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_KEGG_Data_Series_Matrix",visible=FALSE,height=400,width=600)
+	gtable(KEGGtable.out_S,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$GSTA$KEGG_Data$Online_Data$handler=function(h,...)
+{
+	view_w<-gwindow("GSTA_KEGG_Data_Online_Data",visible=FALSE,height=400,width=600)
+	gtable(KEGGtable.out_O,container=view_w)
+	visible(view_w)<-TRUE
+}
+
+mbl$View$Identifier_Symbol$Affymetrix$handler=function(h,...)
+{
+	view_w<-gwindow("Identifier_Symbol_Affymetrix",visible=FALSE,height=400,width=600)
+	gtable(genes_Affy,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Identifier_Symbol$Agilent_OneColor$handler=function(h,...)
+{
+	view_w<-gwindow("Identifier_Symbol_Agilent_OneColor",visible=FALSE,height=400,width=600)
+	gtable(genes_Ag1,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Identifier_Symbol$Agilent_TwoColor$handler=function(h,...)
+{
+	view_w<-gwindow("Identifier_Symbol_Agilent_TwoColor",visible=FALSE,height=400,width=600)
+	gtable(genes_Ag2,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Identifier_Symbol$Illumina_Beadarray$handler=function(h,...)
+{
+	view_w<-gwindow("Identifier_Symbol_Illumina_Beadarray",visible=FALSE,height=400,width=600)
+	gtable(genes_Il_B,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Identifier_Symbol$Illumina_Lumi$handler=function(h,...)
+{
+	view_w<-gwindow("Identifier_Symbol_Illumina_Lumi",visible=FALSE,height=400,width=600)
+	gtable(genes_Il_L,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Identifier_Symbol$Nimblegen$handler=function(h,...)
+{
+	view_w<-gwindow("Identifier_Symbol_Nimblegen",visible=FALSE,height=400,width=600)
+	gtable(genes_N,container=view_w)
+	visible(view_w)<-TRUE
+}
+
+mbl$View$Identifier_Symbol$Series_Matrix$handler=function(h,...)
+{
+	view_w<-gwindow("Identifier_Symbol_Series_Matrix",visible=FALSE,height=400,width=600)
+	gtable(genes_S,container=view_w)
+	visible(view_w)<-TRUE
+}
+mbl$View$Identifier_Symbol$Online_Data$handler=function(h,...)
+{
+	view_w<-gwindow("Identifier_Symbol_Online_Data",visible=FALSE,height=400,width=600)
+	gtable(genes_O,container=view_w)
+	visible(view_w)<-TRUE
+}
+
+mbl$View$Sample_size_estimation$Affymetrix$handler=function(h,...)
+{
+	ssize.plot(size_Affy,xlim=c(0,20),main=paste("Sample size to detect 2-fold change (Affymetrix)",sep=""))
+}
+mbl$View$Sample_size_estimation$Agilent_OneColor$handler=function(h,...)
+{
+	ssize.plot(size_Ag1,xlim=c(0,20),main=paste("Sample size to detect 2-fold change (Agilent_OneColor)",sep=""))
+}
+mbl$View$Sample_size_estimation$Agilent_TwoColor$handler=function(h,...)
+{
+	ssize.plot(size_Ag2,xlim=c(0,20),main=paste("Sample size to detect 2-fold change (Agilent_TwoColor)",sep=""))
+}
+mbl$View$Sample_size_estimation$Illumina_Beadarray$handler=function(h,...)
+{
+	ssize.plot(size_Il_B,xlim=c(0,20),main=paste("Sample size to detect 2-fold change (Illumina_Beadarray)",sep=""))
+}
+mbl$View$Sample_size_estimation$Illumina_Lumi$handler=function(h,...)
+{
+	ssize.plot(size_Il_L,xlim=c(0,20),main=paste("Sample size to detect 2-fold change (Illumina_Lumi)",sep=""))
+}
+mbl$View$Sample_size_estimation$Nimblegen$handler=function(h,...)
+{
+	ssize.plot(size_N,xlim=c(0,20),main=paste("Sample size to detect 2-fold change (Nimblegen)",sep=""))
+}
+mbl$View$Sample_size_estimation$Series_Matrix$handler=function(h,...)
+{
+	ssize.plot(size_S,xlim=c(0,20),main=paste("Sample size to detect 2-fold change (Series_Matrix)",sep=""))
+}
+mbl$View$Sample_size_estimation$Online_Data$handler=function(h,...)
+{
+	ssize.plot(size_O,xlim=c(0,20),main=paste("Sample size to detect 2-fold change (Online_Data)",sep=""))
+}
+
+mbl$View$Coexpression_Network$Affymetrix$handler=function(h,...)
+{
+	plot(myGraph_Affy,nodeAttrs=makeNodeAttrs(myGraph_Affy,fontsize=18,fillcolor="grey"))
+}
+mbl$View$Coexpression_Network$Agilent_OneColor$handler=function(h,...)
+{
+	plot(myGraph_Ag1,nodeAttrs=makeNodeAttrs(myGraph_Ag1,fontsize=18,fillcolor="grey"))
+}
+mbl$View$Coexpression_Network$Agilent_TwoColor$handler=function(h,...)
+{
+	plot(myGraph_Ag2,nodeAttrs=makeNodeAttrs(myGraph_Ag2,fontsize=18,fillcolor="grey"))
+}
+mbl$View$Coexpression_Network$Illumina_Beadarray$handler=function(h,...)
+{
+	plot(myGraph_Il_B,nodeAttrs=makeNodeAttrs(myGraph_Il_B,fontsize=18,fillcolor="grey"))
+}
+mbl$View$Coexpression_Network$Illumina_Lumi$handler=function(h,...)
+{
+	plot(myGraph_Il_L,nodeAttrs=makeNodeAttrs(myGraph_Il_L,fontsize=18,fillcolor="grey"))
+}
+mbl$View$Coexpression_Network$Nimblegen$handler=function(h,...)
+{
+	plot(myGraph_N,nodeAttrs=makeNodeAttrs(myGraph_N,fontsize=18,fillcolor="grey"))
+}
+mbl$View$Coexpression_Network$Series_Matrix$handler=function(h,...)
+{
+	plot(myGraph_S,nodeAttrs=makeNodeAttrs(myGraph_S,fontsize=18,fillcolor="grey"))
+}
+mbl$View$Coexpression_Network$Online_Data$handler=function(h,...)
+{
+	plot(myGraph_O,nodeAttrs=makeNodeAttrs(myGraph_O,fontsize=18,fillcolor="grey"))
+}
+
+mbl$Export$Affymetrix$Normalized_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(dat2Affy.m,file=en,sep="\t")
+	setwd(cur_dir)
+}
+mbl$Export$Affymetrix$QC_Plot$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	plot(dat2Affy.m)
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Affymetrix$Filtered_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	ps1<-as.data.frame(dat2Affy.f)
+	write.table(ps1,file=en,sep="\t")
+	setwd(cur_dir)
+}
+mbl$Export$Affymetrix$Stat_Significant_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(dat2Affy.s,file=en,sep="\t")
+	setwd(cur_dir)
+}
+mbl$Export$Affymetrix$DGE_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(DE_Affy,file=en,sep="\t")
+	setwd(cur_dir)
+}
+mbl$Export$Affymetrix$PCA_Plot$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	plot(pca_Affy,main="Affymetrix PCA")
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Affymetrix$Cluster_Plot$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	hclust(sample.dist_Affy,method="complete")
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Affymetrix$Classification_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(Clas_Affy,file=en,sep="\t")
+	setwd(cur_dir)
+}
+mbl$Export$Affymetrix$GSEA_Data$handler=function(h,...)
+{
+#	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	htmlReport(GOresultBP_Affy,"hypergeoBP_Affymetrix.html",append=T)
+	htmlReport(GOresultMF_Affy,"hypergeoML_Affymetrix.html",append=T)
+	htmlReport(GOresultCC_Affy,"hypergeoCC_Affymetrix.html",append=T)
+	htmlReport(KEGGresult_Affy,"hypergeoKEGG_Affymetrix.html",append=T)
+	setwd(cur_dir)
+}
+mbl$Export$Affymetrix$GSTA_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(GOtable.outBP_Affy,file=en,sep="\t")
+	write.table(GOtable.outMF_Affy,file=en,sep="\t")
+	write.table(GOtable.outCC_Affy,file=en,sep="\t")
+	write.table(KEGGtable.out_Affy,file=en,sep="\t")
+	setwd(cur_dir)
+}
+mbl$Export$Affymetrix$Identifier_Symbol$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(genes_Affy,file=en,sep="\t")
+	setwd(cur_dir)
+}
+mbl$Export$Affymetrix$SSE_Plot$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	ssize.plot(size_Affy,xlim=c(0,20),main=paste("Sample size to detect 2-fold change",sep=""))
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Affymetrix$Coexpression_Network$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	plot(myGraph_Affy,nodeAttrs=makeNodeAttrs(myGraph_Affy,fontsize=18,fillcolor="grey"))
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Affymetrix$All$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	try(({
+	img<-paste(en,".txt",sep="_Normalized_Data");write.table(dat2Affy.m,file=img,sep="\t")
+	img<-paste(en,".png",sep="_QC_Plot");png(img);plot(dat2Affy.m);dev.off()
+	img<-paste(en,".txt",sep="_Filtered_Data");ps1<-as.data.frame(dat2Affy.f);write.table(ps1,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_Stat_Significant_Data");write.table(dat2Affy.s,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_DGE_Data");write.table(DE_Affy,file=img,sep="\t")
+	img<-paste(en,".png",sep="_PCA_Plot");png(img);plot(pca_Affy,main="Affymetrix PCA");dev.off()
+	img<-paste(en,".png",sep="_Cluster_Plot");png(img);hclust(sample.dist_Affy,method="complete");dev.off()
+	img<-paste(en,".txt",sep="_Classification_Data");write.table(Clas_Affy,file=img,sep="\t")
+	htmlReport(GOresultBP_Affy,"hypergeoBP_Affymetrix.html",append=T)
+	htmlReport(GOresultMF_Affy,"hypergeoML_Affymetrix.html",append=T)
+	htmlReport(GOresultCC_Affy,"hypergeoCC_Affymetrix.html",append=T)
+	htmlReport(KEGGresult_Affy,"hypergeoKEGG_Affymetrix.html",append=T)
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_BP");write.table(GOtable.outBP_Affy,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_MF");write.table(GOtable.outMF_Affy,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_CC");write.table(GOtable.outCC_Affy,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_KEGG");write.table(KEGGtable.out_Affy,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_Identifier_Symbol");write.table(genes_Affy,file=img,sep="\t")
+	img<-paste(en,".png",sep="_SSE_Plot");png(img);ssize.plot(size_Affy,xlim=c(0,20),main=paste("Sample size to detect 2-fold change",sep=""));dev.off()
+	img<-paste(en,".png",sep="_Coexpression_Network");png(img);plot(myGraph_Affy,nodeAttrs=makeNodeAttrs(myGraph_Affy,fontsize=18,fillcolor="grey"));dev.off()	
+	}),silent=TRUE)
+	setwd(cur_dir)
+}
+
+mbl$Export$Agilent_OneColor$Normalized_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(datAgOne2.m,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_OneColor$QC_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	boxplot(datAgOne2.m)
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_OneColor$Filtered_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	ps1<-as.data.frame(datAgOne2.f)
+	write.table(ps1,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_OneColor$Stat_Significant_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(datAgOne2.s,file=en,sep="\t")
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_OneColor$DGE_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(DE_Ag1,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_OneColor$PCA_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	plot(pca_Ag1,main="Agilent_OneColor PCA")
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_OneColor$Clusted_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	hclust(sample.dist_Ag1,method="complete")
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_OneColor$Classification_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(Clas_Ag1,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_OneColor$GSEA_Data$handler=function(h,...)
+{
+#	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	htmlReport(GOresultBP_Ag1,"hypergeoBP_Agilent_OneColor.html",append=T)
+	htmlReport(GOresultMF_Ag1,"hypergeoML_Agilent_OneColor.html",append=T)
+	htmlReport(GOresultCC_Ag1,"hypergeoCC_Agilent_OneColor.html",append=T)
+	htmlReport(KEGGresult_Ag1,"hypergeoKEGG_Agilent_OneColor.html",append=T)
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_OneColor$GSTA_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(GOtable.outBP_Ag1,file=en)
+	write.table(GOtable.outMF_Ag1,file=en)
+	write.table(GOtable.outCC_Ag1,file=en)
+	write.table(KEGGtable.out_Ag1,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_OneColor$Identifier_Symbol$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(genes_Ag1,file=en,sep="\t")
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_OneColor$SSE_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	ssize.plot(size_Ag1,xlim=c(0,20),main=paste("Sample size to detect 2-fold change",sep=""))
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_OneColor$Coexpression_Network_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	plot(myGraph_Ag1,nodeAttrs=makeNodeAttrs(myGraph_Ag1,fontsize=18,fillcolor="grey"))
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_OneColor$All$handler=function(h,...)
+{
+n<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	try(({
+	img<-paste(en,".txt",sep="_Normalized_Data")
+	write.table(datAgOne2.m,file=img,sep="\t")
+	img<-paste(en,".png",sep="_QC_Plot");png(img);plot(datAgOne2.m);dev.off()
+	img<-paste(en,".txt",sep="_Filtered_Data");ps1<-as.data.frame(datAgOne2.f);write.table(ps1,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_Stat_Significant_Data");write.table(datAgOne2.s,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_DGE_Data");write.table(DE_Ag1,file=img,sep="\t")
+	img<-paste(en,".png",sep="_PCA_Plot");png(img);plot(pca_Ag1,main="Agilent_OneColor PCA");dev.off()
+	img<-paste(en,".png",sep="_Cluster_Plot");png(img);hclust(sample.dist_Ag1,method="complete");dev.off()
+	img<-paste(en,".txt",sep="_Classification_Data");write.table(Clas_Ag1,file=img,sep="\t")
+	htmlReport(GOresultBP_Ag1,"hypergeoBP_Agilent_OneColor.html",append=T)
+	htmlReport(GOresultMF_Ag1,"hypergeoML_Agilent_OneColor.html",append=T)
+	htmlReport(GOresultCC_Ag1,"hypergeoCC_Agilent_OneColor.html",append=T)
+	htmlReport(KEGGresult_Ag1,"hypergeoKEGG_Agilent_OneColor.html",append=T)
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_BP");write.table(GOtable.outBP_Ag1,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_MF");write.table(GOtable.outMF_Ag1,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_CC");write.table(GOtable.outCC_Ag1,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_KEGG");write.table(KEGGtable.out_Ag1,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_Identifier_Symbol");write.table(genes_Ag1,file=img,sep="\t")
+	img<-paste(en,".png",sep="_SSE_Plot");png(img);ssize.plot(size_Ag1,xlim=c(0,20),main=paste("Sample size to detect 2-fold change",sep=""));dev.off()
+	img<-paste(en,".png",sep="_Coexpression_Network");png(img);plot(myGraph_Ag1,nodeAttrs=makeNodeAttrs(myGraph_Ag1,fontsize=18,fillcolor="grey"));dev.off()	
+	}),silent=TRUE)
+	setwd(cur_dir)
+}
+
+mbl$Export$Agilent_TwoColor$Normalized_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(datAgTwo2.m,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_TwoColor$QC_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	plotMA3by2(datAgTwo2.m,device="png")
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_TwoColor$Filtered_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	ps1<-as.data.frame(datAgTwo2.f)
+	write.table(ps1,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_TwoColor$Stat_Significant_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(datAgTwo2.s,file=en,sep="\t")
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_TwoColor$DGE_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(DE_Ag2,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_TwoColor$PCA_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	plot(pca_Ag2,main="Agilent_TwoColor PCA")
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_TwoColor$Clusted_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	hclust(sample.dist_Ag2,method="complete")
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_TwoColor$Classification_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(Clas_Ag2,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_TwoColor$GSEA_Data$handler=function(h,...)
+{
+#	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	htmlReport(GOresultBP_Ag2,"hypergeoBP_Agilent_TwoColor.html",append=T)
+	htmlReport(GOresultMF_Ag2,"hypergeoML_Agilent_TwoColor.html",append=T)
+	htmlReport(GOresultCC_Ag2,"hypergeoCC_Agilent_TwoColor.html",append=T)
+	htmlReport(KEGGresult_Ag2,"hypergeoKEGG_Agilent_TwoColor.html",append=T)
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_TwoColor$GSTA_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(GOtable.outBP_Ag2,file=en)
+	write.table(GOtable.outMF_Ag2,file=en)
+	write.table(GOtable.outCC_Ag2,file=en)
+	write.table(KEGGtable.out_Ag2,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_TwoColor$Identifier_Symbol$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(genes_Ag2,file=en,sep="\t")
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_TwoColor$SSE_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	ssize.plot(size_Ag2,xlim=c(0,20),main=paste("Sample size to detect 2-fold change",sep=""))
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_TwoColor$Coexpression_Network_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	plot(myGraph_Ag2,nodeAttrs=makeNodeAttrs(myGraph_Ag2,fontsize=18,fillcolor="grey"))
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Agilent_TwoColor$All$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	try(({
+	img<-paste(en,".txt",sep="_Normalized_Data")
+	write.table(datAgTwo2.m,file=img,sep="\t")
+	img<-paste(en,".png",sep="_QC_Plot");png(img);plot(datAgTwo2.m);dev.off()
+	img<-paste(en,".txt",sep="_Filtered_Data");ps1<-as.data.frame(datAgTwo2.f);write.table(ps1,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_Stat_Significant_Data");write.table(datAgTwo2.s,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_DGE_Data");write.table(DE_Ag2,file=img,sep="\t")
+	img<-paste(en,".png",sep="_PCA_Plot");png(img);plot(pca_Ag2,main="Agilent_TwoColor PCA");dev.off()
+	img<-paste(en,".png",sep="_Cluster_Plot");png(img);hclust(sample.dist_Ag2,method="complete");dev.off()
+	img<-paste(en,".txt",sep="_Classification_Data");write.table(Clas_Ag2,file=img,sep="\t")
+	htmlReport(GOresultBP_Ag2,"hypergeoBP_Agilent_TwoColor.html",append=T)
+	htmlReport(GOresultMF_Ag2,"hypergeoML_Agilent_TwoColor.html",append=T)
+	htmlReport(GOresultCC_Ag2,"hypergeoCC_Agilent_TwoColor.html",append=T)
+	htmlReport(KEGGresult_Ag2,"hypergeoKEGG_Agilent_TwoColor.html",append=T)
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_BP");write.table(GOtable.outBP_Ag2,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_MF");write.table(GOtable.outMF_Ag2,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_CC");write.table(GOtable.outCC_Ag2,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_KEGG");write.table(KEGGtable.out_Ag2,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_Identifier_Symbol");write.table(genes_Ag2,file=img,sep="\t")
+	img<-paste(en,".png",sep="_SSE_Plot");png(img);ssize.plot(size_Ag2,xlim=c(0,20),main=paste("Sample size to detect 2-fold change",sep=""));dev.off()
+	img<-paste(en,".png",sep="_Coexpression_Network");png(img);plot(myGraph_Ag2,nodeAttrs=makeNodeAttrs(myGraph_Ag2,fontsize=18,fillcolor="grey"));dev.off()	
+	}),silent=TRUE)
+	setwd(cur_dir)
+}
+
+mbl$Export$Illumina_Beadarray$Normalized_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(datIllBA2.m2,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Beadarray$QC_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	boxplot(datIllBA2.m2)
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Beadarray$Filtered_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	ps1<-as.data.frame(datIllBA2.f)
+	write.table(ps1,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Beadarray$Stat_Significant_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(datIllBA2.s,file=en,sep="\t")
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Beadarray$DGE_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(DE_Il_B,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Beadarray$PCA_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	plot(pca_Il_B,main="Illumina_Beadarray PCA")
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Beadarray$Clusted_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	hclust(sample.dist_Il_B,method="complete")
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Beadarray$Classification_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(Clas_Il_B,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Beadarray$GSEA_Data$handler=function(h,...)
+{
+#	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	htmlReport(GOresultBP_Il_B,"hypergeoBP_Illumina_Beadarray.html",append=T)
+	htmlReport(GOresultMF_Il_B,"hypergeoML_Illumina_Beadarray.html",append=T)
+	htmlReport(GOresultCC_Il_B,"hypergeoCC_Illumina_Beadarray.html",append=T)
+	htmlReport(KEGGresult_Il_B,"hypergeoKEGG_Illumina_Beadarray.html",append=T)
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Beadarray$GSTA_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(GOtable.outBP_Il_B,file=en)
+	write.table(GOtable.outMF_Il_B,file=en)
+	write.table(GOtable.outCC_Il_B,file=en)
+	write.table(KEGGtable.out_Il_B,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Beadarray$Identifier_Symbol$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(genes_Il_B,file=en,sep="\t")
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Beadarray$SSE_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	ssize.plot(size_Il_B,xlim=c(0,20),main=paste("Sample size to detect 2-fold change",sep=""))
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Beadarray$Coexpression_Network_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	plot(myGraph_Il_B,nodeAttrs=makeNodeAttrs(myGraph_Il_B,fontsize=18,fillcolor="grey"))
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Beadarray$All$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	try(({
+	img<-paste(en,".txt",sep="_Normalized_Data")
+	write.table(datIllBA2.m2,file=img,sep="\t")
+	img<-paste(en,".png",sep="_QC_Plot");png(img);plot(datIllBA2.m2);dev.off()
+	img<-paste(en,".txt",sep="_Filtered_Data");ps1<-as.data.frame(datIllBA2.f);write.table(ps1,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_Stat_Significant_Data");write.table(datIllBA2.s,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_DGE_Data");write.table(DE_Il_B,file=img,sep="\t")
+	img<-paste(en,".png",sep="_PCA_Plot");png(img);plot(pca_Il_B,main="Illumina_Beadarray PCA");dev.off()
+	img<-paste(en,".png",sep="_Cluster_Plot");png(img);hclust(sample.dist_Il_B,method="complete");dev.off()
+	img<-paste(en,".txt",sep="_Classification_Data");write.table(Clas_Il_B,file=img,sep="\t")
+	htmlReport(GOresultBP_Il_B,"hypergeoBP_Illumina_Beadarray.html",append=T)
+	htmlReport(GOresultMF_Il_B,"hypergeoML_Illumina_Beadarray.html",append=T)
+	htmlReport(GOresultCC_Il_B,"hypergeoCC_Illumina_Beadarray.html",append=T)
+	htmlReport(KEGGresult_Il_B,"hypergeoKEGG_Illumina_Beadarray.html",append=T)
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_BP");write.table(GOtable.outBP_Il_B,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_MF");write.table(GOtable.outMF_Il_B,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_CC");write.table(GOtable.outCC_Il_B,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_KEGG");write.table(KEGGtable.out_Il_B,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_Identifier_Symbol");write.table(genes_Il_B,file=img,sep="\t")
+	img<-paste(en,".png",sep="_SSE_Plot");png(img);ssize.plot(size_Il_B,xlim=c(0,20),main=paste("Sample size to detect 2-fold change",sep=""));dev.off()
+	img<-paste(en,".png",sep="_Coexpression_Network");png(img);plot(myGraph_Il_B,nodeAttrs=makeNodeAttrs(myGraph_Il_B,fontsize=18,fillcolor="grey"));dev.off()	
+	}),silent=TRUE)
+	setwd(cur_dir)
+}
+
+mbl$Export$Illumina_Lumi$Normalized_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(lumi_NQ.m,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Lumi$QC_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	plot(lumi_NQ.m,what="boxplot")
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Lumi$Filtered_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	ps1<-as.data.frame(lumi_NQ.f)
+	write.table(ps1,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Lumi$Stat_Significant_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(lumi_NQ.s,file=en,sep="\t")
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Lumi$DGE_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(DE_Il_L,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Lumi$PCA_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	plot(pca_Il_L,main="Illumina_Lumi PCA")
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Lumi$Clusted_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	hclust(sample.dist_Il_L,method="complete")
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Lumi$Classification_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(Clas_Il_L,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Lumi$GSEA_Data$handler=function(h,...)
+{
+#	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	htmlReport(GOresultBP_Il_L,"hypergeoBP_Illumina_Lumi.html",append=T)
+	htmlReport(GOresultMF_Il_L,"hypergeoML_Illumina_Lumi.html",append=T)
+	htmlReport(GOresultCC_Il_L,"hypergeoCC_Illumina_Lumi.html",append=T)
+	htmlReport(KEGGresult_Il_L,"hypergeoKEGG_Illumina_Lumi.html",append=T)
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Lumi$GSTA_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(GOtable.outBP_Il_L,file=en)
+	write.table(GOtable.outMF_Il_L,file=en)
+	write.table(GOtable.outCC_Il_L,file=en)
+	write.table(KEGGtable.out_Il_L,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Lumi$Identifier_Symbol$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(genes_Il_L,file=en,sep="\t")
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Lumi$SSE_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	ssize.plot(size_Il_L,xlim=c(0,20),main=paste("Sample size to detect 2-fold change",sep=""))
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Lumi$Coexpression_Network_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	plot(myGraph_Il_L,nodeAttrs=makeNodeAttrs(myGraph_Il_L,fontsize=18,fillcolor="grey"))
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Illumina_Lumi$All$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	try(({
+	img<-paste(en,".txt",sep="_Normalized_Data")
+	write.table(lumi_NQ.m,file=img,sep="\t")
+	img<-paste(en,".png",sep="_QC_Plot");png(img);plot(lumi_NQ.m);dev.off()
+	img<-paste(en,".txt",sep="_Filtered_Data");ps1<-as.data.frame(lumi_NQ.f);write.table(ps1,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_Stat_Significant_Data");write.table(lumi_NQ.s,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_DGE_Data");write.table(DE_Il_L,file=img,sep="\t")
+	img<-paste(en,".png",sep="_PCA_Plot");png(img);plot(pca_Il_L,main="Illumina_Lumi PCA");dev.off()
+	img<-paste(en,".png",sep="_Cluster_Plot");png(img);hclust(sample.dist_Il_L,method="complete");dev.off()
+	img<-paste(en,".txt",sep="_Classification_Data");write.table(Clas_Il_L,file=img,sep="\t")
+	htmlReport(GOresultBP_Il_L,"hypergeoBP_Illumina_Lumi.html",append=T)
+	htmlReport(GOresultMF_Il_L,"hypergeoML_Illumina_Lumi.html",append=T)
+	htmlReport(GOresultCC_Il_L,"hypergeoCC_Illumina_Lumi.html",append=T)
+	htmlReport(KEGGresult_Il_L,"hypergeoKEGG_Illumina_Lumi.html",append=T)
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_BP");write.table(GOtable.outBP_Il_L,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_MF");write.table(GOtable.outMF_Il_L,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_CC");write.table(GOtable.outCC_Il_L,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_KEGG");write.table(KEGGtable.out_Il_L,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_Identifier_Symbol");write.table(genes_Il_L,file=img,sep="\t")
+	img<-paste(en,".png",sep="_SSE_Plot");png(img);ssize.plot(size_Il_L,xlim=c(0,20),main=paste("Sample size to detect 2-fold change",sep=""));dev.off()
+	img<-paste(en,".png",sep="_Coexpression_Network");png(img);plot(myGraph_Il_L,nodeAttrs=makeNodeAttrs(myGraph_Il_L,fontsize=18,fillcolor="grey"));dev.off()	
+	}),silent=TRUE)
+	setwd(cur_dir)
+}
+
+mbl$Export$Nimblegen$Normalized_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(data.matrix_Nimblegen2.m,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Nimblegen$QC_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	boxplot(data.matrix_Nimblegen2.m)
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Nimblegen$Filtered_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	ps1<-as.data.frame(data.matrix_Nimblegen2.f)
+	write.table(ps1,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Nimblegen$Stat_Significant_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(data.matrix_Nimblegen2.s,file=en,sep="\t")
+	setwd(cur_dir)
+}
+mbl$Export$Nimblegen$DGE_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(DE_N,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Nimblegen$PCA_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	plot(pca_N,main="Nimblegen PCA")
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Nimblegen$Clusted_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	hclust(sample.dist_N,method="complete")
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Nimblegen$Classification_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(Clas_N,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Nimblegen$GSEA_Data$handler=function(h,...)
+{
+#	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	htmlReport(GOresultBP_N,"hypergeoBP_Nimblegen.html",append=T)
+	htmlReport(GOresultMF_N,"hypergeoML_Nimblegen.html",append=T)
+	htmlReport(GOresultCC_N,"hypergeoCC_Nimblegen.html",append=T)
+	htmlReport(KEGGresult_N,"hypergeoKEGG_Nimblegen.html",append=T)
+	setwd(cur_dir)
+}
+mbl$Export$Nimblegen$GSTA_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(GOtable.outBP_N,file=en)
+	write.table(GOtable.outMF_N,file=en)
+	write.table(GOtable.outCC_N,file=en)
+	write.table(KEGGtable.out_N,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Nimblegen$Identifier_Symbol$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(genes_N,file=en,sep="\t")
+	setwd(cur_dir)
+}
+mbl$Export$Nimblegen$SSE_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	ssize.plot(size_N,xlim=c(0,20),main=paste("Sample size to detect 2-fold change",sep=""))
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Nimblegen$Coexpression_Network_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	plot(myGraph_N,nodeAttrs=makeNodeAttrs(myGraph_N,fontsize=18,fillcolor="grey"))
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Nimblegen$All$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	try(({
+	img<-paste(en,".txt",sep="_Normalized_Data")
+	write.table(data.matrix_Nimblegen2.m,file=img,sep="\t")
+	img<-paste(en,".png",sep="_QC_Plot");png(img);plot(data.matrix_Nimblegen2.m);dev.off()
+	img<-paste(en,".txt",sep="_Filtered_Data");ps1<-as.data.frame(data.matrix_Nimblegen2.f);write.table(ps1,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_Stat_Significant_Data");write.table(data.matrix_Nimblegen2.s,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_DGE_Data");write.table(DE_N,file=img,sep="\t")
+	img<-paste(en,".png",sep="_PCA_Plot");png(img);plot(pca_N,main="Nimblegen PCA");dev.off()
+	img<-paste(en,".png",sep="_Cluster_Plot");png(img);hclust(sample.dist_N,method="complete");dev.off()
+	img<-paste(en,".txt",sep="_Classification_Data");write.table(Clas_N,file=img,sep="\t")
+	htmlReport(GOresultBP_N,"hypergeoBP_Nimblegen.html",append=T)
+	htmlReport(GOresultMF_N,"hypergeoML_Nimblegen.html",append=T)
+	htmlReport(GOresultCC_N,"hypergeoCC_Nimblegen.html",append=T)
+	htmlReport(KEGGresult_N,"hypergeoKEGG_Nimblegen.html",append=T)
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_BP");write.table(GOtable.outBP_N,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_MF");write.table(GOtable.outMF_N,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_CC");write.table(GOtable.outCC_N,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_KEGG");write.table(KEGGtable.out_N,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_Identifier_Symbol");write.table(genes_N,file=img,sep="\t")
+	img<-paste(en,".png",sep="_SSE_Plot");png(img);ssize.plot(size_N,xlim=c(0,20),main=paste("Sample size to detect 2-fold change",sep=""));dev.off()
+	img<-paste(en,".png",sep="_Coexpression_Network");png(img);plot(myGraph_N,nodeAttrs=makeNodeAttrs(myGraph_N,fontsize=18,fillcolor="grey"));dev.off()	
+	}),silent=TRUE)
+	setwd(cur_dir)
+}
+
+mbl$Export$Series_Matrix$Normalized_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(data.matrixNorm.m,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Series_Matrix$QC_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	boxplot(data.matrixNorm.m)
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Series_Matrix$Filtered_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	ps1<-as.data.frame(data.matrixNorm.f)
+	write.table(ps1,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Series_Matrix$Stat_Significant_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(data.matrixNorm.s,file=en,sep="\t")
+	setwd(cur_dir)
+}
+mbl$Export$Series_Matrix$DGE_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(DE_S,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Series_Matrix$PCA_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	plot(pca_S,main="Series_Matrix PCA")
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Series_Matrix$Clusted_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	hclust(sample.dist_S,method="complete")
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Series_Matrix$Classification_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(Clas_S,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Series_Matrix$GSEA_Data$handler=function(h,...)
+{
+#	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	htmlReport(GOresultBP_S,"hypergeoBP_Series_Matrix.html",append=T)
+	htmlReport(GOresultMF_S,"hypergeoML_Series_Matrix.html",append=T)
+	htmlReport(GOresultCC_S,"hypergeoCC_Series_Matrix.html",append=T)
+	htmlReport(KEGGresult_S,"hypergeoKEGG_Series_Matrix.html",append=T)
+	setwd(cur_dir)
+}
+mbl$Export$Series_Matrix$GSTA_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(GOtable.outBP_S,file=en)
+	write.table(GOtable.outMF_S,file=en)
+	write.table(GOtable.outCC_S,file=en)
+	write.table(KEGGtable.out_S,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Series_Matrix$Identifier_Symbol$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(genes_S,file=en,sep="\t")
+	setwd(cur_dir)
+}
+mbl$Export$Series_Matrix$SSE_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	ssize.plot(size_S,xlim=c(0,20),main=paste("Sample size to detect 2-fold change",sep=""))
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Series_Matrix$Coexpression_Network_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	plot(myGraph_S,nodeAttrs=makeNodeAttrs(myGraph_S,fontsize=18,fillcolor="grey"))
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Series_Matrix$All$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	try(({
+	img<-paste(en,".txt",sep="_Normalized_Data")
+	write.table(data.matrixNorm.m,file=img,sep="\t")
+	img<-paste(en,".png",sep="_QC_Plot");png(img);plot(data.matrixNorm.m);dev.off()
+	img<-paste(en,".txt",sep="_Filtered_Data");ps1<-as.data.frame(data.matrixNorm.f);write.table(ps1,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_Stat_Significant_Data");write.table(data.matrixNorm.s,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_DGE_Data");write.table(DE_S,file=img,sep="\t")
+	img<-paste(en,".png",sep="_PCA_Plot");png(img);plot(pca_S,main="Series_Matrix PCA");dev.off()
+	img<-paste(en,".png",sep="_Cluster_Plot");png(img);hclust(sample.dist_S,method="complete");dev.off()
+	img<-paste(en,".txt",sep="_Classification_Data");write.table(Clas_S,file=img,sep="\t")
+	htmlReport(GOresultBP_S,"hypergeoBP_Series_Matrix.html",append=T)
+	htmlReport(GOresultMF_S,"hypergeoML_Series_Matrix.html",append=T)
+	htmlReport(GOresultCC_S,"hypergeoCC_Series_Matrix.html",append=T)
+	htmlReport(KEGGresult_S,"hypergeoKEGG_Series_Matrix.html",append=T)
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_BP");write.table(GOtable.outBP_S,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_MF");write.table(GOtable.outMF_S,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_CC");write.table(GOtable.outCC_S,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_KEGG");write.table(KEGGtable.out_S,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_Identifier_Symbol");write.table(genes_S,file=img,sep="\t")
+	img<-paste(en,".png",sep="_SSE_Plot");png(img);ssize.plot(size_S,xlim=c(0,20),main=paste("Sample size to detect 2-fold change",sep=""));dev.off()
+	img<-paste(en,".png",sep="_Coexpression_Network");png(img);plot(myGraph_S,nodeAttrs=makeNodeAttrs(myGraph_S,fontsize=18,fillcolor="grey"));dev.off()	
+	}),silent=TRUE)
+	setwd(cur_dir)
+}
+
+mbl$Export$Online_Data$Normalized_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(data.matrix_onlineNorm.m,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Online_Data$QC_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	boxplot(data.matrix_onlineNorm.m)
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Online_Data$Filtered_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	ps1<-as.data.frame(data.matrix_onlineNorm.f)
+	write.table(ps1,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Online_Data$Stat_Significant_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(data.matrix_onlineNorm.s,file=en,sep="\t")
+	setwd(cur_dir)
+}
+mbl$Export$Online_Data$DGE_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(DE_O,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Online_Data$PCA_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	plot(pca_O,main="Online_Data PCA")
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Online_Data$Clusted_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	hclust(sample.dist_O,method="complete")
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Online_Data$Classification_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(Clas_O,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Online_Data$GSEA_Data$handler=function(h,...)
+{
+#	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	htmlReport(GOresultBP_O,"hypergeoBP_Online_Data.html",append=T)
+	htmlReport(GOresultMF_O,"hypergeoML_Online_Data.html",append=T)
+	htmlReport(GOresultCC_O,"hypergeoCC_Online_Data.html",append=T)
+	htmlReport(KEGGresult_O,"hypergeoKEGG_Online_Data.html",append=T)
+	setwd(cur_dir)
+}
+mbl$Export$Online_Data$GSTA_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(GOtable.outBP_O,file=en)
+	write.table(GOtable.outMF_O,file=en)
+	write.table(GOtable.outCC_O,file=en)
+	write.table(KEGGtable.out_O,file=en)
+	setwd(cur_dir)
+}
+mbl$Export$Online_Data$Identifier_Symbol$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	write.table(genes_O,file=en,sep="\t")
+	setwd(cur_dir)
+}
+mbl$Export$Online_Data$SSE_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	ssize.plot(size_O,xlim=c(0,20),main=paste("Sample size to detect 2-fold change",sep=""))
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Online_Data$Coexpression_Network_Data$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	img<-paste(en,"png",sep=".")
+	png(img)
+	plot(myGraph_O,nodeAttrs=makeNodeAttrs(myGraph_O,fontsize=18,fillcolor="grey"))
+	dev.off()
+	setwd(cur_dir)
+}
+mbl$Export$Online_Data$All$handler=function(h,...)
+{
+	en<-ginput("Give a name")
+	choose_folder()
+	el<-folderchoose
+	folderchoose=NULL
+	setwd(el)
+	try(({
+	img<-paste(en,".txt",sep="_Normalized_Data")
+	write.table(data.matrix_onlineNorm.m,file=img,sep="\t")
+	img<-paste(en,".png",sep="_QC_Plot");png(img);plot(data.matrix_onlineNorm.m);dev.off()
+	img<-paste(en,".txt",sep="_Filtered_Data");ps1<-as.data.frame(data.matrix_onlineNorm.f);write.table(ps1,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_Stat_Significant_Data");write.table(data.matrix_onlineNorm.s,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_DGE_Data");write.table(DE_O,file=img,sep="\t")
+	img<-paste(en,".png",sep="_PCA_Plot");png(img);plot(pca_O,main="Online_Data PCA");dev.off()
+	img<-paste(en,".png",sep="_Cluster_Plot");png(img);hclust(sample.dist_O,method="complete");dev.off()
+	img<-paste(en,".txt",sep="_Classification_Data");write.table(Clas_O,file=img,sep="\t")
+	htmlReport(GOresultBP_O,"hypergeoBP_Online_Data.html",append=T)
+	htmlReport(GOresultMF_O,"hypergeoML_Online_Data.html",append=T)
+	htmlReport(GOresultCC_O,"hypergeoCC_Online_Data.html",append=T)
+	htmlReport(KEGGresult_O,"hypergeoKEGG_Online_Data.html",append=T)
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_BP");write.table(GOtable.outBP_O,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_MF");write.table(GOtable.outMF_O,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_GO_CC");write.table(GOtable.outCC_O,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_GSTA_Data_KEGG");write.table(KEGGtable.out_O,file=img,sep="\t")
+	img<-paste(en,".txt",sep="_Identifier_Symbol");write.table(genes_O,file=img,sep="\t")
+	img<-paste(en,".png",sep="_SSE_Plot");png(img);ssize.plot(size_O,xlim=c(0,20),main=paste("Sample size to detect 2-fold change",sep=""));dev.off()
+	img<-paste(en,".png",sep="_Coexpression_Network");png(img);plot(myGraph_O,nodeAttrs=makeNodeAttrs(myGraph_O,fontsize=18,fillcolor="grey"));dev.off()	
+	}),silent=TRUE)
+	setwd(cur_dir)
+}
+
+mbl$Help$GUI_Workflow$handler=function(h,...){
+wf<-gwindow("Workflow",height=250,width=500,visible=FALSE,parent=c(450,150))
+g_wf1<-ggroup(container=wf)
+gimage("Flow_Chart.png",dirname="/home/dhamma/Desktop/newGUI/",container=g_wf1)
+visible(wf)<-TRUE
+}
+mbl$Help$GUI_Help$handler=function(h,...){
+openPDF("maGUI_Help.pdf")
+}
+mbl$Help$About_this_GUI$handler=function(h,...){
+abt_gui<-gmessage("This is maGUI Version 1.0 using gWidgets Version 0.0.54. The gWidgets package was developed by John Verzani and the Graphical User Interface (GUI) was developed by James Wettenhall.",title="About maGUI",icon="info")
+}
+
+mbl<-gmenu(mbl,container=w)
+svalue(sb)<-"Ready"
+visible(w)=TRUE
+setwd(cur_dir)
+}

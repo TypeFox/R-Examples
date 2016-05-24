@@ -1,0 +1,4 @@
+getGoogleLanguages <-
+function(){
+    getLanguages('Google')
+}

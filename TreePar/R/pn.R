@@ -1,0 +1,1 @@
+pn <- function(x,l,m,sampling,n){ (qhelp(x,l,m,sampling))^(n-1)*p1(x,l,m,sampling) }

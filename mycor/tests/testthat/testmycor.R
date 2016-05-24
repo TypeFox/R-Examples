@@ -1,0 +1,11 @@
+out=mycor(iris,alternative="greater", method="kendall",digits=2)
+out
+out1=mycor(~ mpg+disp+wt+hp,data=mtcars)
+summary(out1)
+plot(out,groups=species)
+plot(out,type=2,groups=species)
+plot(out,type=3,groups=species)
+plot(out,type=4,groups=spe)
+plot(out1,type=4,groups=cy)
+plot(out1,type=4)
+plot(out1,type=2,groups=am)

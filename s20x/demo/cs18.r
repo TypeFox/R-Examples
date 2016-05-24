@@ -1,0 +1,12 @@
+data (mazda.df)
+mazda.df<-within(mazda.df,{age<-91-year})
+plot(price~age,main="Mazda Car Prices",data=mazda.df)
+trendscatter(price~age,data=mazda.df)
+trendscatter(log(price)~age,data=mazda.df)
+mazda.fit<-lm(log(price)~age,data=mazda.df)
+residPlot(mazda.fit)
+eovcheck(mazda.fit)
+normcheck(mazda.fit)
+summary(mazda.fit)
+exp(ciReg(mazda.fit))
+

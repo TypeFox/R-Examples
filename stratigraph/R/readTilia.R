@@ -1,0 +1,5 @@
+"readTilia" <-
+function(...){
+  readGPDascii(...)
+}
+

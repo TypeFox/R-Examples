@@ -1,0 +1,2 @@
+"dssp" <- function(...)
+  UseMethod("dssp")

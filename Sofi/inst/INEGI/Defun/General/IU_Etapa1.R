@@ -1,0 +1,141 @@
+sidebarLayout(
+sidebarPanel(
+  conditionalPanel(
+    'input.Etap01 === "Datos"',
+    wellPanel(
+      dateInput("aEst", "Año estadístico", format = "yyyy",startview = "decade", language = "es")
+      #submitButton()
+    ),
+    uiOutput("dataset_select"),
+    
+    tags$hr(),
+    
+    fileInput('file1', 'Archivo de c\u00f3digos (en dbf)',
+              accept=c('.dbf')),
+    #        numericInput("obs", "Primeros casos del archive:", 20),
+    
+    tags$hr(),
+    p('Para ver un ejemplo de c\u00f3mo est\u00e1n organizados los',
+      'archivos .dbf y .cvs, puede descargar estos ejemplos',
+      a(href = 'BaseEtapa01.dbf', 'BaseEtapa01.dbf'), 'o',
+      a(href = 'DatCap.csv', 'DatCap.csv'),
+      'y hacer pruebas con ellos.'
+    ),
+    p('Nota: El archivo de c\u00f3digos debe ser guardado en',
+      'el formado', code("dBASE IV (DBF)"), 'y con solo las columnas', 
+      'de ID y c\u00f3digo si son m\u00e1s de 300,000 registros.'),
+    tags$hr(),
+    tags$hr(),
+    tags$hr(),
+    uiOutput("NomCap"),
+    uiOutput("NomErr"),
+    uiOutput("NomEsp"),
+    uiOutput("NomAtn"),
+    tags$hr(),
+    p(HTML('<br/>Para dudas y sugerencias escribir a <a href="mailto:jose.loera@inegi.org.mx?subject=Registros%20administrativos" title="Enviar correo a Daniel">Enviar Mail</a>')),
+    actionButton("E1_sal", "Salir")
+  ),
+  
+  conditionalPanel(
+    'input.Etap01 === "Resumen"',
+    helpText('Elegir las variables a utilizar'),
+    uiOutput("NomID"),
+    uiOutput("NomCod"),
+    actionButton("updat1", "Obtener Poblaci\u00f3n", icon = icon("globe")),
+    tags$hr(),
+    radioButtons("En", "De donde tomar n:",
+                 c("Archivo" = "arc",
+                   "Ecuaci\u00f3n" = "ecu",
+                   "Manual" = "man")),
+    conditionalPanel(condition = 'input.En === "ecu"',
+                     actionButton("updat3", "Renovar"),
+                     tags$hr(),
+                     selectInput("CapEcu","Capitulo que desea modificar:", 
+                                 choices=c(1:20),selected="1"),
+                     sliderInput(inputId = "bw_Error",
+                                 label = "Valor para Error:",
+                                 min = 0, max = 0.1, value = .04, step = 0.005)
+                     #sliderInput(inputId = "bw_P",
+                     #            label = "Valor para P:",
+                     #            min = 0, max = 1, value = .5, step = 0.05)
+    ),
+    conditionalPanel(condition = 'input.En === "man"',
+                     actionButton("updat4", "Renovar"),
+                     tags$hr(),
+                     selectInput("CapMod","Capitulo que desea modificar:", 
+                                 choices=c(1:20)),
+                     numericInput("nmanual", "Introducir valores para n:", 
+                                  100)                
+    ),
+    downloadButton('DescarResum', 'Guardar'),
+    tags$hr()
+  ),
+  
+  conditionalPanel(
+    'input.Etap01 === "Muestra"',
+    actionButton("updat2", "Obtener Muestra"),
+    tags$hr(),
+    helpText('Elige las variables a exhibir'),
+    checkboxGroupInput('show_vars', 'Elegir:',
+                       c("Id" = "Id",
+                         "ID Original" = "IDo",
+                         "ID Originalm" = "IDm",
+                         "C\u00f3digo de defunci\u00f3n" = "CausaD",
+                         "CapAut" = "CapAut",
+                         "Capit" = "Capit",
+                         "FactorExp" = "FactorExp",
+                         "En Muestra" = "EnMuestra"),
+                       selected = c("Id","IDo","IDm","CausaD","CapAut","Capit","FactorExp","EnMuestra")),
+    tags$hr(),
+    checkboxInput("mues","Solo los elementos de la muestra",value = F),
+    downloadButton('DescarMuestra', 'Guardar')
+  )
+),
+
+mainPanel(
+  tabsetPanel(
+    id = 'Etap01',
+    tabPanel("Datos",
+             h4("Tabla de c\u00f3digos"),
+             dataTableOutput('tabla1'),
+             tags$hr(),
+             h4("Tabla de Datos"),
+             tableOutput('tabla2')),
+    
+    tabPanel("Resumen",
+             conditionalPanel(condition = 'input.En === "arc"',
+                            
+                                wellPanel(
+                                h4("Tabla de Resumen Archivo"),
+                                tableOutput('tabla5')
+                              ),
+                             wellPanel(
+                               h5("Cantidad de registros para la muestra:"),
+                               verbatimTextOutput("num5")
+                              )
+                              
+             ),
+             conditionalPanel(condition = 'input.En === "ecu"',
+                              fluidRow(
+                                column(5,h4("Tabla de Resumen Ecuaciones"),
+                                       tableOutput('tabla51')),
+                                column(5,offset = 1,h5("Cantidad de registros para la muestra:"),
+                                       verbatimTextOutput("num51"))
+                              )
+             ),
+             conditionalPanel(condition = 'input.En === "man"',
+                              fluidRow(
+                                column(5,h4("Tabla de Resumen Manual"),
+                                       tableOutput('tabla52')),
+                                column(5,offset = 1,h5("Cantidad de registros para la muestra:"),
+                                       verbatimTextOutput("num52"))
+                              )
+             )),
+    
+    tabPanel("Muestra",
+             h4("Tabla con la muestra para la Etapa 1"),
+             dataTableOutput('tabla4')
+            )
+    )
+)
+)

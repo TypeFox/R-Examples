@@ -1,0 +1,26 @@
+require(testthat)
+context("collUtils")
+
+test_that("truncate end of file", {
+			library(collUtils)
+			fn = tempfile()
+			f = file(fn, "wb")
+			writeBin("a", f)
+			writeBin("b", f)
+			writeBin("c", f)
+			close(f)
+			expect_true(file.info(fn)$size == 6)
+			truncateEndOfFile(fn, 1)
+			expect_true(file.info(fn)$size == 5)
+		})
+
+test_that("get java array, read bed files", {
+			rbed_obj = rBed("test.bed")
+			geno = rbed_obj$readBed()
+			expect_true(all(dim(geno) == c(6, 12)))
+			geno = getJArray(geno)
+			expect_true(all(dim(geno) == c(6, 12)))
+			expect_true(all(na.omit(geno[, 1:3] == geno[, 4:6])))
+			expect_true(all(na.omit(geno[, 1:3] == geno[, 7:9])))
+			expect_true(all(na.omit(geno[, 1] == c(2, 0, NA, 0, 0, 0))))
+		})

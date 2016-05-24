@@ -1,0 +1,49 @@
+oat_parameter_sampling <-
+function(FILEPATH,PARAMETERS,BASELINE,PMIN=NULL,PMAX=NULL,PINC=NULL,PARAMVALS=NULL)
+{
+	# SPARTAN 2.0 - CHANGES SUCH THAT SAMPLING CAN BE PERFORMED USING SPECIFIED PARAMETER VALUES
+	# AS WELL AS INCREMENTS
+
+	if(file.exists(FILEPATH))
+	{
+		# CONSIDER EACH PARAMETER IN TURN
+		for(PARAMOFINT in 1:length(PARAMETERS))
+		{
+			# NOW GET THE LIST OF PARAMETER VALUES BEING EXPLORED FOR THIS PARAMETER
+			# NOTE THE CONVERSION BACK TO NUMBERS - GETS RID OF TRAILING ZEROS MADE BY SEQ
+			PARAM_VAL_LIST<-as.numeric(prepare_parameter_value_list(PMIN,PMAX,PINC,PARAMVALS,PARAMOFINT))
+
+			PARAMETERTABLE<-NULL
+
+			for(PARAM in 1:length(PARAMETERS))
+			{
+				if(PARAMOFINT==PARAM)
+				{
+					#PARAMETERTABLE<-cbind(PARAMETERTABLE,seq(PMIN[PARAMOFINT],PMAX[PARAMOFINT],PINC[PARAMOFINT]))
+					PARAMETERTABLE<-cbind(PARAMETERTABLE,PARAM_VAL_LIST)
+				}
+				else
+				{
+					PARAMETERTABLE<-cbind(PARAMETERTABLE,array(BASELINE[PARAM],dim=c(length(PARAM_VAL_LIST))))				
+				}
+			}
+	
+	
+			# FORMAT THEN OUTPUT THE PARAMETER TABLE FOR THIS PARAMETER OF INTEREST
+			colnames(PARAMETERTABLE)<-PARAMETERS
+	
+			# WRITE THE A-TEST RESULTS TO FILE
+			resultsFile = paste(FILEPATH,"/",PARAMETERS[PARAMOFINT],"_OAT_Values.csv",sep="")
+	
+			write.csv(PARAMETERTABLE,resultsFile,quote = FALSE,row.names=FALSE)
+
+			print(paste("Sample File Generated for parameter ",PARAMETERS[PARAMOFINT]," and output to ",resultsFile,sep=""))
+		}
+	}
+	else
+	{
+		print("The directory specified in FILEPATH does not exist. No parameter samples generated")
+	}
+
+}
+

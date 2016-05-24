@@ -1,0 +1,3 @@
+.EurostatEnv <- new.env()
+
+

@@ -1,0 +1,1 @@
+plot.EDAM <- function(...) shardsplot(...)

@@ -1,0 +1,181 @@
+# breitung.R
+# Copyright (C) 2014 by Matthew Clegg
+
+# Routines implementing Breitung's variance ratio
+#
+#   Breitung, Jorg (2001).  Nonparametric tests for unit roots and cointegration,
+#   Journal of Econometrics, 108, 343-363.
+
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  A copy of the GNU General Public License is available at
+#  http://www.r-project.org/Licenses/
+
+bvr_rho <- function (Y, detrend=FALSE) {
+	# Calculates the variance ratio statistic rho described in equation (5) of
+	#   Breitung, Jorg (2001).  Nonparametric tests for unit roots and cointegration,
+	#   Journal of Econometrics, 108, 343-363.
+
+	if (detrend) {
+		y <- detrend(Y)
+	} else {
+		y <- coredata(Y) - mean(coredata(Y))
+	}
+
+	ys <- cumsum(y)
+	n <- length(y)
+	rho_num <- (1 / n^2) * sum(ys^2)
+	rho_den <- (1 / n) * sum(y^2)
+	# Note factor of 1/n has been added that was not in the original paper.
+	rho <- (rho_num / rho_den) / n
+	rho
+}
+
+bvr_quantiles <- function(sample_size=100, nrep=40000, 
+	q=c(0.001, 0.01, 0.025, 0.05, 0.10, 0.20, 0.50, 0.80, 0.90, 0.95, 0.975, 0.99, 0.999),
+	sd=1, detrend=FALSE) {
+	# Calculates quantiles of the bvr_rho function under the assumptions
+	# a_0 = 0 and a_1 = 1.
+	qvals <- replicate(nrep, bvr_rho(rar1(sample_size, sd=sd), detrend=detrend))
+	quantile(qvals, q)
+}
+
+bvr_quantile_table <- function(nrep=40000,
+	q=c(0.001, 0.01, 0.025, 0.05, 0.10, 0.20, 0.50, 0.80, 0.90, 0.95, 0.975, 0.99, 0.999),
+	n=c(25, 50, 100, 250, 500, 750, 1000, 1250), sd=1, detrend=FALSE) {
+	# Calculates a table of quantile values by sample size of the bvr_rho function
+	# under the assumption a_0=0 and a_1=1.
+	df <- do.call("cbind", lapply(n, function(nv) c(nv, bvr_quantiles(nv, nrep, q, sd, detrend=detrend))))
+	df <- as.data.frame(df)
+	colnames(df) <- n
+	df <- cbind(data.frame(quantile=c(NA,q)), df) 
+	df
+}
+
+# The following table was generated using the call
+#   bvr_qtab <- bvr_quantile_table()
+bvr_qtab <- structure(list(quantile = c(NA, 0.001, 0.01, 0.025, 0.05, 0.1, 
+0.2, 0.5, 0.8, 0.9, 0.95, 0.975, 0.99, 0.999), `25` = c(25, 0.00332637455591009, 
+0.00585745961329492, 0.00798960027086461, 0.0105373080553876, 
+0.0150004420791956, 0.0220490768870461, 0.0517838845245987, 0.0798377158634759, 
+0.0879813700851962, 0.0921303890798318, 0.0946062893660788, 0.0965695782064616, 
+0.0988687421743598), `50` = c(50, 0.00312981685753421, 0.00580422085442258, 
+0.00784802426252351, 0.0103672783549273, 0.0144821609570802, 
+0.0215786933909018, 0.0514264840801606, 0.0796085968951424, 0.0874329498630163, 
+0.0917242451170734, 0.0941587848720424, 0.0961805629259171, 0.0985460669231598
+), `100` = c(100, 0.0030302822493761, 0.00558912528222194, 0.00772184312229409, 
+0.0104166077319071, 0.0146476080970805, 0.0216939692835852, 0.0513220929469567, 
+0.0797959488410655, 0.087631621168659, 0.0919207577499628, 0.094339872897165, 
+0.0962604330637953, 0.0986130828033007), `250` = c(250, 0.00289850174980398, 
+0.00553139542288896, 0.00762950737159783, 0.0101319765011695, 
+0.0142733424169059, 0.0214928641627112, 0.0514630620014147, 0.0793934536098819, 
+0.0873851099727652, 0.0915855661457587, 0.0941517184573074, 0.0962902144155935, 
+0.098677267337584), `500` = c(500, 0.00305710661105332, 0.00544600639541136, 
+0.00754559550481492, 0.0101011442885638, 0.0142472134777352, 
+0.0212781070264034, 0.0511920886616309, 0.0793889207266449, 0.0873707165385677, 
+0.0917426949005179, 0.0941981056662748, 0.0960242644480482, 0.0985074830761626
+), `750` = c(750, 0.00301007161402827, 0.00548558465584746, 0.00767433432579238, 
+0.0101582135161997, 0.0143894210957233, 0.0215221766847057, 0.0509050619344435, 
+0.0795339082392001, 0.0876363386055488, 0.0918635283740264, 0.0942589928805052, 
+0.0962438714606306, 0.0986682091672022), `1000` = c(1000, 0.00298323901478343, 
+0.00551493610235411, 0.0076654895410273, 0.010276288911672, 0.0144242639907012, 
+0.0213628350811129, 0.051228078374354, 0.0794048282306855, 0.087453070396734, 
+0.0916568658959338, 0.0941431922060523, 0.0961921269254635, 0.0985127878537571
+), `1250` = c(1250, 0.00306253528257504, 0.00537748023783321, 
+0.0074666813665504, 0.0100679219782415, 0.014293190071986, 0.0215756981612748, 
+0.0515638225099148, 0.0796758586257054, 0.0877612789797003, 0.0918409286997245, 
+0.0942173357670156, 0.0962726790088758, 0.0985953726395397)), .Names = c("quantile", 
+"25", "50", "100", "250", "500", "750", "1000", "1250"), row.names = c("", 
+"0.1%", "1%", "2.5%", "5%", "10%", "20%", "50%", "80%", "90%", 
+"95%", "97.5%", "99%", "99.9%"), class = "data.frame")
+
+# The following table was generated using the call
+#   bvr_qtab <- bvr_quantile_table(detrend=TRUE)
+bvr_qtab_detrended <- structure(list(quantile = c(NA, 0.001, 0.01, 0.025, 0.05, 0.1, 
+0.2, 0.5, 0.8, 0.9, 0.95, 0.975, 0.99, 0.999), `25` = c(25, 0.00168712405179854, 
+0.00253217722042582, 0.00312181424925527, 0.00376926655109628, 
+0.00474287543098176, 0.00633222666543711, 0.0106271227725071, 
+0.0162771978932732, 0.0189023637742038, 0.0205143658341207, 0.0215287042894976, 
+0.0225526147575758, 0.023875900170275), `50` = c(50, 0.00140880842231724, 
+0.00229920683777919, 0.00283678960906636, 0.00349924284771183, 
+0.00443242586703879, 0.00601680334452872, 0.0102746842717097, 
+0.0159982270657943, 0.0185884185297237, 0.020253402175764, 0.0213145375046391, 
+0.022280873629319, 0.0236687999417853), `100` = c(100, 0.00133476253824772, 
+0.00220190519602716, 0.00281996248275345, 0.0034627339157511, 
+0.00441240940690256, 0.00597919462373363, 0.0102019645534696, 
+0.0159436827883071, 0.0185459998901182, 0.0202027655899719, 0.0212572406658586, 
+0.0222141349110763, 0.0234491859902589), `250` = c(250, 0.00139751874609496, 
+0.00220312428847516, 0.00277934566074049, 0.00340697821574804, 
+0.00442693527992565, 0.00600849012813196, 0.0102029787959123, 
+0.0159475349576176, 0.0184931201760397, 0.0201428921249319, 0.0212207606044985, 
+0.0221897505899013, 0.0235601948472796), `500` = c(500, 0.00138222144173778, 
+0.00219573407632577, 0.00278365119795981, 0.00340897111860022, 
+0.00438328737782025, 0.00591410492263717, 0.010134997154612, 
+0.0159497730503104, 0.0185564871388565, 0.0201649557104934, 0.021305788002882, 
+0.0222391953355076, 0.0234982443840029), `750` = c(750, 0.00136926617120187, 
+0.00220627938658952, 0.00278207347911421, 0.00343723108464136, 
+0.00441177094147542, 0.00593155938053703, 0.0101212384027732, 
+0.0158329539639887, 0.0184505021492885, 0.0200971092094903, 0.0212134064888182, 
+0.0221790396015763, 0.0234741784797023), `1000` = c(1000, 0.00137427108101005, 
+0.00220531383360885, 0.00280374191430434, 0.00345851096304081, 
+0.00439460350000821, 0.00595719408311324, 0.0101981868726643, 
+0.0159558007598192, 0.018541579368193, 0.0201872908757718, 0.0213201944053304, 
+0.022205002688817, 0.0234768963658856), `1250` = c(1250, 0.00135100041059188, 
+0.00219731203488951, 0.00278827000837087, 0.00342866371049778, 
+0.00437121227906767, 0.00594994735644952, 0.0101282778302252, 
+0.0157930542963664, 0.0183884536165205, 0.0200778640062674, 0.0211651097698149, 
+0.0221193040226837, 0.0233513907649339)), .Names = c("quantile", 
+"25", "50", "100", "250", "500", "750", "1000", "1250"), row.names = c("", 
+"0.1%", "1%", "2.5%", "5%", "10%", "20%", "50%", "80%", "90%", 
+"95%", "97.5%", "99%", "99.9%"), class = "data.frame")
+
+
+bvr.test <- function(Y, detrend=FALSE) {
+	# Tests for a unit root of an AR(1) process using the variance ratio
+	# test of Breitung.
+
+	if (!exists("bvr_qtab")) {
+		stop("Could not find quantile table bvr_qtab")
+	}
+	
+    DNAME <- deparse(substitute(Y))
+	STAT <- bvr_rho (Y, detrend=detrend)
+	
+	if (detrend) {
+		PVAL <- quantile_table_interpolate(bvr_qtab_detrended, length(Y), STAT)
+	} else {
+		PVAL <- quantile_table_interpolate(bvr_qtab, length(Y), STAT)
+	}
+    METHOD <- "Breitung Variance Ratio Test for a Unit Root"
+    names(STAT) <- "rho"
+    alternative <- "stationary"
+    structure(list(statistic = STAT, alternative = alternative, 
+        p.value = PVAL, method = METHOD, data.name = DNAME), 
+        class = "htest")
+    
+}
+
+bvr_power <- function (a0=0, a1=0.95, trend=0, n=250, nrep=10000, p.value=0.05, detrend=FALSE) {
+	# Uses simulation to estimate the power of the Breitung's variance ratio test
+	ur_power (function(X) bvr.test(X, detrend=detrend), a0=a0, a1=a1, trend=trend, 
+        n=n, nrep=nrep, p.value=p.value)
+}
+
+bvr_power_table <- function (nrep=1000, p.value=0.05,
+	a1=c(0.995, 0.99, 0.98, 0.97, 0.96, 0.95),
+    trend=0,
+	n=c(100, 250, 500, 750, 1000, 1250),
+	detrend=FALSE) {
+	# Constructs a table of power estimates of Breitung's variance ratio test
+	ur_power_table(function(X) bvr.test(X, detrend=detrend), nrep=nrep, p.value=p.value, 
+        a1=a1, trend=trend, n=n)
+}
+

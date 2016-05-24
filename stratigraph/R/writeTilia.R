@@ -1,0 +1,5 @@
+"writeTilia" <-
+function(...){
+  writeGPDascii(...)
+}
+

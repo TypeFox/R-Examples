@@ -1,0 +1,19 @@
+ci.yhat<-function(bty,CI){ 
+     switch(bty,
+      perc=
+        {
+        return(c(CI$perc[4],CI$perc[5]))
+        },
+      basic=
+        {
+        return(c(CI$basic[4],CI$basic[5]))
+        },
+      bca=
+        {
+        return(c(CI$bca[4],CI$bca[5]))
+        },
+      norm=
+        {
+        return(c(CI$norm[2],CI$norm[3]))
+        }) 
+}

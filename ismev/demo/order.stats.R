@@ -1,0 +1,6 @@
+data(venice)
+venice.rl <- rlarg.fit(venice[,-1])
+rlarg.diag(venice.rl)
+rlarg.fit(venice[,-1], r = 5)
+covar <- as.matrix((venice[,1] - 1956)/51)
+rlarg.fit(venice[,-1], ydat = covar, mul = 1)

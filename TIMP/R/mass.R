@@ -1,0 +1,6 @@
+"mass" <-
+function (...) 
+{
+    new("mass", ...)
+}
+

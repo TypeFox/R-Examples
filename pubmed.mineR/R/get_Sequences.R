@@ -1,0 +1,1 @@
+get_Sequences = function(x,filename){res = getURL(paste("http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=",paste(x,collapse=","),"&rettype=fasta",sep=""));write(res,file=paste(filename,"_sequences_fasta.txt"))}

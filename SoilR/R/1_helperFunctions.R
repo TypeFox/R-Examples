@@ -1,0 +1,19 @@
+#
+# vim:set ff=unix expandtab ts=2 sw=2:
+fromToSplitter=function(){"_to_"}
+#####################################################################
+getRecipient=function(stri){
+  as.numeric(unlist(strsplit(stri,split=fromToSplitter()))[[2]])
+}
+#####################################################################
+getSender=function(stri){
+  as.numeric(unlist(strsplit(stri,split=fromToSplitter()))[[1]])
+}
+#####################################################################
+key=function(i,j){
+  paste(i,fromToSplitter(),j,sep="")
+}
+#####################################################################
+stockKey=function(ip){paste("particles_in_pool_",ip,sep="")}
+#####################################################################
+leaveKey=function(ip){paste("particles_leaving_pool_",ip,sep="")}

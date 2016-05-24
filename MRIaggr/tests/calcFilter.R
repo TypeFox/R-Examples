@@ -1,0 +1,41 @@
+require(MRIaggr)
+
+M <- matrix(c(rep(1, 15 * 30), rep(0, 15 * 30)), 30, 30)
+
+
+resG.2D <- calcFilter(M, filter = "2D_G3")
+resG_w.2D <- calcFilter(M, filter = "2D_G3", bilateral = TRUE)
+resM.2D <- calcFilter(M, filter = "2D_M3")
+resI.2D <- calcFilter(M, filter = "2D_I3")
+resSx.2D <- calcFilter(M, filter = "2D_Sx")
+resSy.2D <- calcFilter(M, filter = "2D_Sy")
+resSx_w.2D <- calcFilter(M, filter = "2D_Sx", bilateral = TRUE)
+resSy_w.2D <- calcFilter(M, filter = "2D_Sy", bilateral = TRUE)
+
+fields::image.plot(resG.2D$res)
+fields::image.plot(resG_w.2D$res)
+fields::image.plot(resM.2D$res)
+fields::image.plot(resI.2D$res)
+fields::image.plot(resSx.2D$res)
+fields::image.plot(resSy.2D$res)
+fields::image.plot(resSx_w.2D$res)
+fields::image.plot(resSy_w.2D$res)
+
+
+resG.2D_NArm <- calcFilter(M, filter = "2D_G3", na.rm = TRUE)
+resG_w.2D_NArm <- calcFilter(M, filter = "2D_G3", bilateral = TRUE,na.rm = TRUE)
+resM.2D_NArm <- calcFilter(M, filter = "2D_M3", na.rm = TRUE)
+resI.2D_NArm <- calcFilter(M, filter = "2D_I3", na.rm = TRUE)
+resSx.2D_NArm <- calcFilter(M, filter = "2D_Sx", na.rm = TRUE)
+resSy.2D_NArm <- calcFilter(M, filter = "2D_Sy", na.rm = TRUE)
+resSx_w.2D_NArm <- calcFilter(M, filter = "2D_Sx", bilateral = TRUE,na.rm = TRUE)
+resSy_w.2D_NArm <- calcFilter(M, filter = "2D_Sy", bilateral = TRUE,na.rm = TRUE)
+
+fields::image.plot(resG.2D_NArm$res)
+fields::image.plot(resG_w.2D_NArm$res)
+fields::image.plot(resM.2D_NArm$res)
+fields::image.plot(resI.2D_NArm$res)
+fields::image.plot(resSx.2D_NArm$res)
+fields::image.plot(resSy.2D_NArm$res)
+fields::image.plot(resSx_w.2D_NArm$res)
+fields::image.plot(resSy_w.2D_NArm$res)

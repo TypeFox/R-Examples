@@ -1,0 +1,37 @@
+# NIST constants non-SI
+
+kNISTnonSIatomicUnitOf1stHyperpolarizability <- 3.206361449e-53
+kNISTnonSIatomicUnitOf2ndHyperpolarizability <- 6.23538054e-65
+kNISTnonSIatomicUnitOfAction <- 1.054571726e-34
+kNISTnonSIatomicUnitOfCharge <- 1.602176565e-19
+kNISTnonSIatomicUnitOfChargeDensity <- 1081202338000
+kNISTnonSIatomicUnitOfCurrent <- 0.00662361795
+kNISTnonSIatomicUnitOfElectricDipoleMoment <- 8.47835326e-30
+kNISTnonSIatomicUnitOfElectricField <- 514220652000
+kNISTnonSIatomicUnitOfElectricFieldGradient <- 9.717362e+21
+kNISTnonSIatomicUnitOfElectricPolarizability <- 1.6487772754e-41
+kNISTnonSIatomicUnitOfElectricPotential <- 27.21138505
+kNISTnonSIatomicUnitOfElectricQuadrupoleMoment <- 4.486551331e-40
+kNISTnonSIatomicUnitOfEnergy <- 4.35974434e-18
+kNISTnonSIatomicUnitOfLength <- 5.2917721092e-11
+kNISTnonSIatomicUnitOfMagneticDipoleMoment <- 1.854801936e-23
+kNISTnonSIatomicUnitOfMagneticFluxDensity <- 235051.7464
+kNISTnonSIatomicUnitOfMagnetizability <- 7.891036607e-29
+kNISTnonSIatomicUnitOfMass <- 9.10938291e-31
+kNISTnonSIatomicUnitOfMomentum <- 1.99285174e-24
+kNISTnonSIatomicUnitOfPermittivity <- 1.112650056e-10
+kNISTnonSIatomicUnitOfTime <- 2.418884326502e-17
+kNISTnonSIatomicUnitOfVelocity <- 2187691.26379
+kNISTnonSIelectronVolt <- 1.602176565e-19
+kNISTnonSInaturalUnitOfAction <- 1.054571726e-34
+kNISTnonSInaturalUnitOfActionInEVS <- 6.58211928e-16
+kNISTnonSInaturalUnitOfEnergy <- 8.18710506e-14
+kNISTnonSInaturalUnitOfEnergyInMeV <- 0.510998928
+kNISTnonSInaturalUnitOfLength <- 3.86159268e-13
+kNISTnonSInaturalUnitOfMass <- 9.10938291e-31
+kNISTnonSInaturalUnitOfMomentum <- 2.73092429e-22
+kNISTnonSInaturalUnitOfMomentumInMeVc <- 0.510998928
+kNISTnonSInaturalUnitOfTime <- 1.28808866833e-21
+kNISTnonSIPlanckConstantOver2PiTimesCInMeVFm <- 197.3269718
+kNISTnonSIspeedOfLightInVacuum <- 299792458
+kNISTnonSIunifiedAtomicMassUnit <- 1.660538921e-27

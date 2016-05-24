@@ -1,0 +1,10 @@
+data (seeds.df)
+interactionPlots(Count~Water+Light,data=seeds.df)
+seeds.df<-within(seeds.df,{Water.F<-factor(Water)})
+seed.fit<-lm(Count~Water.F+Light+Water.F*Light,data=seeds.df)
+eovcheck(seed.fit)
+summary2way(seed.fit,page="table")
+normcheck(seed.fit)
+summary2way(seed.fit,page="interaction")
+interactionPlots(Count~Light+Water,data=seeds.df)
+

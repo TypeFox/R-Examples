@@ -1,0 +1,9 @@
+logpoissnormal=function(theta,datapar)
+{
+y=datapar$data
+npar=datapar$par
+lambda=exp(theta)
+loglike=log(dgamma(lambda,shape=sum(y)+1,scale=1/length(y)))
+logprior=log(dnorm(theta,mean=npar[1],sd=npar[2]))
+return(loglike+logprior)
+}

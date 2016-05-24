@@ -1,0 +1,1 @@
+qhelp <- function(t,l,m,rho){ rho*l*(1-exp(-(l-m)*t))/(rho*l+(l*(1-rho)-m)*exp(-(l-m)*t)) }  #q(t)

@@ -1,0 +1,103 @@
+TreeStat <-
+function(myinput,mystat,method="complete",metric="euclidean",metric.args=list()){
+        #index table
+        if(data.class(myinput)=="dist")hc<-hclust(myinput,method=method)
+        if(data.class(myinput)=="matrix"){
+		if(metric=="define.metric"){
+			#define.metric<-match.fun(define.metric)
+			define.metric<-match.fun(metric)
+			mymetric.args<-vector("list",length(metric.args)+1)
+			mymetric.args[[1]]<-myinput
+			if(length(mymetric.args)>1){mymetric.args[2:length(mymetric.args)]<-
+				metric.args}
+			mydis<-do.call(define.metric,mymetric.args)
+			mydis<-data.matrix(mydis)
+			#mydis<-define.metric(myinput,...)
+                        hc<-hclust(as.dist(mydis),method=method)
+		}
+		else{
+                	if(metric!="pearson"&metric!="kendall"&metric!="spearman"){
+                        	hc<-hclust(dist(myinput,method=metric),method=method)
+                	}
+                	if(metric=="pearson"|metric=="kendall"|metric=="spearman"){
+                        	hc<-hclust(as.dist(1-cor(t(myinput),method=metric,
+                                	use="pairwise.complete.obs")),method=method)
+                	}
+		}
+        }
+        if(data.class(myinput)=="hclust")hc<-myinput
+        if(data.class(myinput)!="dist"&data.class(myinput)!="matrix"&
+                data.class(myinput)!="hclust")stop("Inappropriate input data")
+        indextable<-cbind(hc$merge,hc$height)
+        dimnames(indextable)[[2]]<-c("index1","index2","height")
+        #cluster size
+        clustersize<-rep(NA,nrow(indextable))
+        csleft<-rep(NA,nrow(indextable))
+        csleft[indextable[,"index1"]<0]<-1
+        csright<-rep(NA,nrow(indextable))
+        csright[indextable[,"index2"]<0]<-1
+        while(is.na(sum(clustersize))){
+                clustersize<-csleft+csright
+                csleft[indextable[,"index1"]>0]<-
+                        clustersize[indextable[indextable[,"index1"]>0,"index1"]]
+                csright[indextable[,"index2"]>0]<-
+                        clustersize[indextable[indextable[,"index2"]>0,"index2"]]
+        }
+        #fldc
+        fldc<-rep(0,nrow(indextable))
+        hp<-indextable[indextable[,"index1"]>0,"height"]
+        hc<-indextable[indextable[indextable[,"index1"]>0,"index1"],"height"]
+        fldc[indextable[indextable[,"index1"]>0,"index1"]]<-(hp-hc)/hp
+        hp<-indextable[indextable[,"index2"]>0,"height"]
+        hc<-indextable[indextable[indextable[,"index2"]>0,"index2"],"height"]
+        fldc[indextable[indextable[,"index2"]>0,"index2"]]<-(hp-hc)/hp
+        #NaN values occur hc==hp==0
+        fldc[is.na(fldc)]<-0
+        fldc<-abs(fldc)
+	#fldcc
+        fldcc<-rep(0,nrow(indextable))
+        fldcs<-rep(0,nrow(indextable))
+        hp<-indextable[,"height"]
+        hc1<-rep(0,nrow(indextable))
+        hc1[indextable[,"index1"]>0]<-
+                indextable[indextable[indextable[,"index1"]>0,"index1"],"height"]
+        hc2<-rep(0,nrow(indextable))
+        hc2[indextable[,"index2"]>0]<-
+                indextable[indextable[indextable[,"index2"]>0,"index2"],"height"]
+        hdif<-hp-(hc1-hc2)/2
+        fldcc[indextable[indextable[,"index1"]>0,"index1"]]<-
+                hdif[indextable[,"index1"]>0]/hc1[indextable[,"index1"]>0]
+        fldcc[indextable[indextable[,"index2"]>0,"index2"]]<-
+                hdif[indextable[,"index2"]>0]/hc2[indextable[,"index2"]>0]
+        fldcc[is.na(fldcc)]<-0
+        #when children node has height 0
+        fldcc[fldcc=="Inf"]<-1e5
+        rm(hp,hdif,hc1,hc2)
+        #bldc
+        bldc<-rep(0,nrow(indextable))
+        hl<-rep(0,nrow(indextable))
+        hr<-rep(0,nrow(indextable))
+        sl<-rep(1,nrow(indextable))
+        sr<-rep(1,nrow(indextable))
+        hl[indextable[,"index1"]>0]<-
+                indextable[indextable[indextable[,"index1"]>0,"index1"],"height"]
+        hr[indextable[,"index2"]>0]<-
+                indextable[indextable[indextable[,"index2"]>0,"index2"],"height"]
+        sl[indextable[,"index1"]>0]<-
+                clustersize[indextable[indextable[,"index1"]>0,"index1"]]
+        sr[indextable[,"index2"]>0]<-
+                clustersize[indextable[indextable[,"index2"]>0,"index2"]]
+        bldc<-(2*indextable[,"height"]-hl-hr)/2/indextable[,"height"]
+        #NaN values occur when node heightH==hl==hr
+        bldc[is.na(bldc)]<-0
+	slb<-2*indextable[,"height"]-hl-hr
+        slb[is.na(slb)]<-0
+        #output statistics
+	indextable<-cbind(indextable,clustersize,fldc,bldc,fldcc,slb)
+        if(any(mystat=="all"))return(indextable[,-ncol(indextable)])
+	if(!any(mystat=="all")){
+		m<-4+match(mystat,c("fldc","bldc","fldcc","slb"))
+		indextable<-indextable[,c(1:4,m)]
+		return(indextable)
+	}
+}

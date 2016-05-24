@@ -1,0 +1,6 @@
+"dat" <-
+function (...) 
+{
+    new("dat", ...)
+}
+

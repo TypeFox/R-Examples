@@ -1,0 +1,1 @@
+Give_Sentences = function(m,abs){m = paste("[ ]",m,"[ ,;.]",sep="");check_genes = regexpr(m,abs@Abstract); temp1 = which(check_genes != -1);temp2 = abs@Abstract[temp1];temp3 = abs@PMID[temp1];test = lapply(temp2,function(x){tempA = SentenceToken(x);tempB = regexpr(m,tempA); tempC = which(tempB != -1); tempD = tempA[tempC];return(tempD)}); attr(test,"PMID")=temp3;return(test)}

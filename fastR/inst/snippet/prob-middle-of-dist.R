@@ -1,0 +1,5 @@
+pexp(1+1) - pexp(1-1)
+pexp(1/2 + 1/2,rate=2) - pexp(1/2 - 1/2,rate=2)
+punif(0.5+ sqrt(1/12),0,1) - punif(0.5 - sqrt(1/12),0,1)
+s <- sqrt(8/(6^2*7))
+pbeta(2/6 + s,shape1=2,shape2=4) - pbeta(2/6 - s,shape1=2,shape2=4)

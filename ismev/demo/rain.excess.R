@@ -1,0 +1,8 @@
+data(rain)
+mrl.plot(rain)
+gpd.fitrange(rain, 20, 50, nint = 20)
+rain.gpd <- gpd.fit(rain, 30)
+gpd.diag(rain.gpd)
+gpd.profxi(rain.gpd, -0.1, 0.5)
+gpd.prof(rain.gpd, 100, 70, 400)
+pp.fit(rain, 30)

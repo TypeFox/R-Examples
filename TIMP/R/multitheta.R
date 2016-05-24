@@ -1,0 +1,5 @@
+"multitheta" <-
+function(...) { 
+	   new("multitheta", ...)
+}
+

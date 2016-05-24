@@ -1,0 +1,115 @@
+JCORErandomized <-
+function(procno=1,COREobj,boundaries,nprocs=1,rngoffset=0){
+minscore<-max(COREobj$minscore,min(COREobj$coreTable[,"score"]))
+set.seed(COREobj$seedme)
+COREobj$nshuffle<-COREobj$nshuffle-rngoffset
+myshuffles<-COREobj$nshuffle%/%nprocs
+shuffleres<-COREobj$nshuffle%%nprocs
+shuffleskip<-myshuffles*(procno-1)+min(shuffleres,procno-1)
+if(procno<=shuffleres)myshuffles<-myshuffles+1
+weightList<-vector(mode="list",length=nrow(COREobj$coreTable))
+weight<-COREobj$input[,"weight"]
+for(i in 1:nrow(COREobj$coreTable)){
+	za<-COREobj$input[COREobj$input[,"chrom"]==COREobj$coreTable[i,"chrom"],,drop=F]
+	cigt<-pmin(za[,"end"],COREobj$coreTable[i,"end"])>=
+		pmax(za[,"start"],COREobj$coreTable[i,"start"])
+	zac<-za[cigt,,drop=F]
+	weight[COREobj$input[,"chrom"]==COREobj$coreTable[i,"chrom"]][cigt]<-
+		weight[COREobj$input[,"chrom"]==COREobj$coreTable[i,"chrom"]][cigt]*
+		(1-((pmin(zac[,"end"],COREobj$coreTable[i,"end"])-
+		pmax(zac[,"start"],COREobj$coreTable[i,"start"])+1)/
+		(pmax(zac[,"end"],COREobj$coreTable[i,"end"])-
+    pmin(zac[,"start"],COREobj$coreTable[i,"start"])+1))^COREobj$pow)
+	weightList[[i]]<-matrix(ncol=2,
+    data=c(which(COREobj$input[,"chrom"]==COREobj$coreTable[i,"chrom"])[cigt],
+    weight[COREobj$input[,"chrom"]==COREobj$coreTable[i,"chrom"]][cigt]))
+}
+simscores<-matrix(ncol=myshuffles,nrow=nrow(COREobj$coreTable))
+chrmax<-nrow(boundaries)
+advanceRNG(randopt=COREobj$shufflemethod,nrand=shuffleskip+rngoffset,
+	nevents=nrow(COREobj$input))
+for(shuffle in 1:myshuffles){
+if(COREobj$shufflemethod=="SIMPLE")z<-
+	cbind(randomEventMoves(COREobj$input[,"end"]-COREobj$input[,"start"]+1,boundaries),
+	COREobj$input[,"weight"])
+if(COREobj$shufflemethod=="RESCALE")z<-
+	cbind(randomRescaledEventMoves(COREobj$input[,c("start","end","chrom","weight")],
+	boundaries),COREobj$input[,"weight"])
+dimnames(z)[[2]]<-c("start","end","chrom","weight")
+chu<-unique(z[,"chrom"])
+chc<-rep(0,length(chu))
+for(i in 1:length(chu))chc[i]<-sum(z[z[, "chrom"]==chu[i],"weight"])
+scoremat<-matrix(nrow=nrow(COREobj$coreTable),ncol=length(chu),data=0)
+for(ich in 1:length(chu)){
+	wza<-which(z[,"chrom"]==chu[rev(order(chc))][ich])
+	za<-z[wza,c("start","end","weight"),drop=F]
+	oza<-order(za[,"start"])
+	ooza<-order(oza)
+	za<-za[oza,,drop=F]
+	spairs<-makepairs(za)
+	spairs<-spairs[order(spairs[,"start"]),,drop=F]
+	psched<-interval.schedule(spairs)
+	score<-rep(0,nrow(spairs))
+	for(sch in 1:max(psched)){
+		pspairs<-spairs[psched==sch,,drop=F]
+		ci<-overlap.indicator(pspairs[,"start"],pspairs[,"end"],
+			za[,"start"],za[,"end"])
+		cigt<-(ci[,2]>=ci[,1])
+		if(sum(cigt)>0){
+			pci<-ci[cigt,,drop=F]
+			zas<-za[cigt,,drop=F]
+			zaexp<-zas[rep(1:nrow(zas),times=pci[,2]-pci[,1]+1),,drop=F]
+			pind<-unlist(apply(pci,1,function(v){v[1]:v[2]}))
+			jac<-zaexp[,"weight"]*((pmin(zaexp[,"end"],pspairs[pind,"end"])-
+				pmax(zaexp[,"start"],pspairs[pind,"start"])+1)/
+				(pmax(zaexp[,"end"],pspairs[pind,"end"])-
+				pmin(zaexp[,"start"],pspairs[pind,"start"])+1))^COREobj$pow
+ 			jacsums<-tapply(X=jac,FUN=sum,INDEX=as.factor(pind))
+			score[psched==sch][as.numeric(names(jacsums))]<-jacsums
+		}
+	}
+	for(i in 1:nrow(COREobj$coreTable)){
+		spairs<-spairs[score>=minscore,,drop=F]
+		if(nrow(spairs)==0){
+			scoremat[i:nrow(COREobj$coreTable),ich]<-0
+			break
+		}
+		scoremat[i,ich]<-max(score)
+		if(i==nrow(COREobj$coreTable))break
+		score<-score[score>=minscore]
+		psched<-interval.schedule(spairs)
+		whereIwas<-which(wza%in%weightList[[i]][,1])
+		if(length(whereIwas)>0){
+			whereIamNow<-ooza[whereIwas]
+			zaf<-cbind(za[whereIamNow,,drop=F],
+				weightList[[i]][weightList[[i]][,1]%in%wza,2])
+			dimnames(zaf)[[2]][ncol(zaf)]<-"neweight"
+			za[whereIamNow,"weight"]<-zaf[,"neweight"]
+			zaf<-zaf[order(zaf[,"start"]),,drop=F]
+			for(sch in 1:max(psched)){
+				pspairs<-spairs[psched==sch,,drop=F]
+				ci<-overlap.indicator(pspairs[,"start"],pspairs[,"end"],
+					zaf[,"start"],zaf[,"end"])
+				cigt<-(ci[,2]>=ci[,1])
+				if(sum(cigt)>0){
+					pci<-ci[cigt,,drop=F]
+      		zas<-zaf[cigt,,drop=F]
+      		zaexp<-zas[rep(1:nrow(zas),times=pci[,2]-pci[,1]+1),,drop=F]
+      		pind<-unlist(apply(pci,1,function(v){v[1]:v[2]}))
+      		jac<-(zaexp[,"neweight"]-zaexp[,"weight"])*
+								((pmin(zaexp[,"end"],pspairs[pind,"end"])-
+       		     	pmax(zaexp[,"start"],pspairs[pind,"start"])+1)/
+          	  	(pmax(zaexp[,"end"],pspairs[pind,"end"])-
+           		 	pmin(zaexp[,"start"],pspairs[pind,"start"])+1))^COREobj$pow
+      		jacsums<-tapply(X=jac,FUN=sum,INDEX=as.factor(pind))
+      		score[psched==sch][as.numeric(names(jacsums))]<-
+      			score[psched==sch][as.numeric(names(jacsums))]+jacsums
+    		}
+  		}
+		}
+	}
+}
+simscores[,shuffle]<-apply(scoremat,1,max)
+}
+return(simscores)
+}

@@ -1,0 +1,16 @@
+print.superthin <- function(x, ...)
+{
+	print(x$X)
+	cat("Super-thin rate:\n")
+	print(x$k)
+	cat("Super-thinned residuals:\n")
+	print(x$residuals)
+	cat("Superposed points:\n")
+	print(x$super)
+	cat("Automatically kept points:\n")	
+	print(x$keep1)
+	cat("Kept points after thinning:\n")
+	print(x$keep2)
+	cat("Deleted points:\n")
+	print(x$deleted)
+}

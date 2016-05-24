@@ -1,0 +1,11 @@
+data (chalk.df)
+interactionPlots(Density~Lab+Chalk,data=chalk.df)
+interactionPlots(Density~Chalk+Lab,data=chalk.df)
+chalk.df<-within(chalk.df,{Lab.F<-factor(Lab)})
+chalk.fit<-lm(Density~Chalk+Lab.F+Chalk*Lab.F,data=chalk.df)
+eovcheck(chalk.fit)
+summary2way(chalk.fit,page="table")
+normcheck(chalk.fit)
+summary2way(chalk.fit,page="interaction")
+summary2way(chalk.fit,page="means")
+

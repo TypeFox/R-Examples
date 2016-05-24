@@ -1,0 +1,36 @@
+# The ISOpureR package is copyright (c) 2014 Ontario Institute for Cancer Research (OICR)
+# This package and its accompanying libraries is free software; you can redistribute it and/or modify it under the terms of the GPL
+# (either version 1, or at your option, any later version) or the Artistic License 2.0.  Refer to LICENSE for the full license text.
+# OICR makes no representations whatsoever as to the SOFTWARE contained herein.  It is experimental in nature and is provided WITHOUT
+# WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE OR ANY OTHER WARRANTY, EXPRESS OR IMPLIED. OICR MAKES NO REPRESENTATION
+# OR WARRANTY THAT THE USE OF THIS SOFTWARE WILL NOT INFRINGE ANY PATENT OR OTHER PROPRIETARY RIGHT.
+# By downloading this SOFTWARE, your Institution hereby indemnifies OICR against any loss, claim, damage or liability, of whatsoever kind or
+# nature, which may arise from your Institution's respective use, handling or storage of the SOFTWARE.
+# If publications result from research using this SOFTWARE, we ask that the Ontario Institute for Cancer Research be acknowledged and/or
+# credit be given to OICR scientists, as scientifically appropriate.
+
+### FUNCTION: ISOpure.util.matlab_less_than.R ################################################
+# Change '>' to match the Matlab: when one of the values is NA or NaN, 
+# return false
+#
+# Input variables:
+#   a, b: two scalars 
+# 
+# Output variables:
+#   Logical: TRUE if a < b, FALSE if a >= b OR if one of a, b is NA or NaN
+#
+# REVISIT: should extend to vectors/matrices
+
+ISOpure.util.matlab_less_than <- function(a, b) {
+
+	# If either a or b is NA or NaN, output false, not NA
+	if (is.na(a) || is.na(b) || is.nan(a) || is.nan(b)){
+		output <- FALSE;
+	}
+	# otherwise R handles cases the same as Matlab (Inf, -Inf, etc.)
+	else { 
+		output <- (a < b);
+	}
+
+	return(output);
+}

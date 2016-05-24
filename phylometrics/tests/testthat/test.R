@@ -1,0 +1,18 @@
+library(phylometrics)
+phy <- treesim(pars=c(0.1,0.1,0.05,0.05,0.1,0.1),N0=1,N1=1,sampling.f=c(1,1),max.t=Inf)
+test_that("treesim works well", {
+  expect_equal(length(phy$tip.label),2)
+  expect_equal(phy$tip.label[1],"1")
+  expect_equal(dim(phy$edge),c(2,2))
+  expect_equal(dim(phy$edge),c(2,2))
+  expect_equal(phy$edge.length[1],phy$edge.length[2])
+  expect_equal(length(phy$edge.length),2)
+  expect_equal(phy$Nnode,1)
+  expect_equal(sum(phy$tip.state),1)
+})
+test_that("treestat works well", {
+  expect_equal(treestat(phy,func=tars),1.5)
+  expect_equal(treestat(phy,func=noto),1)
+  expect_equal(treestat(phy,func=sscd),1)
+  expect_equal(is.na(treestat(phy,func=fpd)),TRUE)
+})

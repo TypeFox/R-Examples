@@ -1,0 +1,21 @@
+survSNP.power.table <-
+function(GHRs,ns,rafs,erates,pilm,lm,model,test,alpha,exactvar=FALSE,B=0,para=FALSE)
+  {
+    GHR<-raf<-n<-erate<-NULL
+    res=foreach(GHR=GHRs,.combine=rbind)%:%
+      foreach(raf=rafs,.combine=rbind)%:%
+        foreach(n=ns,.combine=rbind)%:%
+            foreach(erate=erates,.combine=rbind)%do%{
+                sim.snp.expsurv.power(GHR=GHR,
+                                      B=B,
+                                      n=n,
+                                      raf=raf,
+                                      erate=erate,
+                                      pilm=pilm,
+                                      lm=lm,
+                                      model=model,
+                                      test=test,
+                                      alpha=alpha,
+                                      exactvar=exactvar)}
+    return(res)
+  }

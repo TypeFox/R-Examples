@@ -1,0 +1,51 @@
+getLOH <-
+function(cali,sam.dat,para){
+	oo<-cali$oo
+	x0<-oo$x0
+	y0<-oo$y0
+	plist<-cali$plist
+	type<-cali$type
+	p<-cali$sam.p
+	n0<-log2(1+(type-1)*p)+1
+	nn<-type
+	if(para$model==1){
+		nn<-1 # consider only diploid non-aberrant cell mix-up
+	}
+	if(para$model==2){
+		n0<-log2(nn)+1
+	}
+	if(para$is.tri){
+		n0<-log2(2+p)
+		b0<-abs(1/(2+p)-0.5)
+		nn<-1
+	}
+	nc<-c(0,0)
+	i<-c(1,2)
+	ll<-(log(p*i+(1-p)*2*nn)/log(2)-n0)+y0
+	bb<-abs((p*nc+(1-p)*nn)/(p*i+(1-p)*2*nn)-0.5)+x0
+	if(para$is.tri)bb<-abs((p*nc+(1-p))/(p*i+(1-p)*2*nn)-0.5)+x0-b0
+	del.loh<-c()
+	cn.loh<-c()
+	amp.3<-c()
+	for(pp in plist){
+		if(abs(sam.dat[pp,6]-bb[1])<para$std.BAF&abs(sam.dat[pp,4]-ll[1])<para$std.LRR){
+			del.loh<-c(del.loh,pp)
+		}
+		if(abs(sam.dat[pp,6]-bb[2])<para$std.BAF&abs(sam.dat[pp,4]-ll[2])<para$std.LRR){
+			cn.loh<-c(cn.loh,pp)
+		}
+	}
+	i<-3
+	nc<-1
+	ll<-(log(p*i+(1-p)*2*nn)/log(2)-n0)+y0
+	bb<-abs((p*nc+(1-p)*nn)/(p*i+(1-p)*2*nn)-0.5)+x0
+	for(pp in plist){
+		if(abs(sam.dat[pp,6]-bb[1])<para$std.BAF&abs(sam.dat[pp,4]-ll[1])<para$std.LRR){
+			amp.3<-c(amp.3,pp)
+		}
+	}
+	cali$del.loh<-del.loh
+	cali$cn.loh<-cn.loh
+	cali$amp.3<-amp.3
+	return(cali)
+}

@@ -1,0 +1,5 @@
+av <-
+function(...)
+
+  ANOVA(...)
+

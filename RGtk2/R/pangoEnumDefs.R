@@ -1,0 +1,229 @@
+PangoAttrType<-c("invalid" = 0,
+	"language" = 1,
+	"family" = 2,
+	"style" = 3,
+	"weight" = 4,
+	"variant" = 5,
+	"stretch" = 6,
+	"size" = 7,
+	"font-desc" = 8,
+	"foreground" = 9,
+	"background" = 10,
+	"underline" = 11,
+	"strikethrough" = 12,
+	"rise" = 13,
+	"shape" = 14,
+	"scale" = 15,
+	"fallback" = 16,
+	"letter-spacing" = 17,
+	"underline-color" = 18,
+	"strikethrough-color" = 19,
+	"absolute-size" = 20,
+	"gravity" = 21,
+	"gravity-hint" = 22)
+storage.mode(PangoAttrType) <- 'integer'
+class(PangoAttrType) <- 'enums' 
+
+PangoUnderline<-c("none" = 0,
+	"single" = 1,
+	"double" = 2,
+	"low" = 3)
+storage.mode(PangoUnderline) <- 'integer'
+class(PangoUnderline) <- 'enums' 
+
+PangoCoverageLevel<-c("none" = 0,
+	"fallback" = 1,
+	"approximate" = 2,
+	"exact" = 3)
+storage.mode(PangoCoverageLevel) <- 'integer'
+class(PangoCoverageLevel) <- 'enums' 
+
+PangoRenderPart<-c("foreground" = 0,
+	"background" = 1,
+	"underline" = 2,
+	"strikethrough" = 3)
+storage.mode(PangoRenderPart) <- 'integer'
+class(PangoRenderPart) <- 'enums' 
+
+PangoScript<-c("invalid-code" = 0,
+	"common" = 1,
+	"inherited" = 2,
+	"arabic" = 3,
+	"armenian" = 4,
+	"bengali" = 5,
+	"bopomofo" = 6,
+	"cherokee" = 7,
+	"coptic" = 8,
+	"cyrillic" = 9,
+	"deseret" = 10,
+	"devanagari" = 11,
+	"ethiopic" = 12,
+	"georgian" = 13,
+	"gothic" = 14,
+	"greek" = 15,
+	"gujarati" = 16,
+	"gurmukhi" = 17,
+	"han" = 18,
+	"hangul" = 19,
+	"hebrew" = 20,
+	"hiragana" = 21,
+	"kannada" = 22,
+	"katakana" = 23,
+	"khmer" = 24,
+	"lao" = 25,
+	"latin" = 26,
+	"malayalam" = 27,
+	"mongolian" = 28,
+	"myanmar" = 29,
+	"ogham" = 30,
+	"old-italic" = 31,
+	"oriya" = 32,
+	"runic" = 33,
+	"sinhala" = 34,
+	"syriac" = 35,
+	"tamil" = 36,
+	"telugu" = 37,
+	"thaana" = 38,
+	"thai" = 39,
+	"tibetan" = 40,
+	"canadian-aboriginal" = 41,
+	"yi" = 42,
+	"tagalog" = 43,
+	"hanunoo" = 44,
+	"buhid" = 45,
+	"tagbanwa" = 46,
+	"braille" = 47,
+	"cypriot" = 48,
+	"limbu" = 49,
+	"osmanya" = 50,
+	"shavian" = 51,
+	"linear-b" = 52,
+	"tai-le" = 53,
+	"ugaritic" = 54,
+	"new-tai-lue" = 55,
+	"buginese" = 56,
+	"glagolitic" = 57,
+	"tifinagh" = 58,
+	"syloti-nagri" = 59,
+	"old-persian" = 60,
+	"kharoshthi" = 61,
+	"unknown" = 62,
+	"balinese" = 63,
+	"cuneiform" = 64,
+	"phoenician" = 65,
+	"phags-pa" = 66,
+	"nko" = 67)
+storage.mode(PangoScript) <- 'integer'
+class(PangoScript) <- 'enums' 
+
+PangoStyle<-c("normal" = 0,
+	"oblique" = 1,
+	"italic" = 2)
+storage.mode(PangoStyle) <- 'integer'
+class(PangoStyle) <- 'enums' 
+
+PangoVariant<-c("normal" = 0,
+	"small-caps" = 1)
+storage.mode(PangoVariant) <- 'integer'
+class(PangoVariant) <- 'enums' 
+
+PangoWeight<-c("ultralight" = 200,
+	"light" = 300,
+	"normal" = 400,
+	"semibold" = 600,
+	"bold" = 700,
+	"ultrabold" = 800,
+	"heavy" = 900,
+	"book" = 380,
+	"ultraheavy" = 1000,
+	"thin" = 100,
+	"medium" = 500)
+storage.mode(PangoWeight) <- 'integer'
+class(PangoWeight) <- 'enums' 
+
+PangoStretch<-c("ultra-condensed" = 0,
+	"extra-condensed" = 1,
+	"condensed" = 2,
+	"semi-condensed" = 3,
+	"normal" = 4,
+	"semi-expanded" = 5,
+	"expanded" = 6,
+	"extra-expanded" = 7,
+	"ultra-expanded" = 8)
+storage.mode(PangoStretch) <- 'integer'
+class(PangoStretch) <- 'enums' 
+
+PangoAlignment<-c("left" = 0,
+	"center" = 1,
+	"right" = 2)
+storage.mode(PangoAlignment) <- 'integer'
+class(PangoAlignment) <- 'enums' 
+
+PangoWrapMode<-c("word" = 0,
+	"char" = 1)
+storage.mode(PangoWrapMode) <- 'integer'
+class(PangoWrapMode) <- 'enums' 
+
+PangoTabAlign<-c("left" = 0)
+storage.mode(PangoTabAlign) <- 'integer'
+class(PangoTabAlign) <- 'enums' 
+
+PangoDirection<-c("ltr" = 0,
+	"rtl" = 1,
+	"ttb-ltr" = 2,
+	"ttb-rtl" = 3)
+storage.mode(PangoDirection) <- 'integer'
+class(PangoDirection) <- 'enums' 
+
+PangoEllipsizeMode<-c("none" = 0,
+	"start" = 1,
+	"middle" = 2,
+	"end" = 3)
+storage.mode(PangoEllipsizeMode) <- 'integer'
+class(PangoEllipsizeMode) <- 'enums' 
+
+PangoGravity<-c("south" = 0,
+	"east" = 1,
+	"north" = 2,
+	"west" = 3,
+	"auto" = 4)
+storage.mode(PangoGravity) <- 'integer'
+class(PangoGravity) <- 'enums' 
+
+PangoGravityHint<-c("natural" = 0,
+	"strong" = 1,
+	"line" = 2)
+storage.mode(PangoGravityHint) <- 'integer'
+class(PangoGravityHint) <- 'enums' 
+
+PangoBidiType<-c("l" = 0,
+	"lre" = 1,
+	"lro" = 2,
+	"r" = 3,
+	"al" = 4,
+	"rle" = 5,
+	"rlo" = 6,
+	"pdf" = 7,
+	"en" = 8,
+	"es" = 9,
+	"et" = 10,
+	"an" = 11,
+	"cs" = 12,
+	"nsm" = 13,
+	"bn" = 14,
+	"b" = 15,
+	"s" = 16,
+	"ws" = 17,
+	"on" = 18)
+storage.mode(PangoBidiType) <- 'integer'
+class(PangoBidiType) <- 'enums' 
+
+PangoFontMask<-c("family" = 1,
+	"style" = 2,
+	"variant" = 4,
+	"weight" = 8,
+	"stretch" = 16,
+	"size" = 32)
+storage.mode(PangoFontMask) <- 'numeric'
+class(PangoFontMask) <- 'flags' 
+

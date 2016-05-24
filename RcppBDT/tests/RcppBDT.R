@@ -1,0 +1,2 @@
+
+demo(RcppBDT, package="RcppBDT")

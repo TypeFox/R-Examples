@@ -1,0 +1,1 @@
+itemcor <- function(x){return(x$itemcor)}

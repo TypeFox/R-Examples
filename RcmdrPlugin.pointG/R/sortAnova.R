@@ -1,0 +1,11 @@
+sortAnova<-
+function(modele){
+tableAnova<-Anova(modele)
+if(ncol(tableAnova)==3){
+return(tableAnova[order(tableAnova[,1]/tableAnova[,2],decreasing=TRUE),])
+}
+else{
+nr<-nrow(tableAnova)
+return(tableAnova[c(order(tableAnova[-nr,1]/tableAnova[-nr,2],decreasing=TRUE),nr),])
+}
+}

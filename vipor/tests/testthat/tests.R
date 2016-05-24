@@ -1,0 +1,117 @@
+context("violinscatter functions")
+test_that("Test offsetting",{
+	expect_that(offsetX(1,1), equals(0))
+	expect_that(offsetX(rep(1,10),1:10), equals(rep(0,10)))
+	expect_that(offsetX(1,1:2), throws_error("not the same length"))
+	expect_that(offsetX(1:2,1), throws_error("not the same length"))
+	expect_that(length(unique(offsetX(rep(1,100)))), equals(100))
+	expect_that(offsetX(rep(1,100)), equals(offsetX(rep(1,100))))
+})
+
+test_that("Test single group offsetting",{
+	expect_that(offsetSingleGroup(1), equals(0))
+	expect_that(offsetSingleGroup(NULL), equals(NULL))
+	expect_that(offsetSingleGroup(rep(1,100)), equals(offsetSingleGroup(rep(1,100))))
+	expect_that(length(offsetSingleGroup(rnorm(1000))), equals(1000))
+})
+
+test_that("Test ave with args",{
+	expect_that(aveWithArgs(1:10,rep(1:5,2)), equals(ave(1:10,rep(1:5,2))))
+	expect_that(aveWithArgs(1:10,rep(1:5,2),FUN=median), equals(ave(1:10,rep(1:5,2),FUN=median)))
+	expect_that(aveWithArgs(100:1+.01,rep(1:5,20),FUN=median), equals(ave(100:1+.01,rep(1:5,20),FUN=median)))
+	expect_that(aveWithArgs(100:1+.01,rep(1:5,20),FUN=max), equals(ave(100:1+.01,rep(1:5,20),FUN=max)))
+	expect_that(aveWithArgs(100:1+.01,rep(1:5,20),FUN=max), equals(ave(100:1+.01,rep(1:5,20),FUN=max)))
+	expect_that(aveWithArgs(c(1:5,NA),rep(1:3,2),FUN=max,na.rm=TRUE), equals(rep(c(4,5,3),2)))
+	expect_that(aveWithArgs(c(1:6),rep(1:3,2),FUN=function(x,y)sum(x)+y,3), equals(rep(c(8,10,12),2)))
+	expect_that(aveWithArgs(c(1:6),rep(1:3,2),FUN=function(x,y)x+y,3), equals(1:6+3))
+	expect_that(aveWithArgs(c(6:1),rep(1:3,2),FUN=function(x,y)sqrt(x)+y,3), equals(sqrt(6:1)+3))
+	expect_that(aveWithArgs(c(6:1),rep(1:3,2),FUN=function(x,y)sqrt(x)+y), throws_error('argument.*missing'))
+})
+
+test_that("Test top bottom distribute",{
+	expect_that(topBottomDistribute(1:10), equals(topBottomDistribute(1:10+100)))
+	expect_that(topBottomDistribute(-1:-10), equals(topBottomDistribute(1:10,TRUE)))
+	expect_that(topBottomDistribute(1000), equals(.5))
+	expect_that(topBottomDistribute(-1000), equals(.5))
+	expect_that(topBottomDistribute(1:3)[1], equals(.5)) #could do left to right or right to left
+	expect_that(topBottomDistribute(-1:-3)[3], equals(.5)) #could do left to right or right to left
+	expect_that(length(topBottomDistribute(1:100)), equals(100)) 
+	expect_that(sort(tail(topBottomDistribute(1:100),2)), equals(c(0,1)))
+	expect_that(sort(tail(topBottomDistribute(1:1000),2)), equals(c(0,1)))
+	expect_that(sort(head(topBottomDistribute(1:1000,TRUE),2)), equals(c(0,1)))
+	expect_that(sort(head(topBottomDistribute(1:100,TRUE),2)), equals(c(0,1)))
+	expect_that(sort(head(topBottomDistribute(1:100,TRUE,FALSE),2)), equals(c(1,100)))
+	expect_that(sort(tail(topBottomDistribute(1:100,FALSE,FALSE),2)), equals(c(1,100)))
+	expect_that(sort(tail(topBottomDistribute(1:1000,prop=FALSE),2)), equals(c(1,1000)))
+	expect_that(sort(head(topBottomDistribute(1:1000,prop=FALSE),5)), equals(498:502))
+	expect_that(sort(tail(topBottomDistribute(1:1000,TRUE,prop=FALSE),5)), equals(498:502))
+})
+
+test_that("Test van der Corput generation",{
+	expect_that(vanDerCorput(3), equals(c(1/2,1/4,3/4)))
+	expect_that(vanDerCorput(8), equals(c(1/2,1/4,3/4,1/8,5/8,6/16,14/16,1/16)))
+	expect_that(vanDerCorput(8,start=1), equals(c(1/2,1/4,3/4,1/8,5/8,6/16,14/16,1/16)))
+	expect_that(vanDerCorput(5,start=4), equals(c(1/8,5/8,6/16,14/16,1/16)))
+	expect_that(vanDerCorput(3,3), equals(c(1/3,2/3,1/9)))
+	expect_that(vanDerCorput(3,10), equals(c(1/10,2/10,3/10)))
+	expect_that(vanDerCorput(0,10), equals(c()))
+	expect_that(vanDerCorput(3,1), throws_error('base'))
+	expect_that(vanDerCorput(3,-10), throws_error('base'))
+	expect_that(vanDerCorput(10,0), throws_error('base'))
+	expect_that(vanDerCorput(-10,10), throws_error('n '))
+	expect_that(vanDerCorput(10,10,-100), throws_error('start'))
+	expect_that(length(vanDerCorput(10000)), equals(10000))
+	expect_that(length(unique(vanDerCorput(10000))), equals(10000))
+})
+
+test_that("Test number splitting",{
+	expect_that(number2digits(0), equals(c()))
+	expect_that(number2digits(-1), throws_error('negative'))
+	expect_that(number2digits(10,1), throws_error('base'))
+	expect_that(number2digits(10,0), throws_error('base'))
+	expect_that(number2digits(10,-1), throws_error('base'))
+	expect_that(number2digits(1,123), equals(1))
+	expect_that(number2digits(1,10), equals(1))
+	expect_that(number2digits(101,102), equals(101))
+	expect_that(number2digits(5,4), equals(c(1,1)))
+	expect_that(number2digits(255), equals(rep(1,8)))
+	expect_that(number2digits(65535), equals(rep(1,16)))
+	expect_that(number2digits(65535,16), equals(rep(15,4)))
+	expect_that(number2digits(65534,16), equals(c(14,15,15,15)))
+	expect_that(number2digits(65533,16), equals(c(13,15,15,15)))
+	expect_that(number2digits(4095,8), equals(rep(7,4)))
+	expect_that(length(number2digits(4095,8)), equals(4))
+	expect_that(length(number2digits(4096,8)), equals(5))
+	expect_that(length(number2digits(4096,2)), equals(13))
+})
+
+test_that("Test digit combining",{
+	expect_that(digits2number(c(1,1)), equals(3))
+	expect_that(digits2number(c(1,1,1)), equals(7))
+	expect_that(digits2number(rep(15,4),16), equals(65535))
+	expect_that(digits2number(c(14,15,15,15),16), equals(65534))
+	expect_that(digits2number(c(0,1,1)), equals(6))
+	expect_that(digits2number(c(1,1,rep(0,100))), equals(3))
+	expect_that(digits2number(c(rep(0,15),1)), equals(2^15))
+	expect_that(digits2number(c(rep(0,15),1),5), equals(5^15))
+	expect_that(digits2number(c(rep(0,5),1),5), equals(5^5))
+	expect_that(digits2number(c(1,1,1),1), equals(3))
+	expect_that(digits2number(rep(0,16),2), equals(0))
+	expect_that(digits2number(c(1,1,1),0), throws_error('base')) #doesn't really require an error but probably does not produce a desired result
+	expect_that(digits2number(1,-1), throws_error('base')) #doesn't really require an error but probably does not produce a desired result
+	expect_that(digits2number(-1,10), throws_error('digit')) #doesn't really require an error but probably does not produce a desired result
+})
+
+test_that("Test consistency",{
+	expect_that(digits2number(number2digits(100)), equals(100))
+	expect_that(digits2number(number2digits(100,5),5), equals(100))
+	expect_that(digits2number(number2digits(123456,23),23), equals(123456))
+})
+
+dat<-rnorm(1000)
+labs<-rep(1:4,250)
+test_that("vpPlot returns x positions",{
+	expect_that(length(vpPlot(y=rnorm(100))), equals(100))
+	expect_that(vpPlot(y=dat), equals(1+offsetX(dat)))
+	expect_that(vpPlot(labs,dat), equals(labs+offsetX(dat,labs)))
+})

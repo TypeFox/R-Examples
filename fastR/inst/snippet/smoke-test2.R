@@ -1,0 +1,1 @@
+xchisq.test(smokeTab)

@@ -1,0 +1,1 @@
+.PopedNamespaceEnv <- new.env()

@@ -1,0 +1,15 @@
+"calc2"<-function(){
+a1<-c(1,0,1)
+a2<-c(0,1,1)
+a3<-c(1,1,1)
+gauche<-rbind(a1,a2,a3)
+droite<-c(length(txt1),length(txt2),length(levels(factor(c(txt1,txt2)))))
+#droite<-c(bd1,bd2,bd3,4,5,4,1)
+zz<-solve(gauche,droite)
+zz1<-0
+zz1<<-zz1
+zz1<-matrix(nr=1,nc=3)
+colnames(zz1)<-c("a","b","c")
+zz1[1,]<-zz
+zz1<<-zz1
+}

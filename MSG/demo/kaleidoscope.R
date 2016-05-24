@@ -1,0 +1,16 @@
+set.seed(829)
+x = rnorm(3)
+y = rnorm(3)
+for (i in 1:150) {
+    x = c(x, NA, rnorm(3, tail(x, 1)))
+    y = c(y, NA, rnorm(3, tail(y, 1)))
+}
+x = c(x, NA)
+y = c(y, NA)
+xr = diff(range(x, na.rm = TRUE))
+yr = diff(range(y, na.rm = TRUE))
+x = c(x, x + xr, x + xr/2, x + xr/2)
+y = c(y, y, y + yr, y - yr)
+par(mar = rep(0, 4))
+plot(x, y, type = "n", ann = FALSE, axes = FALSE)
+polygon(x, y, col = sample(colors(), 151), border = NA) 

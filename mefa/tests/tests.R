@@ -1,0 +1,2 @@
+library(mefa)
+demo(mefa)

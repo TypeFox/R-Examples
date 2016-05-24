@@ -1,0 +1,26 @@
+####################################################################################
+
+
+library(coda)
+library(sp)
+
+.onLoad <-
+    function(libname, pkgname)
+{
+      library.dynam(pkgname, pkgname, lib.loc=libname)
+}
+
+
+.onAttach <-
+    function(libname, pkgname)
+{
+        ## figureout the version automatically
+        library(help=spTimer)$info[[1]] -> version
+        version <- version[pmatch("Version",version)]
+        um <- strsplit(version," ")[[1]]
+        version <- um[nchar(um)>0][2]
+        packageStartupMessage("\n## spTimer version: ", version," \n")
+}
+
+
+####################################################################################

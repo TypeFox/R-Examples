@@ -1,0 +1,20 @@
+over3 <-
+function(para)
+{
+	alp1=para[[1]][1]
+	alp2=para[[1]][2]
+	alp3=para[[1]][3]
+	mu1=para[[2]][1]
+	mu2=para[[2]][2]
+	mu3=para[[2]][3]
+	sig1=para[[3]][1]
+	sig2=para[[3]][2]
+	sig3=para[[3]][3]
+	part1=over1(alp1,mu1,sig1,alp2,mu2,sig2)
+	part2=over1(alp2,mu2,sig2,alp1,mu1,sig1)
+	w12=(part1+part2)/2
+	part3=over1(alp2,mu2,sig2,alp3,mu3,sig3)
+	part4=over1(alp3,mu3,sig3,alp2,mu2,sig2)
+	w23=(part3+part4)/2
+	c(w12,w23)
+}

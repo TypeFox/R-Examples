@@ -1,0 +1,2 @@
+get_gene_sentences =  function(genes, abs,filename){
+for (i in 1:length(genes)){ if ((genes[i]) != "NONE") {for (j in 1:1) result_genes = Give_Sentences(genes[i],abs) ; if (length(result_genes) != 0) {print(c(i,j));write(paste(">>",genes[i],sep=" "), file = paste(filename,"tb.txt",sep=""), append=T);for (k in 1:length(result_genes)) {write(c(attr(result_genes,"PMID")[k],result_genes[[k]][1:length(result_genes[[k]])]), file = paste(filename,"tb.txt",sep=""),append=T)}}}}}

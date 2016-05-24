@@ -1,0 +1,13 @@
+data (course2way.df)
+interactionPlots(Exam~Gender+Attend, data=course2way.df)
+exam.fit<-lm(Exam~Gender+Attend+Gender*Attend,data=course2way.df)
+eovcheck(exam.fit)
+summary2way(exam.fit,page="table")
+exam.fit1<-lm(Exam~Gender+Attend,data=course2way.df)
+summary2way(exam.fit1,page="table")
+exam.fit2<-lm(Exam~Attend,data=course2way.df)
+eovcheck(exam.fit2)
+normcheck(exam.fit2)
+summary1way(exam.fit2)
+multipleComp(exam.fit2)
+

@@ -1,0 +1,1 @@
+popF <- read.delim(file='popF.txt', comment.char='#', check.names=FALSE)

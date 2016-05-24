@@ -1,0 +1,1 @@
+C2D<-function(H){(pi^(3/2)*gamma(H+1/2)/(H*sin(pi*H)*gamma(2*H)*gamma(H+1)))^(1/2)}

@@ -1,0 +1,85 @@
+bcrossv.sa <-
+function(x,y,z,delta,method="canberra",quant=0.05,
+	trials=c(10,0.05),detrend=FALSE)
+{
+{
+	x<-as.vector(x)
+	a<-t(matrix(ncol=trials[1],rep(1:nrow(y),trials[1])))
+	ss<-floor(trials[2]*nrow(y))
+	leave.out<-t(apply(a,1,sample,size=ss))
+	estimated<-matrix(nrow=length(leave.out),ncol=3)
+	colnames(estimated)<-c("Observed","Estimated","Error")
+	b<-matrix(ncol=2,nrow=nrow(leave.out))
+	b[,1]<-seq(1,nrow(estimated),by=ss)
+	b[,2]<-seq(ss,nrow(estimated),by=ss)
+	for(i in 1:nrow(leave.out)){
+		syas(x[-leave.out[i,]],y[-leave.out[i,],],z,
+			y[leave.out[i,],],c(1:ncol(leave.out)),delta=delta,
+			method=method,quant=quant,plot=FALSE,
+			detrend=FALSE)$values[,2]->estimated[b[i,1]:b[i,2],2]
+		x[leave.out[i,]]->estimated[b[i,1]:b[i,2],1]
+		}
+	estimated[,3]<-estimated[,1]-estimated[,2]
+	error<-matrix(nrow=2,ncol=1)
+	rownames(error)<-c("sse","rmse")
+	colnames(error)<-c("value")
+	error[1,1]<-sum(estimated[,3]^2)
+	error[2,1]<-mean(abs(estimated[,3]))
+	cedasticity<-lm(estimated[,3]~estimated[,2])
+	coef<-matrix(nrow=1,ncol=3)
+	coef[1,1:2]<-cedasticity$coefficients
+	coef[1,3]<-anova(cedasticity)$Pr[1]
+	colnames(coef)<-c("Intercept","Slope","p-value")
+	if(detrend==FALSE){
+		layout(c(1,2))
+		plot(estimated[,2],jitter(estimated[,3]),ylab="Error",
+			xlab="Estimated")
+		abline(coef[1,1:2],lty=2,col="gray")
+		abline(h=0)
+		plot(estimated[,1],jitter(estimated[,3]),ylab="Error",
+			xlab="Observed")
+		abline(h=0)
+		}
+	if(detrend==TRUE){
+		estimated<-cbind(estimated,c(1:nrow(estimated)),
+			c(1:nrow(estimated)),c(1:nrow(estimated)),
+			c(1:nrow(estimated)))
+		colnames(estimated)<-c("Observed","Estimated",
+			"Error","Est error","Rotated","Translated",
+			"Det error")
+		for(i in 1:nrow(estimated)){
+			(coef[1,1]+coef[1,2]*estimated[i,2])->estimated[i,4]
+			}
+		estimated[,5]<-estimated[,2]+estimated[,4]
+		transl<-mean(estimated[,1]-estimated[,5])
+		estimated[,6]<-estimated[,5]-transl
+		estimated[,7]<-estimated[,1]-estimated[,6]
+		layout(c(1,2))
+		plot(estimated[,2],jitter(estimated[,3]),ylab="Error",
+			xlab="Estimated")
+		abline(h=0)
+		abline(coef[1,1:2],lty=2,col="gray")
+		plot(estimated[,6],jitter(estimated[,7]),
+			ylab="Detrended error",xlab="Detrended estimated")
+		abline(h=0)
+		error<-cbind(error,c(1,2))
+		error[1,2]<-sum(estimated[,7]^2)
+		error[2,2]<-mean(abs(estimated[,7]))
+		colnames(error)<-c("Regular","Detrended")
+		}
+	error<-round(error,2)
+	estimated<-round(estimated,2)
+	layout(1)
+}
+if(detrend==TRUE){
+	results<-list(estimated,error,coef,transl)
+	names(results)<-c("estimated","error","coef","transl")
+	return(results)
+	}
+else{
+	results<-list(estimated,error,coef)
+	names(results)<-c("estimated","error","coef")
+	return(results)
+	}
+}
+

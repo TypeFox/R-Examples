@@ -1,0 +1,6 @@
+`int` <-
+function(x)
+ {
+  x
+ }
+

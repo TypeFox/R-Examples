@@ -1,0 +1,8 @@
+library(retistruct)
+dataset <- file.path(system.file(package = "retistruct"), "extdata", "GM114-4-RC")
+r <- retistruct.read.dataset(dataset)
+r <- retistruct.read.recdata(r)
+print(getDssMean(r))
+Dss <- getDss(r)
+Sss <- getSss(r)
+Ims <- getIms(r)

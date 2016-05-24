@@ -1,0 +1,1 @@
+find.mini <- function(time, fixations) min(fixations)

@@ -1,0 +1,1 @@
+p1 <- function(t,l,m,rho){ rho*(l-m)^2 * exp(-(l-m)*t)/(rho*l+(l*(1-rho)-m)*exp(-(l-m)*t))^2 }

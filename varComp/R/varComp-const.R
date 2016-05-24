@@ -1,0 +1,11 @@
+plus = as.symbol('+')
+colon = as.symbol(':')
+star = as.symbol('*')
+tilde = as.symbol('~')
+varCompScoreTests = c(score='LinScore',score='VM03',score='SS95')
+varCompTests=c(varCompScoreTests,score='HP01',RLRT='RLRT') #,'Wald', 'RWD88')
+# varCompTestTypes = structure(names(varCompTests), names=varCompTests)
+informationTypes=c('AOI', 'WAI', 'AEI', 'OI', 'EI')
+LinScoreWeightingMethods=c('EqWt', 'InvSTD', 'InvSqrtV', 'MinVar')
+
+# varCompSpecial=c('ibs','lin0','quad1','intxn2','am')

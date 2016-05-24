@@ -1,0 +1,2 @@
+
+calcQuantiles <- function(...) calcStats(...)

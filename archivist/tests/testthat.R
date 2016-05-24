@@ -1,0 +1,7 @@
+library(testthat)
+library(ggplot2)
+library(dplyr)
+library(archivist)
+library(httr)
+library(datasets)
+test_check("archivist")

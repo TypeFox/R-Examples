@@ -1,0 +1,1 @@
+BiocGenerics:::testPackage("aop", pattern="^test_.*\\.R$")

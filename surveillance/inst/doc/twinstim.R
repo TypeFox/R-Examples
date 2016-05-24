@@ -1,0 +1,194 @@
+## ----include = FALSE---------------------------------------------------------------
+## load the "cool" package
+library("surveillance")
+
+## Compute everything or fetch cached results?
+message("Doing computations: ",
+        COMPUTE <- !file.exists("twinstim-cache.RData"))
+if (!COMPUTE) load("twinstim-cache.RData", verbose = TRUE)
+
+## ----imdepi_components, echo=FALSE-------------------------------------------------
+## extract components from imdepi to reconstruct
+data("imdepi")
+events <- SpatialPointsDataFrame(
+    coords = coordinates(imdepi$events),
+    data = marks(imdepi, coords=FALSE),
+    proj4string = imdepi$events@proj4string  # ETRS89 projection (+units=km)
+    )
+stgrid <- imdepi$stgrid[,-1]
+
+## ----load_districtsD, echo=FALSE---------------------------------------------------
+load(system.file("shapes", "districtsD.RData", package = "surveillance"))
+
+## ----imdepi_construct, results="hide", eval=FALSE----------------------------------
+#  imdepi <- as.epidataCS(events = events, W = stateD, stgrid = stgrid,
+#    qmatrix = diag(2), nCircle2Poly = 16)
+
+## ----imdepi_events_echo, results="hide"--------------------------------------------
+summary(events)
+
+## ----imdepi_stgrid, echo=FALSE-----------------------------------------------------
+.stgrid.excerpt <- format(rbind(head(stgrid, 3), tail(stgrid, 3)), digits=3)
+rbind(.stgrid.excerpt[1:3,], "..."="...", .stgrid.excerpt[4:6,])
+
+## ----imdepi_print------------------------------------------------------------------
+imdepi
+
+## ----imdepi_summary, include = FALSE-----------------------------------------------
+(simdepi <- summary(imdepi))
+
+## ----imdepi_stepfun, echo=2, fig.cap="Time course of the number of infectives assuming infectious periods of 30 days."----
+par(mar = c(5, 5, 1, 1), las = 1)
+plot(as.stepfun(imdepi), xlim = summary(imdepi)$timeRange, xaxs = "i",
+  xlab = "Time [days]", ylab = "Current number of infectives", main = "")
+#axis(1, at = 2557, labels = "T", font = 2, tcl = -0.3, mgp = c(3, 0.3, 0))
+
+## ----imdepi_plot, fig.cap="Occurrence of the two finetypes viewed in the temporal and spatial dimensions.", fig.subcap=c("Temporal pattern.","Spatial pattern."), fig.width=5, fig.height=6, echo=c(2,4,5), out.width="0.47\\linewidth"----
+par(las = 1)
+plot(imdepi, "time", col = c("indianred", "darkblue"), ylim = c(0, 20))
+par(mar = c(0, 0, 0, 0))
+plot(imdepi, "space", lwd = 2,
+  points.args = list(pch = c(1, 19), col = c("indianred", "darkblue")))
+layout.scalebar(imdepi$W, scale = 100, labels = c("0", "100 km"), plot = TRUE)
+
+## ----imdepi_animate_saveHTML, eval=FALSE-------------------------------------------
+#  animation::saveHTML(
+#    animate(subset(imdepi, type == "B"), interval = c(0, 365), time.spacing = 7),
+#    nmax = Inf, interval = 0.2, loop = FALSE,
+#    title = "Animation of the first year of type B events")
+
+## ----imdepi_untied-----------------------------------------------------------------
+eventDists <- dist(coordinates(imdepi$events))
+(minsep <- min(eventDists[eventDists > 0]))
+set.seed(321)
+imdepi_untied <- untie(imdepi, amount = list(s = minsep / 2))
+
+## ----imdepi_untied_infeps----------------------------------------------------------
+imdepi_untied_infeps <- update(imdepi_untied, eps.s = Inf)
+
+## ----imdsts_plot, fig.cap="IMD cases (joint types) aggregated as an \\class{sts} object by month and district.", fig.subcap=c("Time series of monthly counts.", "Disease incidence (per 100\\,000 inhabitants)."), fig.width=5, fig.height=5, out.width="0.47\\linewidth", fig.pos="ht", echo=-2----
+imdsts <- epidataCS2sts(imdepi, freq = 12, start = c(2002, 1), tiles = districtsD)
+par(las = 1, lab = c(7,7,7), mar = c(5,5,1,1))
+plot(imdsts, type = observed ~ time)
+plot(imdsts, type = observed ~ unit, population = districtsD$POPULATION / 100000)
+
+## ----endemic_formula---------------------------------------------------------------
+(endemic <- addSeason2formula(~offset(log(popdensity)) + I(start / 365 - 3.5),
+  period = 365, timevar = "start"))
+
+## ----imdfit_endemic, results="hide"------------------------------------------------
+imdfit_endemic <- twinstim(endemic = endemic, epidemic = ~0,
+  data = imdepi_untied, subset = !is.na(agegrp))
+
+## ----strip.white.output=TRUE-------------------------------------------------------
+summary(imdfit_endemic)
+
+## ----imdfit_Gaussian, results="hide", eval=COMPUTE---------------------------------
+#  imdfit_Gaussian <- update(imdfit_endemic, epidemic = ~type + agegrp,
+#    siaf = siaf.gaussian(), start = c("e.(Intercept)" = -12.5, "e.siaf.1" = 2.75),
+#    control.siaf = list(F = list(adapt = 0.25), Deriv = list(nGQ = 13)),
+#    cores = 2 * (.Platform$OS.type == "unix"))
+
+## ----tab_imdfit_Gaussian, echo=FALSE, results="asis"-------------------------------
+print(xtable(imdfit_Gaussian,
+             caption="Estimated rate ratios (RR) and associated Wald confidence intervals (CI) for endemic (\\code{h.}) and epidemic (\\code{e.}) terms. This table was generated by \\code{xtable(imdfit\\_Gaussian)}.",
+             label="tab:imdfit_Gaussian"),
+      sanitize.text.function=NULL, sanitize.colnames.function=NULL,
+      sanitize.rownames.function=function(x) paste0("\\code{", x, "}"))
+
+## ----------------------------------------------------------------------------------
+R0_events <- R0(imdfit_Gaussian)
+tapply(R0_events, marks(imdepi_untied)[names(R0_events), "type"], mean)
+
+## ----imdfit_powerlaw, results="hide", eval=COMPUTE, include=FALSE------------------
+#  imdfit_powerlaw <- update(imdfit_Gaussian, data = imdepi_untied_infeps,
+#    siaf = siaf.powerlaw(), control.siaf = NULL,
+#    start = c("e.(Intercept)" = -6.2, "e.siaf.1" = 1.5, "e.siaf.2" = 0.9))
+
+## ----imdfit_step4, results="hide", eval=COMPUTE, include=FALSE---------------------
+#  imdfit_step4 <- update(imdfit_Gaussian, data = imdepi_untied_infeps,
+#    siaf = siaf.step(exp(1:4 * log(100) / 5), maxRange = 100), control.siaf = NULL,
+#    start = c("e.(Intercept)" = -10, setNames(-2:-5, paste0("e.siaf.", 1:4))))
+
+## ----imdfit_siafs, fig.cap="Various estimates of spatial interaction (scaled by the epidemic intercept $\\gamma_0$).", fig.pos="!ht", echo=FALSE----
+par(mar = c(5,5,1,1))
+set.seed(2)  # Monte-Carlo confidence intervals
+plot(imdfit_Gaussian, "siaf", xlim=c(0,42), ylim=c(0,5e-5), lty=c(1,3),
+     xlab = expression("Distance " * x * " from host [km]"))
+plot(imdfit_powerlaw, "siaf", add=TRUE, col.estimate=4, lty=c(2,3))
+plot(imdfit_step4, "siaf", add=TRUE, col.estimate=3, lty=c(4,3))
+legend("topright", legend=c("Power law", "Step (df=4)", "Gaussian"),
+       col=c(4,3,2), lty=c(2,4,1), lwd=3, bty="n")
+
+## ----------------------------------------------------------------------------------
+exp(cbind("Estimate" = coef(imdfit_Gaussian)["e.siaf.1"],
+          confint(imdfit_Gaussian, parm = "e.siaf.1")))
+
+## ----------------------------------------------------------------------------------
+exp(cbind("Estimate" = coef(imdfit_powerlaw)[c("e.siaf.1", "e.siaf.2")],
+          confint(imdfit_powerlaw, parm = c("e.siaf.1", "e.siaf.2"))))
+
+## ----imdfits_AIC-------------------------------------------------------------------
+AIC(imdfit_endemic, imdfit_Gaussian, imdfit_powerlaw, imdfit_step4)
+
+## ----imdfit_endemic_sel, results="hide", include=FALSE-----------------------------
+## Example of AIC-based stepwise selection of the endemic model
+imdfit_endemic_sel <- stepComponent(imdfit_endemic, component = "endemic")
+## -> none of the endemic predictors is removed from the model
+
+## ----imdfit_powerlaw_model---------------------------------------------------------
+imdfit_powerlaw <- update(imdfit_powerlaw, model = TRUE)
+
+## ----imdfit_powerlaw_intensityplot_time, fig.cap="Fitted ``ground'' intensity process aggregated over space and both types.", fig.pos="ht", echo=FALSE----
+par(mar = c(5,5,1,1), las = 1)
+intensity_endprop <- intensityplot(imdfit_powerlaw, aggregate="time",
+                                   which="endemic proportion", plot=FALSE)
+intensity_total <- intensityplot(imdfit_powerlaw, aggregate="time", 
+                                 which="total", tgrid=501, lwd=2,
+                                 xlab="Time [days]", ylab="Intensity")
+curve(intensity_endprop(x) * intensity_total(x), add=TRUE, col=2, lwd=2, n=501)
+#curve(intensity_endprop(x), add=TRUE, col=2, lty=2, n=501)
+text(2500, 0.36, labels="total", col=1, pos=2, font=2)
+text(2500, 0.08, labels="endemic", col=2, pos=2, font=2)
+
+## ----echo=FALSE, eval=FALSE--------------------------------------------------------
+#  meanepiprop <- integrate(intensityplot(imdfit_powerlaw, which="epidemic proportion"),
+#                           50, 2450, subdivisions=2000, rel.tol=1e-3)$value / 2400
+
+## ----imdfit_powerlaw_intensityplot_space, fig.cap="Epidemic proportion of the fitted intensity process accumulated over time by type.", fig.subcap=c("Type B.", "Type C."), fig.width=5, fig.height=5, out.width="0.47\\linewidth", fig.pos="p", echo=FALSE----
+for (.type in 1:2) {
+    print(intensityplot(imdfit_powerlaw, aggregate="space", which="epidemic proportion",
+                        types=.type, tiles=districtsD, sgrid=1000,
+                        col.regions = grey(seq(1,0,length.out=10)), at = seq(0,1,by=0.1)))
+    grid::grid.text("Epidemic proportion", x=1, rot=90, vjust=-1)
+}
+
+## ----imdfit_checkResidualProcess, fig.cap="\\code{checkResidualProcess(imdfit\\_powerlaw)}. The left plot shows the \\code{ecdf} of the transformed residuals with a 95\\% confidence band obtained by inverting the corresponding Kolmogorov-Smirnov test (no evidence for deviation from uniformity). The right-hand plot suggests absence of serial correlation.", results="hide", fig.pos="p", echo=FALSE----
+par(mar = c(5, 5, 1, 1))
+checkResidualProcess(imdfit_powerlaw)
+
+## ----imdsim, results="hide"--------------------------------------------------------
+imdsim <- simulate(imdfit_powerlaw, nsim = 1, seed = 1, t0 = 2191, T = 2555,
+  data = imdepi_untied_infeps, tiles = districtsD)
+
+## ----imdsim_plot, fig.cap = "Simulation-based forecast of the cumulative number of cases by finetype in the last two years. The black lines correspond to the observed numbers.", fig.pos="bht", echo=FALSE----
+.t0 <- imdsim$timeRange[1]
+.cumoffset <- c(table(subset(imdepi, time < .t0)$events$type))
+par(mar = c(5,5,1,1), las = 1)
+plot(imdepi, ylim = c(0, 20), col = c("indianred", "darkblue"),
+     subset = time < .t0, cumulative = list(maxat = 336),
+     xlab = "Time [days]")
+plot(imdsim, add = TRUE, legend.types = FALSE,
+     col = scales::alpha(c("indianred", "darkblue"), 0.5),
+     subset = !is.na(source),  # exclude events of the prehistory
+     cumulative = list(offset = .cumoffset, maxat = 336, axis = FALSE),
+     border = NA, density = 0) # no histogram for simulations
+plot(imdepi, add = TRUE, legend.types = FALSE,
+     col = 1, subset = time >= .t0,
+     cumulative = list(offset = .cumoffset, maxat = 336, axis = FALSE),
+     border = NA, density = 0) # no histogram for the last year's data
+abline(v = .t0, lty = 2, lwd = 2)
+
+## ----strip.white.output=TRUE-------------------------------------------------------
+table(imdsim$events$source > 0, exclude = NULL)
+

@@ -1,0 +1,2 @@
+#' @include shirt.R
+NULL

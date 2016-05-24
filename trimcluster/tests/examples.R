@@ -1,0 +1,2 @@
+library(trimcluster)
+example(trimkmeans)

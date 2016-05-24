@@ -1,0 +1,13 @@
+if( !require("lme4", quietly = TRUE) )
+  install.packages("lme4")
+if( !require("lsmeans", quietly = TRUE) )
+  install.packages("lsmeans")
+
+library("rtable")
+library("lsmeans")
+library("lme4")
+data("Oats", package = "nlme")
+Oats.lmer <- lmer(log(yield) ~ Variety + poly(nitro,2)
+                  + (1|Block/Variety), data = Oats)
+Oats.lsm <- lsmeans(Oats.lmer, ~ nitro | Variety, cov.reduce = FALSE)
+lsmtab = summary(Oats.lsm)

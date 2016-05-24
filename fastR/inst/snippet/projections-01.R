@@ -1,0 +1,8 @@
+project(c(1,0), c(1,1))
+project(c(1,0), c(1,-1))
+project(c(1,0), c(1,2))
+project(c(1,2,3), c(1,1,1))
+fractions(project(c(1,1,1), c(1,2,3)))
+project(c(1,2,3), c(1,-1,0))
+project(c(1,2,3,4), c(1,1,-1,-1))
+project(c(1,1,-1,-1), c(1,-1,1,-1))

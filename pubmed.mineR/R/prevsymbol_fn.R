@@ -1,0 +1,5 @@
+prevsymbol_fn =  function(genes, data, abs,filename, terms)  {indices = NULL; for (i in 1:dim(genes)[1]){indices = c(indices,which(genes[i,1] == data[,2]))  }
+data_theme <- data[indices,]
+prevsymbol = NULL;for (i in 1:dim(genes)[1]){ prevsymbol = c(prevsymbol, list(unlist(strsplit(as.character(data_theme[i,11]),"|",fixed=T)))) }
+result_genes_prevsymbol = NULL; for (i in 1:dim(genes)[1]){if ( !is.na(prevsymbol[[i]][1]) ) {for (j in 1:length(prevsymbol[[i]])) result_genes_prevsymbol = Give_Sentences(prevsymbol[[i]][j],abs) ; if (length(result_genes_prevsymbol) != 0) {print(c(i,j));write(paste(">>",data_theme[i,2],prevsymbol[[i]][j],sep=" "), file = paste(filename,"prevsymbol.txt",sep=""), append=T); for (k in 1:length(result_genes_prevsymbol)){for(l in 1: length(result_genes_prevsymbol[[k]])) {temp = result_genes_prevsymbol[[k]][l];  for(s in 1:length(terms)){temp1 = regexpr(terms[s],temp);if (temp1 != -1) write(c(attr(result_genes_prevsymbol,"PMID")[k],temp), file = paste(filename,"prevsymbol.txt",sep=""),append=T)}   }}}    }}
+}

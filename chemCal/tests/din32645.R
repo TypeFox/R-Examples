@@ -1,0 +1,7 @@
+require(chemCal)
+data(din32645)
+m <- lm(y ~ x, data = din32645)
+inverse.predict(m, 3500, alpha = 0.01)
+lod <- lod(m, alpha = 0.01, beta = 0.5)
+lod(m, alpha = 0.01, beta = 0.01) 
+loq <- loq(m, alpha = 0.01)

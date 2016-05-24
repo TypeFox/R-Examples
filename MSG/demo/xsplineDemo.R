@@ -1,0 +1,27 @@
+xsplineTest <- function(s, open = TRUE,
+                        x = c(1,1,3,3)/4,
+                        y = c(1,3,3,1)/4, ...) {
+    plot(c(0,1), c(0,1), type="n", axes=FALSE, xlab="", ylab="")
+    points(x, y, pch=19)
+    xspline(x, y, s, open, ...)
+    text(x+0.05*c(-1,-1,1,1), y+0.05*c(-1,1,1,-1), s)
+}
+par(mfrow=c(4,3), mar=rep(0,4), oma=c(0,0,0,0))
+xsplineTest(c(0, -1, -1, 0))
+xsplineTest(c(0, -1,  0, 0))
+xsplineTest(c(0, -1,  1, 0))
+xsplineTest(c(0,  0, -1, 0))
+xsplineTest(c(0,  0,  0, 0))
+xsplineTest(c(0,  0,  1, 0))
+xsplineTest(c(0,  1, -1, 0))
+xsplineTest(c(0,  1,  0, 0))
+xsplineTest(c(0,  1,  1, 0))
+xsplineTest(c(0, -1, -1, 0), FALSE, col="grey80")
+xsplineTest(c(0, -1,  0, 0), FALSE, col="grey80")
+xsplineTest(c(0, -1,  1, 0), FALSE, col="grey80")
+## xsplineTest(c(0,  0, -1, 0), FALSE, col="grey80")
+## xsplineTest(c(0,  0,  0, 0), FALSE, col="grey80")
+## xsplineTest(c(0,  0,  1, 0), FALSE, col="grey80")
+## xsplineTest(c(0,  1, -1, 0), FALSE, col="grey80")
+## xsplineTest(c(0,  1,  0, 0), FALSE, col="grey80")
+## xsplineTest(c(0,  1,  1, 0), FALSE, col="grey80")

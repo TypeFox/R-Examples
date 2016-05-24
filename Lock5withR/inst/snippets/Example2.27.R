@@ -1,0 +1,2 @@
+fivenum( ~ Smokers, data = USStates)
+

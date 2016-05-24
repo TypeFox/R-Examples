@@ -1,0 +1,95 @@
+chron <-
+function(age,depths,max.depth,type="l",linear=TRUE,
+	method="fmm",ci=TRUE,dates="points",
+	length=0.05,digits=2)
+{
+{
+	max.age<-age[nrow(age),2]+((age[nrow(age),
+		2]-age[nrow(age)-1,2])/(age[nrow(age),
+		1]-age[nrow(age)-1,1]))*(max.depth-age[nrow(age),1])
+	max<-c(max.depth,max.age)
+	base<-rbind(age[,1:2],max)
+	if(linear==TRUE){
+		approx(base[,1:2],xout=depths)->chronology
+		cbind(chronology$x,chronology$y)->chronology
+		colnames(chronology)<-c("Depth","Age")
+		plot(chronology[,c(1,2)],ylim=c(max(chronology
+			[,2]),min(chronology[,2])),type=type)
+		if(dates=="points"){
+			points(age[,c(1,2)],col="red")
+			}
+		if(dates=="bars"){
+			arrows(age[,1],age[,2],age[,1],(age[,2]+age[,
+				3]),length=length,angle=90)
+			arrows(age[,1],age[,2],age[,1],(age[,2]-age[,
+				3]),length=length,angle=90)
+			}
+		if(ci==TRUE){
+			base1<-age[,1:2]
+			base1[,2]<-age[,2]+age[,3]
+			base2<-age[,1:2]
+			base2[,2]<-age[,2]-age[,3]
+			max.age1<-base1[nrow(base1),2]+((base1[nrow(base1),
+				2]-base1[nrow(base1)-1,2])/(base1[nrow(base1),
+				1]-base1[nrow(base1)-1,1]))*(max.depth-				base1[nrow(base1),1])
+			base11<-rbind(base1,c(max.depth,max.age1))
+			approx(base11[,1:2],xout=depths)->upper
+			max.age2<-base2[nrow(base2),2]+((base2[nrow(base2),
+				2]-base2[nrow(base2)-1,2])/(base2[nrow(base2),
+				1]-base2[nrow(base2)-1,1]))*(max.depth-
+				base2[nrow(base2),1])
+			base22<-rbind(base2,c(max.depth,max.age2))
+			approx(base22[,1:2],xout=depths)->lower
+			lines(upper$x,upper$y,lty=2,col="gray")
+			lines(lower$x,lower$y,lty=2,col="gray")
+			cbind(chronology,upper$y,lower$y)->chronology
+			colnames(chronology)<-c("Depth","Age","Upper Limit",
+				"Lower limit")
+			}
+		}
+	else{
+		spline(base[,1:2],xout=depths,method=method)->chronology
+		cbind(chronology$x,chronology$y)->chronology
+		colnames(chronology)<-c("Depth","Age")
+		plot(chronology[,c(1,2)],ylim=c(max(chronology
+			[,2]),min(chronology[,2])),type=type)
+		if(dates=="points"){
+			points(age[,c(1,2)],col="red")
+			}
+		if(dates=="bars"){
+			arrows(age[,1],age[,2],age[,1],(age[,2]+age[,3]),
+				length=length,angle=90)
+			arrows(age[,1],age[,2],age[,1],(age[,2]-age[,3]),
+				length=length,angle=90)
+			}
+		if(ci==TRUE){
+			base1<-age[,1:2]
+			base1[,2]<-age[,2]+age[,3]
+			base2<-age[,1:2]
+			base2[,2]<-age[,2]-age[,3]
+			max.age1<-base1[nrow(base1),2]+((base1[nrow(base1),
+				2]-base1[nrow(base1)-1,2])/(base1[nrow(base1),
+				1]-base1[nrow(base1)-1,1]))*(max.depth-
+				base1[nrow(base1),1])
+			base11<-rbind(base1,c(max.depth,max.age1))
+			spline(base11[,1:2],xout=depths,method=method)->upper
+			max.age2<-base2[nrow(base2),2]+((base2[nrow(base2),
+				2]-base2[nrow(base2)-1,2])/(base2[nrow(base2),
+				1]-base2[nrow(base2)-1,1]))*(max.depth-
+				base2[nrow(base2),1])
+			base22<-rbind(base2,c(max.depth,max.age2))
+			spline(base22[,1:2],xout=depths,,method=method)->lower
+			lines(upper$x,upper$y,lty=2,col="gray")
+			lines(lower$x,lower$y,lty=2,col="gray")
+			cbind(chronology,upper$y,lower$y)->chronology
+			colnames(chronology)<-c("Depth","Age","Upper Limit",
+				"Lower limit")
+			}
+		}
+	chronology<-round(chronology,digits)
+}
+results<-list(base,chronology)
+names(results)<-c("base","chronology")
+return(results)
+}
+

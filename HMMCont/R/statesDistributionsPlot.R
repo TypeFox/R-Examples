@@ -1,0 +1,23 @@
+statesDistributionsPlot <-
+function(hmm, sc=1)
+{
+	NRv<-nrow(hmm$Parameters)
+	x<-seq(-0.2,0.2,0.0001)
+	y<-dnorm(x, mean=(mean(((hmm$Observations)/sc))), sd=(sd(((hmm$Observations)/sc))))
+	State1<-matrix(NA, nrow= (length(hmm$Viterbi)), ncol=1)
+	State2<-matrix(NA, nrow= (length(hmm$Viterbi)), ncol=1)
+	State1<-ifelse((hmm$Viterbi)==1, ((hmm$Observations)/sc), NA)
+	State2<-ifelse((hmm$Viterbi)==2, ((hmm$Observations)/sc), NA)
+	State1<-sort(State1)
+	State2<-sort(State2)
+	plot(y~x, type="l", lwd=2, col="dimgrey", ylab="Density", ylim=c(0, 16), xlab=" ")
+	y1<-dnorm(x, mean=(mean(State1)), sd=(sd(State1)))
+	lines(x, y1, col="dodgerblue4", lwd=2)
+	y2<-dnorm(x, mean=(hmm$Parameters[NRv,7]/sc), sd=(sqrt(hmm$Parameters[NRv,9])/sc))
+	lines(x, y2, col="dodgerblue4", lty=3, lwd=2)
+	y3<-dnorm(x, mean=(mean(State2)), sd=(sd(State2)))
+	lines(x, y3, col="firebrick", lwd=2)
+	y4<-dnorm(x, mean=(hmm$Parameters[NRv,8]/sc), sd=(sqrt(hmm$Parameters[NRv,10])/sc))
+	lines(x, y4, col="firebrick", lty=3, lwd=2)
+	legend(-0.2,max(y,y1,y2,y3,4),c("Whole data set","State 1 Data Set","State 1 Model", "State 2 Data Set","State 2 Model"),lty=c(1,1,3,1,3), col=c("dimgrey","dodgerblue4","dodgerblue4","firebrick","firebrick"),lwd=c(2,2,2,2,2), bty="n")
+}

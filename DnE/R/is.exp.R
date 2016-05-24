@@ -1,0 +1,59 @@
+is.exp <-
+function(x,m,a=10,lambda=NULL)
+{
+	re=1;
+	for(i in 1:length(x))
+		if(x[i]<0)
+			re=-1;
+	p=rep(0,m+1);
+	y=rep(0,m+1);
+	q=0;
+	if(re==-1)
+	{
+		return(data.frame("state"=-1,"pvalue"=1));
+	}
+	else
+	{
+		if(is.null(lambda))
+		{
+			lambda=1/mean(x);
+			df=m-1;
+		}
+		else
+		{
+			df=m;
+		}
+		if(lambda>0)
+		{
+			di=max(x);
+			for(i in 1:m)
+			{
+				p[i]=pexp(di*i/m,lambda)-pexp(di*(i-1)/m,lambda);
+			 if(p[i]==0)
+			{
+				break;
+			}
+				for(j in 1:length(x))
+					if(x[j]>di*(i-1)/m && x[j]<=di*i/m)
+						y[i]=y[i]+1;
+				q=q+(y[i]-(length(x)*p[i]))^2/(length(x)*p[i]);
+			}
+			p[m+1]=pexp(Inf,lambda)-pexp(max(x),lambda);
+			q=q+length(x)*p[m+1];
+			q0=qchisq(1-a,df);
+                        pvalue=pchisq(q,df);
+			if(q<=q0)
+			{
+				return(data.frame("qchisq"=q,"pvalue"=pvalue));
+			}
+			else
+			{
+				return(data.frame("state"=-1,"pvalue"=1));
+			}
+		}
+		else
+		{
+			return(data.frame("state"=-1,"pvalue"=1));
+		}
+	}
+}

@@ -1,0 +1,5 @@
+"multimodel" <-
+function(...) { 
+	   new("multimodel", ...)
+}
+

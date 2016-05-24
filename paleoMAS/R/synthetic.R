@@ -1,0 +1,72 @@
+synthetic <-
+function(x,y,z,delta,plot=FALSE,percen,upmargin=0.1,
+	widths=c(1,4),steps=0.05)
+{
+{
+	x.values<-seq(min(x),max(x),delta)
+	predicted<-matrix(nrow=length(x.values),ncol=(ncol(y)+1))
+	colnames(predicted)<-c("x",colnames(y))
+	predicted[,1]<-x.values
+	loess.f<-as.list(c(1:ncol(y)))
+	names(loess.f)<-colnames(y)
+	for(i in 1:ncol(y)){
+		loess(y[,i]~x,span=z[i,1],degree=z[i,2])->loess.f[[i]]
+		predict(loess.f[[i]],x.values)->predicted[,i+1]
+		}
+	predicted[,-1]<-ifelse(predicted[,-1]<0,0,predicted[,-1])
+	predicted<-round(predicted,2)
+	if(plot==TRUE){
+		b<-ncol(predicted)
+		a<-matrix(c(1:(b*2)),nrow=b,ncol=2)
+		layout(a,heights=c(rep(1,b-1),3),widths=widths)
+		namess<-c(colnames(predicted)[-1])
+		d<-matrix(rep(1,b*2),nrow=b,ncol=2)
+		for(i in 1:length(namess)){
+			par(mai=c(0,0,upmargin,0))
+			plot(d[i,c(1,2)],frame.plot=FALSE,axes=FALSE,type="n")
+			text(2,1,labels=namess[i],pos=2,offset=-0.25)
+			}
+		plot(1,1,frame.plot=FALSE,axes=FALSE,type="n")
+		par(srt=90)
+		text(1,1,labels="Ratio")
+		par(srt=0)
+		mins<-apply(predicted[,-1],2,min)
+		maxs<-apply(predicted[,-1],2,max)
+		ranges<-maxs-mins
+		predicted1<-scale(predicted[,-1],center=mins,scale=ranges)
+		data.plot1<-cbind(predicted[,1],predicted1)
+		data.plot<-rbind(c(predicted[1,1],
+			rep(0,ncol(predicted1))),data.plot1,
+			c(predicted[nrow(predicted),1],
+			rep(0,ncol(predicted1))))
+		envr<-max(predicted[,1])-min(predicted[,1])
+		for(i in 2:ncol(data.plot)){
+			par(mai=c(0,0,0,0))
+			plot(data.plot[,c(1,i)],frame.plot=FALSE,axes=FALSE,
+			type="n",yaxp=c(0,1,4))
+			abline(v=seq(min(predicted[,1]),max(predicted[,1]),
+				steps*envr),lty=3,col="gray")
+			polygon(data.plot[,c(1,i)],col="lightgray")
+			}
+		pollensum<-apply(y,1,sum)
+		ratio<-pollensum/percen
+		g<-cbind(x,ratio)
+		par(mai=c(0.2,0,0.05,0),mgp=c(0,0.5,0))
+		plot(g[order(g[,1]),c(1,2)],type="l",xlab="",
+			frame.plot=FALSE)
+		avg.info<-mean(ratio)
+		abline(h=avg.info,lty=3,col="gray")
+		}
+	}
+if(plot==TRUE){
+	results<-list(loess.f,predicted,avg.info)
+	names(results)<-c("loess.f","predicted","avg.info")
+	return(results)
+	}
+else{
+	results<-list(loess.f,predicted)
+	names(results)<-c("loess.f","predicted")
+	return(results)
+	}
+}
+

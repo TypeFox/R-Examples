@@ -1,0 +1,23 @@
+list.constants <-
+function(BrCa_lambda1, BrCa_lambda2, BrCa_beta, BrCa_1_AR){
+    print(BrCa_lambda1)
+    print(BrCa_lambda2)
+    print(BrCa_beta)
+    print(BrCa_1_AR)
+    sink('list_all_constants.txt')
+    cat("BrCa_lambda1 \n")
+    print(BrCa_lambda1)
+    cat(" \n")
+    cat("BrCa_lambda2 \n")
+    print(BrCa_lambda2)
+    cat(" \n")
+    cat("BrCa_beta \n")
+    print(BrCa_beta)
+    cat(" \n")
+    cat("BrCa_1_AR \n")
+    print(BrCa_1_AR)
+    cat(" \n")
+    cat("Note: See \"exampledata\" in package manual for race character details \n")
+    cat(" \n")
+    sink()
+}

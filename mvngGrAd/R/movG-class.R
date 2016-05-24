@@ -1,0 +1,12 @@
+setClass("movG",
+         representation(movingMeanMap = "matrix",
+                        row = "integer",
+                        col = "integer",
+                        observedPhe = "numeric",
+                        adjustedPhe = "numeric",
+                        movingMean = "numeric",
+                        nValues = "integer",
+                        adjModel = "lm",
+                        correlation = "numeric",
+                        maxValues = "integer",
+                        FunCall = "call"))

@@ -1,0 +1,9 @@
+win<-function(x,lambda=0.2){
+n<-length(x)
+y<-sort(x)
+bot.obs<-floor(n*lambda)+1
+top.obs<-n-bot.obs+1
+z<-ifelse(x<=y[bot.obs],y[bot.obs],x)
+z<-ifelse(x>=y[top.obs],y[top.obs],z)
+z
+}

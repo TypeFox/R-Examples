@@ -1,0 +1,29 @@
+# $Id: skewt.R,v 1.4 2004/03/02 01:52:50 king Exp $
+dskt<-function(x,df,gamma=1) 
+{
+	result<-rep(NA,length(x))
+	result[x<0]<-2/(gamma+1/gamma)*dt(gamma*x[x<0],df)
+	result[x>=0]<-2/(gamma+1/gamma)*dt(x[x>=0]/gamma,df)
+	result
+}
+pskt<-function(x,df,gamma=1)
+{
+ 	result<-rep(NA,length(x))
+ 	result[x<0]<-2/(gamma^2+1)*pt(gamma*x[x<0],df)
+ 	result[x>=0]<-1/(gamma^2+1) + 2/(1+(1/gamma^2))*(pt(x[x>=0]/gamma,df) - 1/2)
+ 	result
+}
+qskt<-function(p,df,gamma)
+{
+ 	result2<-rep(NA,length(p))
+ 	probzero<-pskt(0,df,gamma)
+ 	result2[p<probzero]<-1/gamma*qt(((gamma^2+1)*p[p<probzero])/2,df)
+ 	result2[p>=probzero]<-gamma*qt((1+1/gamma^2)/2*(p[p>=probzero]-probzero)+1/2,df)
+ 	result2
+}
+rskt<-function(n,df,gamma)
+{
+ 	u<-runif(n)
+ 	result3<-qskt(u,df,gamma)
+ 	result3
+}

@@ -1,0 +1,853 @@
+# NOTE: This script assumes that the SEER data is in /data/SEER and that the 
+# Abomb data file hema87.dat is in /data/abomb. Please change these two lines
+# to match your data locations if they differ from these.
+.aBombHome="/data/abomb"
+.seerHome="/data/SEER" 
+rm(list=ls()) # note: dot variables defined above persist through such cleanings
+# install.packages("RSQLite")
+# install.packages("bbmle")
+# install.packages("ggplot2")
+library(RSQLite)
+m=dbDriver("SQLite")
+library(plyr)
+library(bbmle)
+library(ggplot2)
+graphics.off()
+windows(height=7,width=8,xpos=-100,ypos=-100) #need to control the device size to
+                                    # make things work across computers/screen sizes
+# Note: Figure 1 was drawn using Adobe Illustrator so it is not reproduced here.
+######################   
+# Code 9863 versus 205.1 trends over the decades: Figure 2
+con=dbConnect(m,dbname=file.path(.seerHome,"73/all.db"))
+#######################################################################
+dbListTables(con)
+dbListFields(con,"pops")
+dbListFields(con,"lymyleuk")
+pop=dbGetQuery(con,"SELECT * from pops where popage>5 and popage<19")
+head(pop)
+(pop<-ddply(pop, .(popage,popsex,popyear), summarise,py=sum(population)))
+pop$dec= cut(pop$popyear,breaks=c(1972,1984,1996,2010),labels=c("73to84","85to96","97to10"))
+(pop<-ddply(pop, .(popage,popsex,dec), summarise,py=sum(py)))
+head(pop,20)
+
+d=dbGetQuery(con, 
+    "SELECT * from lymyleuk where histo2=9863 and seqnum<2 and agerec>5 and agerec<19")
+head(d)
+(d<-ddply(d, .(agerec,sex,yrdx), summarise,cases=length(agerec))) 
+d$decade= cut(d$yrdx,breaks=c(1972,1984,1996,2011),labels=c("73to84","85to96","97to10"))
+head(d)
+(d<-ddply(d, .(agerec,sex,decade), summarise,cases=sum(cases)))
+head(cbind(d,pop)) # just to see that they match up
+d=cbind(d,py=pop[,"py"]) # only take the non-redundant py column
+head(d)
+
+d9=dbGetQuery(con, 
+        "SELECT * from lymyleuk where ICD9=2051 and seqnum<2 and agerec>5 and agerec<19")
+d9<-ddply(d9, .(sex,agerec,yrdx), summarise,cases=length(agerec))
+d9$decade= cut(d9$yrdx,breaks=c(1972,1984,1996,2010),labels=c("73to84","85to96","97to10"))
+d9<-ddply(d9, .(agerec,sex,decade), summarise,cases=sum(cases))
+d9=cbind(d9,py=pop[,"py"])
+head(d9)
+(d=cbind(rbind(d,d9),code=gl(2,dim(d9)[1],labels=c("9863","205.1"))) ) 
+head(d)
+d=transform(d,incid=1e6*cases/py)
+d$sex=factor(d$sex,labels=c("Male","Female"))
+age=c(0.5,3,seq(7.5,87.5,5))
+d$age=age[d$agerec+1]
+head(d,15)
+names(d)[3]="Decade" # make legend start with capital
+(p <- ggplot(d,aes(x=age,y=incid,shape=Decade))+geom_point(size=5)
+ + labs(title="CML Incidence",x="Age (years)",
+        y=expression(paste("Cases per ",10^6," Person-Years")))    
+ + scale_y_log10(limits=c(3,200)) )
+(p=p + facet_grid(code ~ sex))
+mythem=theme( 
+  plot.title = element_text(size = rel(3)),
+  axis.title = element_text(size = rel(2.4)),
+  axis.text = element_text(size = rel(2)),
+  strip.text = element_text(size = rel(2.4))  )
+p=p+mythem
+(p=p+theme(legend.position = c(.60, .86),  #           legend.direction = 'vertical',
+         legend.title = element_text(size = rel(1.4)) ,
+  legend.text = element_text(size = rel(1.4))  ) )  
+
+# ggsave(p,file="/users/radivot/igv/trends.wmf")
+# ggsave(p,file="/users/radivot/case/grants/sachs/HSCepi/figs/trends.png")
+
+#######################################################################
+## CMML Incidence: Figure 3
+#######################################################################
+con=dbConnect(m,dbname=file.path(.seerHome,"00/all.db"))
+d=dbGetQuery(con, 
+  "SELECT * from lymyleuk where histo3==9945 and seqnum<2 and agerec>7 and agerec<19")
+(d<-ddply(d, .(sex,agerec), summarise,cases=length(agerec))) 
+pops=dbGetQuery(con, "SELECT * from pops where popyear>2000 and popage>7 and popage<19")
+(pop<-ddply(pops, .(popage,popsex), summarise,py=sum(population)))
+d=cbind(d,py=pop[order(pop$popsex),"py"])
+d=transform(d,incid=1e6*cases/py) # make it cases per million person years
+d$Sex=factor(d$sex,labels=c("Male","Female"))
+d$age=age[d$agerec+1]
+head(d,15)
+
+summary(mm1<-mle2(cases~dpois(lambda=exp(c+k*age)*py),
+                  parameters=list(c~Sex),
+                  method="Nelder-Mead",
+                  start=list(c=-12,k=0.04),data=d)) 
+d$EI=1e6*predict(mm1)/d$py
+head(d,15)
+(CI2=round(cbind(coef(mm1),confint(mm1)),4)  )
+exp(-CI2["c.SexFemale",c(1,3,2)])
+mkCIk=function(v) sprintf("k = %4.3f (%4.3f, %4.3f)",v[1],v[2],v[3])
+(lab=mkCIk(CI2["k",]))
+
+library(ggplot2)
+(p <- ggplot(d,aes(x=age,y=incid,shape=Sex))+geom_point(size=5)
+ + labs(title="CMML Incidence: SEER 2000-2010",x="Age (years)",
+        y=expression(paste("Cases per ",10^6," Person-Years")))  #  y=expression(frac(Cases,paste(10^6," Person-Years")))) 
+ + scale_y_log10(limits=c(0.1,70)) )
+
+(p=p+theme(plot.title = element_text(size = rel(2.4)),
+           axis.title = element_text(size = rel(2.4)),
+           axis.text = element_text(size = rel(2)))  )
+(p=p+theme(legend.position = c(0.8, .2), 
+           legend.title = element_text(size = rel(2)) ,
+           legend.text = element_text(size = rel(2))  ) )  
+(p=p+geom_line(aes(y=EI))) # update just y component of aes
+
+(p=p+annotate("text",x=35,y=70, hjust=0, label = paste("y ~ exp(C+k*age)  C~sex"),size=8 )   )  
+(p=p+annotate("text",x=35,y=40,hjust=0,label=lab, size=8))
+
+# ggsave(p,file="/users/radivot/igv/CMML.wmf")
+# ggsave(p,file="/users/radivot/case/grants/sachs/HSCepi/figs/CMML.png")
+
+
+
+###########################################################################################
+# SEER CML versus Race Figure 4
+########################################
+pops=dbGetQuery(con, "SELECT * from pops where popyear>2000 and popage>5 and popage<19")
+head(pops,20)
+summary(as.factor(pops$poprace))
+pops$poprace[pops$poprace>2]=3
+(pop<-ddply(pops, .(popage,popsex,poprace), summarise,py=sum(population)))
+head(pop)
+d=dbGetQuery(con, 
+# ICDO3 CML codes 9875 = bcr-abl+ and 9876 =bcr-abl neg CML are not in full use yet, i.e.
+# many ICD-O3 CML codes are still 9863 carried over from ICD-O2
+# "SELECT * from lymyleuk where histo3=9876 and seqnum<2 and race<98 and agerec>5 and agerec<19")
+"SELECT * from lymyleuk where histo2=9863 and seqnum<2 and race<98 and agerec>5 and agerec<19")
+d$race[d$race>2]=3
+head(d)
+(ddply(d, .(agerec,sex,race), summarise,cases=length(agerec))) #only 5 of the 16s 
+count(d, vars=c("agerec","sex","race"))  # same here, and no options to fix it
+(d=ddply(d, .(agerec,sex,race), summarise,cases=length(agerec),.drop=F))# this gets them all
+head(cbind(d,pop)) # see alignment
+d=cbind(d,py=pop[,"py"])
+d=transform(d,incid=1e6*cases/py)
+head(d,15)
+d$Sex=factor(d$sex,labels=c("Male","Female"))
+d$race=factor(d$race,labels=c("White","Black","Asian"))
+age=c(0.5,3,seq(7.5,87.5,5))
+d$age=age[d$agerec+1]
+head(d,15)
+# ## playing around with stuff like this first
+# (s1=summary(m1<-mle2(cases~dpois(lambda=exp(c+k*age)*py),
+#                      parameters=list(c~-1+sex:race,k~-1+race),   
+#                      method="L-BFGS-B",
+#                      lower=c(rep(-15,6),rep(0.01,3)),
+#                      upper=c(rep(-10,6),rep(0.05,3)),
+#                      start=list(c=-13,k=0.02),
+#                      data=d,
+#                      control=list(maxit=500,trace=1,parscale=c(rep(13,6),rep(0.03,3)) )
+# ) )  )
+# I finally found good initial parameter estimates
+(s1=summary(m1<-mle2(cases~dpois(lambda=exp(c+k*age)*py),
+                     parameters=list(c~-1+Sex:race,k~-1+race),   
+                     start=list(c=-13,k=0.02),
+                     data=d
+) )  )
+
+
+# This is fine if all we want is k estimates and absolute amplitude params
+# But for M/F ratios we need deltaC difference parameters, obtainable as
+(sA=summary(mA<-mle2(cases~dpois(lambda=exp(c+k*age)*py),
+                     parameters=list(c~-1+race+Sex:race,k~-1+race), # = work to figure out  
+                     start=list(c=-4,k=0.02),
+                     data=d
+) )  )
+
+(cA=confint(mA)) #good  
+d$EI=1e6*predict(mA)/d$py
+head(d,20) #incidence predictions look reasonable
+# d$EI=1e6*as.numeric(predict(mA))/d$py 
+# here as.numeric clears .Dimnames in the matrix output of predict()  
+# If ggplot gives warnings about rownames being the same, this may help
+
+
+# And for Tf shifts we need 
+(sT=summary(mT<-mle2(cases~dpois(lambda=exp(c+k*(age-Tf))*py),
+                     parameters=list(c~-1+race,k~-1+race,Tf~-1+Sex:race),   
+                    fixed=list("Tf.SexMale:raceWhite"=0,
+                               "Tf.SexMale:raceBlack"=0,
+                               "Tf.SexMale:raceAsian"=0),
+                     start=list(c=-12,k=0.02,Tf=10),
+               control=list(maxit=100,trace=0,parscale=c(rep(-12,3),rep(0.03,3),rep(10,3))),
+                     data=d
+) )  )
+(cT=confint(mT))#but unfortunately, we cannot get Tf CI for Asians or Blacks
+d$EIT=1e6*as.numeric(predict(mT))/d$py
+head(d,20) #predictions of T model are close to the A model 
+
+# # the next block attempts to reparameterize the T model to get Tf CI 
+# # This can be collapsed for now, since I'm not sure if anything will come of it
+# #######################
+# # try moving it all into Tf
+# (sT=summary(mT<-mle2(cases~dpois(lambda=exp(k*(age-Tf))*py),
+#                      parameters=list(k~-1+race,Tf~-1+race+sex:race),   
+#                     start=list(k=0.02,Tf=100),
+#              control=list(maxit=100,trace=0,parscale=c(rep(.03,3),rep(300,3),rep(10,3))),
+#                      data=d
+# ) )  ) # bad fit, want around 470
+# 
+# # try controlling IC
+# (IC=c("k.raceWhite"=0.04,"k.raceBlack"=0.03,"k.raceAsian"=0.02,
+# "Tf.raceWhite"=13/0.04,"Tf.raceBlack"=13/0.04,"Tf.raceAsian"=13/0.02,
+# "Tf.raceWhite:sexF"=10,"Tf.raceBlack:sexF"=10,"Tf.raceAsian:sexF"=20) )
+# 
+# (sT=summary(mT<-mle2(cases~dpois(lambda=exp(k*(age-Tf))*py),
+#                      parameters=list(k~-1+race,Tf~-1+race+sex:race),   
+#                      start=as.list(IC),
+# #                      control=list(maxit=100,trace=0,parscale=IC),
+#                      data=d
+# ) )  )   
+# 
+# # => An error messsage that I cannot understand. Time is up, I surrender
+# ##################
+
+# Back to the basics: reduce the dimensionality by doing the races separately.
+
+dw=subset(d,race=="White")
+
+# first show no significant difference in k values
+summary(mle2(cases~dpois(lambda=exp(c+k*age)*py),method="Nelder-Mead",
+                       parameters=list(c~Sex,k~sex),
+                       start=list(c=-12,k=0.04),data=dw))
+
+(sw2=summary(mw2<-mle2(cases~dpois(lambda=exp(c+k*(age-Tf))*py),
+                       method="Nelder-Mead",
+                       parameters=list(Tf~Sex),
+                       fixed=list("Tf.(Intercept)"=0),
+                       start=list(c=-12,k=0.04,Tf=10),data=dw))     )
+
+(cwT=confint(mw2))
+cT    # good to see same answer for white Tf CI
+
+
+
+db=subset(d,race=="Black")
+summary(mle2(cases~dpois(lambda=exp(c+k*age)*py),method="Nelder-Mead",
+             parameters=list(c~Sex,k~sex),
+             start=list(c=-12,k=0.04),data=db))
+
+
+(sb2=summary(mb2<-mle2(cases~dpois(lambda=exp(c+k*(age-Tf))*py),
+                       method="Nelder-Mead",
+                       parameters=list(Tf~Sex),
+                       fixed=list("Tf.(Intercept)"=0),
+                       start=list(c=-12,k=0.04,Tf=10),data=db))     )
+(cbT=confint(mb2))
+cT    # adding all those whites didn't tighten black k and c estimates.
+# This is because in Poisson regression, the mean = the variance, so no error 
+# estimate improvements result from pooling across races or sexes. Joint fits 
+# here thus do more harm than good, as they increase the dimensionality of the
+# optimization. The only advantage is that it compacts your codes. 
+da=subset(d,race=="Asian")
+summary(mle2(cases~dpois(lambda=exp(c+k*age)*py),method="Nelder-Mead",
+             parameters=list(c~Sex,k~sex),
+             start=list(c=-12,k=0.04),data=da))
+# => removal of k dependence on sex throughout was OK
+
+(sa2=summary(ma2<-mle2(cases~dpois(lambda=exp(c+k*(age-Tf))*py),
+                       method="Nelder-Mead",
+                       parameters=list(Tf~Sex),
+                       fixed=list("Tf.(Intercept)"=0),
+                       start=list(c=-12,k=0.04,Tf=10),data=da))     )
+(caT=confint(ma2))
+cT # same finding
+# Conclusion: try going to lower dimensions when confint() fails on you
+
+mkCIA=function(v) {v=exp(-v); sprintf("M/F = %4.2f (%4.2f, %4.2f)",v[1],v[3],v[2])}
+mkCIT=function(v) sprintf("Tf = %3.1f (%3.1f, %3.1f)",v[1],v[2],v[3])
+mkCIk=function(v) sprintf("k = %4.3f (%4.3f, %4.3f)",v[1],v[2],v[3])
+(CIA=round(cbind(coef(mA),cA),3))
+(AS=apply(CIA[4:6,],1,mkCIA))
+(kS=apply(CIA[7:9,],1,mkCIk))
+(CIT=cbind(c(coef(mw2)[4],coef(mb2)[4],coef(ma2)[4]),rbind(cwT,cbT,caT)[c(3,6,9),]) )
+(TS=apply(CIT,1,mkCIT))
+
+(cnts=ddply(d, .(race), summarise,cases=sum(cases)))
+mkCases=function(n) sprintf("%d cases",n)
+(cS=sapply(cnts[,2],mkCases))
+(labS=c(kS,AS,TS,cS))
+# note that capital S at the end of variable name => strings in my codes
+(tdf=data.frame(race=rep(c("White","Black","Asian"),4),  #panel
+           Sex=rep("Male",12),  # dummy, it wants to know sex of the "points"
+           age=c(rep(30,9),rep(40,3)),      #x-coordinate of label
+           incid=rep(c(2.5,1.67,1.1,90),each=3),     #y-coordinate of label
+           Text=labS,stringsAsFactors = F) )           #label text
+
+
+graphics.off()
+windows(height=6,width=12,xpos=-100,ypos=-100) #need to control the device size to
+library(ggplot2)
+require(grid) # to avoid "cannot find unit()"
+(p <- ggplot(d,aes(x=age,y=incid,shape=Sex)) + geom_point(size=5) 
+ + labs(title="CML Incidence by Race, Sex and Age",x="Age",
+        y=expression(paste("Cases per ",10^6," Person-Years")))    
+ + scale_y_log10(limits=c(1,100)) +xlim(20,90) )
+(p=p + facet_grid(. ~ race))
+# (p=p+scale_shape_discrete(name = "") )
+
+(p=p+theme(plot.title = element_text(size = rel(2)),
+           strip.text = element_text(size = rel(2)),
+           axis.title = element_text(size = rel(2)),
+           axis.text = element_text(size = rel(2)))  )
+(p=p+theme(legend.position = c(0.07, .75),    
+            legend.direction = 'vertical',
+#            legend.background = element_rect(size=4,color="red"),
+#            legend.margin = unit(0, "cm"),
+           legend.title = element_text(size = rel(1.5)) ,
+           legend.text = element_text(size = rel(1.5))  ) )  
+(p=p+geom_line(aes(y=EI))) 
+(p=p + geom_text(aes(label=Text), size=6,data=tdf, hjust=0))
+
+# ggsave(p,file="/users/radivot/igv/race.wmf")
+# ggsave(p,file="/users/radivot/case/grants/sachs/HSCepi/figs/race.png") 
+#####################   END Figure 4
+
+######################   
+# 9863 k trends sampled every 5 years: Figure 5
+con=dbConnect(m,dbname=file.path(.seerHome,"73/all.db"))
+#######################################################################
+dbListTables(con)
+dbListFields(con,"pops")
+dbListFields(con,"lymyleuk")
+pop=dbGetQuery(con,"SELECT * from pops where popage>5 and popage<19 and poprace=1")
+head(pop)
+(pop<-ddply(pop, .(popage,popsex,popyear), summarise,py=sum(population)))
+yearS=c("73to77","78to82","83to87","88to92","93to99","00to04","05to10")
+pop$Years=cut(pop$popyear,breaks=c(1972,1977,1982,1987,1992,1999,2004,2011),labels=yearS)
+(pop<-ddply(pop,.(popage,popsex,Years),summarise,py=sum(py)))
+head(pop,20)
+
+d=dbGetQuery(con, 
+"SELECT * from lymyleuk where race=1 and histo2=9863 and seqnum<2 and agerec>5 and agerec<19")
+# "SELECT * from lymyleuk where race=1 and ICD9=2051 and seqnum<2 and agerec>5 and agerec<19")
+head(d)
+d<-ddply(d, .(agerec,sex,yrdx), summarise,cases=length(agerec))
+d$Years=cut(d$yrdx,breaks=c(1972,1977,1982,1987,1992,1999,2004,2011),labels=yearS)
+head(d)
+d<-ddply(d, .(agerec,sex,Years), summarise,cases=sum(cases))
+head(cbind(d,pop)) # just to see that they match up
+d=cbind(d,py=pop[,"py"]) # only take the non-redundant py column
+head(d)
+d$sex=factor(d$sex,labels=c("Male","Female"))
+age=c(0.5,3,seq(7.5,87.5,5))
+d$age=age[d$agerec+1]
+head(d,15)
+
+# summary(mk<-mle2(cases~dpois(lambda=exp(c+k*age)*py),
+#                   parameters=list(c~sex,k~-1+Years),
+#                   method="Nelder-Mead",
+#                   start=list(c=-12,k=rep(0.05,7)),data=d)) 
+
+years=c(1975,1980,1985,1990,1996,2002,2007)
+kic=0.05
+k=NULL
+kL=NULL
+kU=NULL
+
+for (Y in yearS) {
+  summary(mk<-mle2(cases~dpois(lambda=exp(c+k*age)*py),
+                   parameters=list(c~sex),
+                   method="Nelder-Mead",
+                   start=list(c=-12,k=kic),data=subset(d,Years==Y))) 
+  k=c(k,coef(mk)[3])
+  (CIk=round(confint(mk)[3,],4))
+  kL=c(kL,CIk[1])
+  kU=c(kU,CIk[2])
+}
+dfk9=data.frame(years,k,kL,kU,Registries="SEER9")
+
+con=dbConnect(m,dbname=file.path(.seerHome,"00/all.db"))
+pop=dbGetQuery(con, 
+"SELECT * from pops where poprace=1 and popyear>1999 and popage>5 and popage<19")
+pop<-ddply(pop, .(popage,popsex,popyear), summarise,py=sum(population))
+head(pop,20)
+yearS=c("00to01","02to03","04to05","06to07","08to10")
+pop$Years=cut(pop$popyear,breaks=c(1999,2001,2003,2005,2007,2011),labels=yearS)
+pop<-ddply(pop,.(popage,popsex,Years),summarise,py=sum(py))
+head(pop,20)
+
+d=dbGetQuery(con, 
+"SELECT * from lymyleuk where race=1 and histo2=9863 and seqnum<2 and agerec>5 and agerec<19")
+# "SELECT * from lymyleuk where race=1 and ICD9=2051 and seqnum<2 and agerec>5 and agerec<19")
+d<-ddply(d, .(agerec,sex,yrdx), summarise,cases=length(agerec))
+d$Years=cut(d$yrdx,breaks=c(1999,2001,2003,2005,2007,2011),labels=yearS)
+d<-ddply(d, .(agerec,sex,Years), summarise,cases=sum(cases))
+head(cbind(d,pop)) # just to see that they match up
+d=cbind(d,py=pop[,"py"])
+head(d,15)
+d$Sex=factor(d$sex,labels=c("Male","Female"))
+age=c(0.5,3,seq(7.5,87.5,5))
+d$age=age[d$agerec+1]
+head(d,15)
+
+years=c(2001,2003,2005,2007,2009)
+kic=0.05
+k=NULL
+kL=NULL
+kU=NULL
+
+for (Y in yearS) {
+  summary(mk<-mle2(cases~dpois(lambda=exp(c+k*age)*py),
+                   parameters=list(c~sex),
+                   method="Nelder-Mead",
+                   start=list(c=-12,k=kic),data=subset(d,Years==Y))) 
+  k=c(k,coef(mk)[3])
+  (CIk=round(confint(mk)[3,],4))
+  kL=c(kL,CIk[1])
+  kU=c(kU,CIk[2])
+}
+
+dfk18=data.frame(years,k,kL,kU,Registries="SEER18")
+dfk=rbind(dfk9,dfk18)
+
+windows(height=7,width=8,xpos=-100,ypos=-100)  # set back to square
+library(ggplot2)
+pd <- position_dodge(1) 
+(p=ggplot(dfk, aes(x=years, y=k,shape=Registries)) + 
+   geom_point(size=6,position=pd))
+(p=p+labs(title="SEER9 1973-2010 and SEER18 2000-2010",x="Year", y="k") )     
+(p=p+geom_errorbar(aes(ymin=kL, ymax=kU),width=.01,position=pd))
+(p=p+theme(plot.title = element_text(size = rel(2)),
+           axis.title = element_text(size = rel(2)),
+           axis.text = element_text(size = rel(2)))  )
+(p=p+theme(legend.position = c(0.2, .2), 
+           legend.title = element_text(size = rel(1.5)) ,
+           legend.text = element_text(size = rel(1.5))  ) )  
+# ggsave(p,file="/users/radivot/igv/ktrends.wmf")
+# ggsave(p,file="/users/radivot/case/grants/sachs/HSCepi/figs/ktrends.png")
+
+###################### End Fig 5 on k trends
+
+
+
+
+# IR-to-CML Wait Figure 6
+#####################
+cols=c("city","sex","doseg","agexg","calg","kerma","PY","adjPY","num.entering",
+       "age","agex","tsx","cal","sv","gam","neut",
+       "lymphoma","NHL","leukemia","AML","ALL","CML","ATL","MM")      
+d<-read.table(file.path(.aBombHome,"hema87.dat"), header=F,col.names=cols);
+d=d[d$adjPY>0,] #remove two recs with zero py
+d=d[d$kerma==1,] # take only kerma < 4 Gy
+# these two lines can also be done using SQL as follows
+# require(sqldf)  # install.packages("sqldf") 
+# d=sqldf("select * from d where adjPY>0 and kerma=1") 
+d$py=10^4*d$adjPY # add a colum py = person years
+wanted=c("city","sex","doseg","agexg","calg","age","agex","tsx","cal","sv","py","CML")      
+d=d[,wanted]
+names(d)[dim(d)[2]]="cases"
+d$Sex=factor(d$sex,labels=c("Male","Female"))
+d$city=factor(d$city,labels=c("Hiroshima","Nagasaki"))
+(years=c(1951,1953,1956,1959,1963,1968,1973,1978,1983,1987)-1945) 
+d$calg=factor(d$calg,labels=years)
+head(d)
+# sapply(d,class)
+log(0.04) #  roughly -3 used to start k, exponentiated below to keep it positive
+library(bbmle)
+(s1=summary(m1<-mle2(cases~dpois(lambda=(exp(c+exp(k)*age)+sv*exp(f))*py),
+                     parameters=list(c~Sex,f~-1+calg:Sex),
+                     method="L-BFGS-B",
+                     start=list(c=-13,k=-3,f=-15),data=d)
+) )
+
+wait=exp(coef(s1)[4:23,1])*1e4
+waitL=exp(coef(s1)[4:23,1]-1.96*coef(s1)[4:23,2])*1e4
+waitU=exp(coef(s1)[4:23,1]+1.96*coef(s1)[4:23,2])*1e4
+dfc=data.frame(years,wait,waitL,waitU,Sex=gl(2,10,labels=c("Male","Female") ) ) 
+
+library(ggplot2)
+pd <- position_dodge(1) 
+(p=ggplot(dfc, aes(x=years, y=wait, shape=Sex)) + 
+   geom_point(size=6,position=pd)+ ylim(0, 10))
+(p=p+labs(title="IR-to-CML Latency",x="Years since exposure",
+          y=expression(paste("Cases per ",10^4," Person-Year-Sv") ) ) )    
+(p=p+geom_errorbar(aes(ymin=waitL, ymax=waitU),width=.01,position=pd))
+(p=p+theme(plot.title = element_text(size = rel(2.3)),
+           axis.title = element_text(size = rel(2.3)),
+           axis.text = element_text(size = rel(2.3)))  )
+(p=p+theme(legend.position = c(0.8, .5), 
+           legend.title = element_text(size = rel(2)) ,
+           legend.text = element_text(size = rel(2))  ) )  
+
+waitm=exp(coef(s1)[4:13,1])
+waitf=exp(coef(s1)[14:23,1])
+(MovF<-format(sum(waitm)/sum(waitf),digits=2))
+pm=waitm/sum(waitm)
+pf=waitf/sum(waitf)
+(taum<-round(years%*%pm,2))
+(tauf<-round(years%*%pf,2))
+(p=p+annotate("text",x=25,y=10, hjust=0, label = paste("M/F =",MovF),size=9) )
+(lb1=paste0("tau[m] == ",taum,"*~Yrs"))
+(p=p+annotate("text",x=25,y=9, hjust=0, label = lb1,size=9,parse=T) )
+(lb1=paste0("tau[f] == ",tauf,"*~Yrs"))
+(p=p+annotate("text",x=25,y=8, hjust=0, label = lb1,size=9,parse=T) )
+# ggsave(p,file="/users/radivot/igv/IR2CML.wmf")
+# ggsave(p,file="/users/radivot/case/grants/sachs/HSCepi/figs/IR2CML.png")
+
+# This next block calculates the 95% CI of the difference in waiting times
+rdiscrete <- function(n, probs,values) {
+  cumprobs <- cumsum(probs)
+  singlenumber <- function() {
+    x <- runif(1)
+    N <- sum(x > cumprobs)
+    N
+  }
+  values[replicate(n, singlenumber())+1]
+}
+x=rdiscrete(1e5,pf,years)
+summary(as.factor(x))
+y=rdiscrete(1e5,pm,years)
+summary(as.factor(y))
+(delT=quantile(x-y,c(0.025,0.975)))
+(lb1=paste0("Delta*tau == ",tauf-taum,"(",delT[1],", ",delT[2],")"))
+#(lb1=paste0("Delta*tau == ",tauf-taum,"~group(\"(\",",delT[1],",",delT[2],",\")\")")) # attempt with group() failed
+(p+annotate("text",x=25,y=7, hjust=0, label = lb1,size=7,parse=T) ) #just show since can't add space before ( 
+
+
+### Figure 7: interpretations ##############
+graphics.off()
+windows(height=6,width=6,xpos=-100,ypos=-100) 
+k=0.025
+Tp=22.1
+Rp=1.73
+Tf=-15:23
+fR=function(Tf) exp(-k*(Tf-Tp))
+R=fR(Tf)
+
+
+par(mar=c(4.5,4.3,0,.5))
+plot(Tf,R,type="l",lwd=2.5,cex.lab=1.5,cex.axis=1.5,
+     ylab="(male risk)/(female risk) M/F",
+     xlab="Extra female latency time T in years",axes=F)
+mtext(side=3,line=-4,"Continuum of SEER CML\n Sex Difference Interpretations",cex=1.5,font=2)
+axis(1);axis(2)
+points(x=c(0,Tp),y=c(Rp,1),pch=1,cex=3,lwd=3)
+abline(h=1,v=0,lty=3)
+fT=function(R) Tp-log(R)/k
+Tx=7
+Rx=2.5
+points(x=c(fT(Rx),Tx),y=c(Rx,fR(Tx)),pch="+",cex=3)
+# plot(1:20,pch=1:20)
+x=seq(fT(Rx),Tx,0.1)
+y=fR(x)
+points(x,y,type="l",lwd=6)
+rect(-1,1.13*Rp,23,1.26*Rp,lwd=2)
+text(12,1.2*Rp,"interpretations by\n a single cause",cex=1.4,font=2,bty="o")
+arrows(x0=0,y0=1.13*Rp,x1=0,y1=Rp+0.05,lwd=2,angle=20)
+arrows(x0=Tp,y0=1.13*Rp,x1=Tp,y1=1.05,lwd=2,angle=20)
+text(4,1.04*Rp,"higher\nmale\nrisk",cex=1.4,font=2)
+text(10,0.96*Rp,"or",cex=1.4,font=2)
+text(18,0.9*Rp,"shorter\nmale\nlatency",cex=1.4,font=2)
+text(-9,1.53,
+     "interpretations\nconsistent with\ntime-since-\nexposure data\n(heavy line)",
+     cex=1.4,font=2)
+arrows(x0=-8,y0=1.8,x1=-8,y1=fR(-8),lwd=2,angle=20)
+text(0.5,1.14,
+     "preferred\ninterpretations",
+     cex=1.4,font=2,adj=0)
+arrows(x0=3,y0=1.23,x1=3,y1=fR(3),lwd=3,angle=20)
+
+
+
+########################################################
+# Age at exposure: Figure 8
+windows(height=7,width=8,xpos=-100,ypos=-100)  
+
+head(d)
+d$Dose<-cut(d$sv,c(-1,.02,1,100),labels=c("Low","Moderate","High"))
+d$agexc<-cut(d$agex,c(0,20,40,180),labels=c("10","30","50"))
+head(d)
+library(plyr) 
+(d2<-ddply(subset(d,city=="Hiroshima"), .(Dose,Sex,agexc), summarise,
+           PY=sum(py),cases=sum(cases),agex=weighted.mean(agex,py) )) #
+(d2=within(d2,{incid=1e5*cases/PY}))
+
+library(ggplot2)
+(p <- ggplot(d2,aes(x=agex,y=incid,shape=Dose,group=Dose))+geom_point(size=5) +geom_line()
+ + labs(title="Hiroshima A-bomb Survivors",x="Age-at-exposure (PY-weighted)",
+        y=expression(paste("CML Cases per ",10^5," Person-Years")))    
+ + scale_y_log10(limits=c(.5,130)) +xlim(8,52) )
+(p=p + facet_grid(. ~ Sex))
+(p=p+theme(legend.position = c(0.8, .85), 
+           legend.title = element_text(size = rel(2)) ,
+           legend.text = element_text(size = rel(1.7))  ) )  
+
+(p=p+theme(plot.title = element_text(size = rel(2.5)),
+           strip.text = element_text(size = rel(2)),
+           axis.title.y = element_text(size = rel(2.5)),
+           axis.title.x = element_text(size = rel(2.3)),
+           axis.text = element_text(size = rel(2.3)))  )
+
+# ggsave(p,file="/users/radivot/igv/agex.wmf")
+# ggsave(p,file="/users/radivot/case/grants/sachs/HSCepi/figs/agex.png")
+
+# for b test bin up times since exposure in groups of two to make fewer parameters
+d$caln=cut(as.integer(d$calg),c(0,2,4,6,8,10),labels=c(7,12,20,30,40))
+head(d,10)
+
+(dHM<-ddply(subset(d,Sex=="Male"&city=="Hiroshima"), .(caln,age,agex,sv,py,cases), summarise,
+            PY=sum(py),cases=sum(cases),agex=weighted.mean(agex,py) )) #
+(s0=summary(m0<-mle2(cases~dpois(lambda=(exp(c+exp(k)*(age-55))+sv*exp(f))*py),
+                     parameters=list(f~caln),
+                     method="L-BFGS-B",
+                     start=list(c=-13,k=-3,f=-15),
+                     data=dHM)
+) )
+
+(s1=summary(m1<-mle2(cases~dpois(lambda=(exp(c+exp(k)*(age-55))
+                                         +exp(-b*abs(agex-30)/28.85)*sv*exp(f))*py),
+                     parameters=list(f~caln),
+                     method="L-BFGS-B",
+                     start=list(c=-13,k=-3,f=-15,b=0.5),
+                     data=dHM)
+) )
+
+anova(m0,m1) # P=0.03  HM only
+
+
+# HM and HF together
+(dH<-ddply(subset(d,city=="Hiroshima"), .(caln,Sex,age,agex,sv,py,cases), summarise,
+           PY=sum(py),cases=sum(cases),agex=weighted.mean(agex,py) )) #
+
+(s0=summary(m0<-mle2(cases~dpois(lambda=(exp(c+exp(k)*(age-55))+sv*exp(f))*py),
+                     parameters=list(c~Sex,f~-1+caln:Sex),
+                     method="L-BFGS-B",
+                     start=list(c=-13,k=-3,f=-15),
+                      data=dH)
+) )
+
+
+(s1=summary(m1<-mle2(cases~dpois(lambda=(exp(c+exp(k)*(age-55))
+                                         +exp(-b*abs(agex-30)/28.85)*sv*exp(f))*py),
+                     parameters=list(c~Sex,f~-1+caln:Sex),
+                     method="L-BFGS-B",
+                     start=list(c=-13,k=-3,f=-15,b=0.5),
+                      data=dH)
+) )
+
+# (Hiroshima M and F combined) # mistake in Ver2 of paper: I thought it was cities combined
+anova(m0,m1) # P=0.06  
+
+
+# try cities combined
+(dM<-ddply(subset(d,Sex=="Male"), .(caln,age,agex,sv,py,cases), summarise,
+            PY=sum(py),cases=sum(cases),agex=weighted.mean(agex,py) )) #
+(s0=summary(m0<-mle2(cases~dpois(lambda=(exp(c+exp(k)*(age-55))+sv*exp(f))*py),
+                     parameters=list(f~caln),
+                     method="L-BFGS-B",
+                     start=list(f=-15,c=-15,k=-3),
+                     data=dM)
+) )
+
+(s1=summary(m1<-mle2(cases~dpois(lambda=(exp(c+exp(k)*(age-55))
+                                         +exp(-b*abs(agex-30)/28.85)*sv*exp(f))*py),
+                     parameters=list(f~caln),
+                     method="L-BFGS-B",
+                     start=list(f=-15,c=-13,k=-3,b=0.5),
+                     data=dM)
+) )
+
+anova(m0,m1) # P=0.279  M across both cities
+
+################### END Figure 7 related calculations
+
+#### Figures 9 and 10 did not involve R 
+
+#######################################################################
+## AML Incidence: Figure 11
+#######################################################################
+con=dbConnect(m,dbname=file.path(.seerHome,"00/all.db"))
+d=dbGetQuery(con, 
+       "SELECT * from lymyleuk where icd9==2050 and seqnum<2 and agerec>3 and agerec<19")
+(d<-ddply(d, .(sex,agerec), summarise,cases=length(agerec))) 
+pops=dbGetQuery(con, "SELECT * from pops where popyear>2000 and popage>3 and popage<19")
+(pop<-ddply(pops, .(popage,popsex), summarise,py=sum(population)))
+d=cbind(d,py=pop[order(pop$popsex),"py"])
+d=transform(d,incid=1e5*cases/py) # make it cases per million person years
+d$Sex=factor(d$sex,labels=c("Male","Female"))
+d$age=age[d$agerec+1]
+head(d,15)
+
+library(ggplot2)
+(p <- ggplot(d,aes(x=age,y=incid,shape=Sex))+geom_point(size=5)
+ + labs(title="AML Incidence: SEER 2000-2010",x="Age (years)",
+        y=expression(paste("Cases per ",10^5," Person-Years")))  #  y=expression(frac(Cases,paste(10^6," Person-Years")))) 
+ + scale_y_log10(limits=c(0.7,30)) )
+
+(p=p+theme(plot.title = element_text(size = rel(2.4)),
+           axis.title = element_text(size = rel(2.4)),
+           axis.text = element_text(size = rel(2)))  )
+(p=p+theme(legend.position = c(0.8, .2), 
+           legend.title = element_text(size = rel(2)) ,
+           legend.text = element_text(size = rel(2))  ) )  
+
+# ggsave(p,file="/users/radivot/igv/AML.wmf")
+# ggsave(p,file="/users/radivot/case/grants/sachs/HSCepi/figs/AML.png")
+
+
+
+####################################### End paper
+# The following figure was taken out because it was redundant with the race figure
+#############################
+# CML Incidence in SEER 2000-2009 (parallel lines) 
+##############################
+con=dbConnect(m,dbname=file.path(.seerHome,"00/all.db"))
+d=dbGetQuery(con, 
+"SELECT * from lymyleuk where histo2=9863 and seqnum<2 and agerec>5 and agerec<19")
+(d<-ddply(d, .(agerec,sex), summarise,cases=length(agerec))) 
+pops=dbGetQuery(con, "SELECT * from pops where popyear>2000 and popage>5 and popage<19")
+(pop<-ddply(pops, .(popage,popsex), summarise,py=sum(population)))
+d=cbind(d,py=pop[,"py"])
+d=transform(d,incid=1e6*cases/py)
+head(d,15)
+d$sex=factor(d$sex,labels=c("M","F"))
+age=c(0.5,3,seq(7.5,87.5,5))
+d$age=age[d$agerec+1]
+head(d,15)
+
+summary(m0<-mle2(cases~dpois(lambda=exp(c+k*age)*py),
+                 parameters=list(c~sex,k~sex),   # see that slopes do not depend on sex
+                 method="Nelder-Mead",
+                 start=list(c=-12,k=0.04),data=d))
+
+summary(m1<-mle2(cases~dpois(lambda=exp(c+k*age)*py),
+                 parameters=list(c~sex),
+                 method="Nelder-Mead",
+                 start=list(c=-12,k=0.04),data=d)) 
+anova(m0,m1)  # => reject null that extra param carries more than noise
+d$EI=1e6*predict(m1)/d$py
+head(d,15)
+(CIA=round(cbind(coef(m1),confint(m1)),4)  )
+
+# reparameterizing the model to get the delay time Tf for females
+(s2=summary(m2<-mle2(cases~dpois(lambda=exp(c+k*(age-Tf))*py),
+                     method="Nelder-Mead",
+                     parameters=list(Tf~sex),
+                     fixed=list("Tf.(Intercept)"=0),
+                     start=list(c=-12,k=0.04,Tf=10),data=d))     )
+coef(s2)
+coef(m2)
+
+
+AICtab(m0,m1,m2)  # should be no difference with m1, it's just a reparameterization
+(CIT=round(cbind(coef(s2)[,1],confint(m2)),4)  )
+
+mkCIA=function(v) {v=exp(-v); sprintf("M/F = %4.2f (%4.2f, %4.2f)",v[1],v[3],v[2])}
+mkCIT=function(v) sprintf("Tf = %3.1f (%3.1f, %3.1f)",v[1],v[2],v[3])
+
+(p <- ggplot(d,aes(x=age,y=incid,shape=sex))+geom_point(size=5)
+ + labs(title="CML Incidence: SEER 2000-2010",x="Age (years)",
+        y=expression(frac(Cases,paste(10^6," Person-Years")))) 
+ + scale_y_log10(limits=c(3,100)) )
+(p=p+theme(title = element_text(size = rel(2)),axis.text = element_text(size = rel(2)))  )
+(p=p+geom_line(aes(y=EI))) # update just y component of aes
+(p=p+annotate("text",x=30,y=100, hjust=0, label = paste("y ~ exp(c+k*age)  c~sex"),size=7 )   )  
+(p=p+annotate("text",x=30,y=80,hjust=0,label=mkCIk(CIA["k",]), size=6))
+(p=p+annotate("text",x=30,y=65,hjust=0,label=mkCIA(CIA["c.sexF",]), size=6 )   )  
+(p=p+annotate("text",x=30,y=47, hjust=0, label = paste("y ~ exp(c+k*(age-Tf))"),size=7)   )  
+(p=p+annotate("text",x=30,y=37,hjust=0, label=mkCIT(CIT["Tf.sexF",]), size=6))
+# ggsave(p,file="/users/radivot/case/grants/sachs/HSCepi/figs/CML.wmf")
+
+###########################################################
+# This section explores CML ICD-O3 codes in whites as 9863, 9875 (ba+) and 9876 (ba-)
+con=dbConnect(m,dbname=file.path(.seerHome,"00/all.db"))
+pop=dbGetQuery(con, 
+     "SELECT * from pops where poprace=1 and popyear>1999 and popage>9 and popage<19")
+pop<-ddply(pop, .(popage,popsex,popyear), summarise,py=sum(population),.drop=F)
+head(pop,20)
+yearS=c("01to03","04to05","06to07","08to10")
+pop$Years=cut(pop$popyear,breaks=c(1999,2003,2005,2007,2011),labels=yearS)
+pop<-ddply(pop,.(popage,popsex,Years),summarise,py=sum(py),.drop=F)
+head(pop,20)
+dim(pop)
+
+d=dbGetQuery(con, 
+# "SELECT * from lymyleuk where race=1 and ICD9=2051 and
+#              seqnum<2 and agerec>9 and agerec<19")
+# "SELECT * from lymyleuk where race=1 and histo2=9863 and
+#               seqnum<2 and agerec>9 and agerec<19")
+# "SELECT * from lymyleuk where race=1 and 
+#              ((histo3=9863) or (histo3=9876) or (histo3=9875)) and
+#              seqnum<2 and agerec>9 and agerec<19")
+# "SELECT * from lymyleuk where race=1 and 
+#              (histo3=9863 or histo3=9875) and
+#              seqnum<2 and agerec>9 and agerec<19")
+# "SELECT * from lymyleuk where race=1 and histo3=9875 and
+# seqnum<2 and agerec>9 and agerec<19")
+# "SELECT * from lymyleuk where race=1 and histo3=9945 and
+# seqnum<2 and agerec>9 and agerec<19")
+d<-ddply(d, .(agerec,sex,yrdx), summarise,cases=length(agerec),.drop=F))
+sum(d$cases)  #2970 icdo2 9863 cases is same as icdO3 9863+9875+9876
+# of the latter, 2425 are 9863, 507 are 9875 and only 38 are 9876  
+d$Years=cut(d$yrdx,breaks=c(1999,2003,2005,2007,2011),labels=yearS)
+d<-ddply(d, .(agerec,sex,Years), summarise,cases=sum(cases),.drop=F)
+head(cbind(d,pop)) # just to see that they match up
+d=cbind(d,py=pop[,"py"])
+head(d,15)
+d$Sex=factor(d$sex,labels=c("Male","Female"))
+age=c(0.5,3,seq(7.5,87.5,5))
+d$age=age[d$agerec+1]
+head(d,15)
+years=c(2002,2005,2007,2009)
+kic=0.05
+c=k=NULL
+cL=kL=NULL
+cU=kU=NULL
+for (Y in yearS) {
+  summary(mk<-mle2(cases~dpois(lambda=exp(c+k*(age-65))*py),
+                   parameters=list(c~sex),
+                   method="Nelder-Mead",
+                   start=list(c=-12,k=kic),data=subset(d,Years==Y))) 
+  k=c(k,coef(mk)[3])
+  c=c(c,coef(mk)[1])
+  CI=confint(mk)
+  (CIk=round(CI[3,],4))
+  (CIc=round(CI[1,],4))
+  kL=c(kL,CIk[1])
+  kU=c(kU,CIk[2])
+  cL=c(cL,CIc[1])
+  cU=c(cU,CIc[2])
+}
+data.frame(years,c,cL,cU)
+data.frame(years,k,kL,kU)
+
+# 9876 = ba neg
+# > data.frame(years,k,kL,kU)
+# years          k      kL     kU
+# 1  2002 0.04739624  0.0042 0.0918
+# 2  2005 0.11644800  0.0455 0.2098
+# 3  2007 0.06525722  0.0131 0.1207
+# 4  2009 0.04218057 -0.0077 0.0926
+
+# 9875 = ba + 
+# years           k      kL     kU
+# 1  2002 0.012260690 -0.0035 0.0276
+# 2  2005 0.009064363 -0.0086 0.0234
+# 3  2007 0.007569936 -0.0078 0.0245
+# 4  2009 0.004961402 -0.0077 0.0165
+
+# so bcr-abl negative CML's do have a larger k/aging rate constant, 
+# but since we used icdo2 9863, this cannot explain the ongoing drops in k

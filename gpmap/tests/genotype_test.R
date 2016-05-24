@@ -1,0 +1,5 @@
+library(gpmap)
+enumerate_genotypes()
+enumerate_genotypes(2)
+try(enumerate_genotypes(3,locinames=c('A','B'),allelenames=c('L','H')))
+enumerate_genotypes(3,locinames=c('A','B','C'),allelenames=c('L','H'))

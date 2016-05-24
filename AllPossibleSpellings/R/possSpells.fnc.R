@@ -1,0 +1,173 @@
+possSpells.fnc <-
+function(words){
+initial.spellings=list( p=c("p","ph","pe"),
+                        b=c("b","bh"),
+                        t=c("t","pt","th"),
+                        d=c("d","dh"),
+                        g=c("g","gue","gh"),
+                        k=c("c","k","ch","qu","q","cu","que","kh"),
+                        m=c("m","mn","mh"),
+                        n=c("n","kn","gn","pn","nh","mn"),
+                        N=c("ng","n","ngue","ngh"),
+                        r=c("r","wr","rh"),
+                        f=c("f","ph"),
+                        v=c("v","w","f"),
+                        T=c("th"),
+                        D=c("th"),
+                        s=c("s","c","sc","ps"),
+                        z=c("s","z","x"),
+                        S=c("sh","ch","s","sch"),
+                        Z=c("si","s","g","z","j","zh","ti","sh"),
+                        tS=c("ch","tch","c","cz"),
+                        dZ=c("g","j","gi","ge","dj"),
+                        h=c("h","wh","j"),
+                        j=c("y","j"),
+                        l=c("l"),
+                        w=c("w","ou","wh"),
+                        i=c("e","ea","ee","ae","ei","ie","eo","oe","ey","i","y","ue"),
+                        I=c("i","y","ui","e","ee","ie","o","u","a","ei","ee","ia","ea","ai"),
+                        u=c("oo","u","o","ou","ew","ue","ui","eu","oe","ough","wo","ioux","ieu","oup"),
+                        U=c("oo","u","o","ou","oul"),
+                        e=c("a","ay","ai","aig","aigh","e","ea","ei","eig","eigh","ee","ey","ae","eg"),
+                        `@`=c("a","e","o","u","ai","ou","eig","y","ah","ae","oi"),
+                        o=c("o","oa","ow","ou","oe","eau","oh","ew","au","aoh","ough","eo"),
+                        E=c("e","ea","a","ae","ai","ay","ei","eo","ie","u","ue","oe"),
+                        ZZZ=c("a","ai"),
+                        V=c("u","o","oe","ou","oo"),
+                        O=c("a","au","aw","ough","augh","o","oa","oo"),
+                        A=c("o","a","eau","au","ou"),
+                        aI=c("i","y","igh","ie","ei","eigh","uy","ai","ey","ye","ae","ais","is","ig","ic","ay","ui"),
+                        OI=c("oi","oy"),
+                        aU=c("ou","ow","ough","au","ao"),
+                        RRR=c("er","or","ur","ir","yr","our","ear","err","eur","ar")
+)
+
+middle.spellings=list(	
+                      p=c("p","pp","ph","pe","gh"),
+                      b=c("b","bb","bh"),
+                      t=c("t","tt","pt","th","ct"),
+                      d=c("d","dd","ed","dh"),
+                      g=c("g","gg","gue","gh"),
+                      k=c("c","k","ck","ch","cc","qu","q","cq","cu","que","kk","kh"),
+                      m=c("m","mm","mb","mn","mh","gm","chm"),
+                      n=c("n","nn","kn","gn","pn","nh","cn","mn"),
+                      N=c("ng","n","ngue","ngh"),
+                      r=c("r","rr","wr","rh","rrh"),
+                      f=c("f","ph","ff","gh","pph"),
+                      v=c("v","w","f","ph"),
+                      T=c("th","tth"),
+                      D=c("th"),
+                      s=c("s","c","ss","sc","st","ps","cc","se","ce","z"),
+                      z=c("s","z","x","zz","ss","ze"),
+                      S=c("sh","ti","ci","ssi","si","ss","ch","s","sci","ce","sch","sc"),
+                      Z=c("si","s","g","z","j","zh","ti","sh"),
+                      tS=c("ch","t","tch","ti","c","cz","tsch"),
+                      dZ=c("g","j","dg","dge","d","di","gi","ge","dj","gg"),
+                      h=c("h","wh","j","ch"),
+                      j=c("y","i","j"),
+                      l=c("l","ll"),
+                      w=c("w","u","o","ou","wh"),
+                      i=c("e","ea","ee","ae","ei","ie","eo","oe","ey","i","y","ue"),
+                      I=c("i","y","ui","e","ee","ie","o","u","a","ei","ee","ia","ea","ai"),
+                      u=c("oo","u","o","ou","ew","ue","ui","eu","oe","ough","wo","ioux","ieu","oup"),
+                      U=c("oo","u","o","ou","oul"),
+                      e=c("a","ay","ai","aig","aigh","e","ea","ei","eig","eigh","ee","ey","ae","eg"),
+                      `@`=c("a","e","o","u","ai","ou","eig","y","ah","ae","oi"),
+                      o=c("o","oa","ow","ou","oe","eau","oh","ew","au","aoh","ough","eo"),
+                      E=c("e","ea","a","ae","ai","ay","ei","eo","ie","u","ue","oe"),
+                      ZZZ=c("a","ai"),
+                      V=c("u","o","oe","ou","oo"),
+                      O=c("a","au","aw","ough","augh","o","oa","oo"),
+                      A=c("o","a","eau","au","ou"),
+                      aI=c("i","y","igh","ie","ei","eigh","uy","ai","ey","ye","ae","ais","is","ig","ic","ay","ui"),
+                      OI=c("oi","oy"),
+                      aU=c("ou","ow","ough","au","ao"),
+                      RRR=c("er","or","ur","ir","yr","our","ear","err","eur","ar")
+)
+
+
+final.spellings=list(
+                    p=c("p","pp","pe","gh"),
+                    b=c("b","bb"),
+                    t=c("t","tt","ed","th"),
+                    d=c("d","dd","ed"),
+                    g=c("g","gg","gue"),
+                    k=c("c","k","ck","ch","cc","q","cq","cu","que","kk"),
+                    m=c("m","mm","mb","mn","gm","chm"),
+                    n=c("n","nn","gn"),
+                    N=c("ng","n","ngue"),
+                    r=c("r","rr"),
+                    f=c("f","ph","ff","gh"),
+                    v=c("v","f"),
+                    T=c("th"),
+                    D=c("th"),
+                    s=c("s","ss","se","ce","z"),
+                    z=c("s","z","zz","ss","ze"),
+                    S=c("sh","ss","s","sch"),
+                    Z=c("s","g","z","zh"),
+                    tS=c("ch","tch","tsch"),
+                    dZ=c("dge","ge"),
+                    h=c("h"),
+                    j=c("y"),
+                    l=c("l","ll"),
+                    w=c("w","u","o","ou"),
+                    i=c("e","ea","ee","ae","ei","ie","eo","oe","ey","i","y","ue"),
+                    I=c("i","y","ui","e","ee","ie","o","u","a","ei","ee","ia","ea","ai"),
+                    u=c("oo","u","o","ou","ew","ue","ui","eu","oe","ough","wo","ioux","ieu","oup"),
+                    U=c("oo","u","o","ou","oul"),
+                    e=c("a","ay","ai","aig","aigh","e","ea","ei","eig","eigh","ee","ey","ae","eg"),
+                    `@`=c("a","e","o","u","ai","ou","eig","y","ah","ae","oi"),
+                    o=c("o","oa","ow","ou","oe","eau","oh","ew","au","aoh","ough","eo"),
+                    E=c("e","ea","a","ae","ai","ay","ei","eo","ie","u","ue","oe"),
+                    ZZZ=c("a","ai"),
+                    V=c("u","o","oe","ou","oo"),
+                    O=c("a","au","aw","ough","augh","o","oa","oo"),
+                    A=c("o","a","eau","au","ou"),
+                    aI=c("i","y","igh","ie","ei","eigh","uy","ai","ey","ye","ae","ais","is","ig","ic","ay","ui"),
+                    OI=c("oi","oy"),
+                    aU=c("ou","ow","ough","au","ao"),
+                    RRR=c("er","or","ur","ir","yr","our","ear","err","eur","ar")
+)
+  words=gsub("'","",words)
+  possible.spellings=as.character()
+  for(word in words){
+    cat(paste("processing ",word," (",grep(word,words)," of ",length(words),") ...\n",sep=""))
+    phons=as.vector(unlist(strsplit(word,"_")))
+    for(i in 1:length(phons)){
+      if(i==1){
+        eval(parse(text=paste("phon",i,"=initial.spellings[phons[i]][[1]]",sep="")))
+        eval(parse(text=paste("len.phons=c(length(phon",i,"))",sep="")))
+      } else{
+        if(i!=1&i<length(phons)){
+          eval(parse(text=paste("phon",i,"=middle.spellings[phons[i]][[1]]",sep="")))
+          eval(parse(text=paste("len.phons=c(len.phons,length(phon",i,"))",sep="")))
+        }
+        if(i==length(phons)){
+          eval(parse(text=paste("phon",i,"=final.spellings[phons[i]][[1]]",sep="")))
+          eval(parse(text=paste("len.phons=c(len.phons,length(phon",i,"))",sep="")))
+        }
+      }
+    }
+    eval(parse(text=paste("len.total=",paste(len.phons[-1],collapse="*"),sep="")))
+    x=matrix(rep(phon1,len.total))
+    len.phons2=len.phons[-1]
+    for(j in 2:(length(len.phons)-1)){
+      eval(parse(text=paste("x=cbind(x,rep(middle.spellings[phons[j]][[1]],each=nrow(x)/length(middle.spellings[phons[j]][[1]])))",sep="")))
+    }
+    eval(parse(text=paste("x=cbind(x,rep(phon",length(phons),",each=nrow(x)/length(phon",length(phons),")))",sep="")))
+    temp=as.character()
+    for(k in 1:length(phons)){
+      eval(parse(text=paste("temp=c(temp,'x[,",k,"]')",sep="")))
+    }
+    temp=paste(temp,collapse=",")
+    x=as.data.frame(x)
+    eval(parse(text=paste("x[,",length(phons)+1,"]=paste(",temp,",sep='')",sep="")))
+    eval(parse(text=paste("poss.spells=unique(x[,",length(phons)+1,"])",sep="")))
+    possible.spellings=c(possible.spellings,poss.spells)
+    cat("\tlength ''poss.spells'' =",length(poss.spells),"\n")
+  }
+  cat("total possible spellings =",length(possible.spellings),"\n")
+  cat("--------------------------------------------------\n\n")
+  return(possible.spellings)
+}
+

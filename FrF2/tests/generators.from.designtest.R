@@ -1,0 +1,5 @@
+require(FrF2)
+reshuffled <- FrF2(32,9, estimable=c("AC","BC","AB"))
+basic <- FrF2(32,9, estimable=c("CJ"))
+FrF2:::generators.from.design(basic)
+FrF2:::generators.from.design(reshuffled)

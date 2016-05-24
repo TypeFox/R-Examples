@@ -1,0 +1,32 @@
+"impr3d"<-function(){
+temp<-function(){
+calc3()
+symbols(c(62,78,69,62,78), c(42,42,66,42,42), circles = c(25,25,25,25,25),lwd=c(4,4,4,4,4),bg=c("white","white","white",NA,NA),fg=c("darkgreen","darkred","blue","darkgreen","darkred"), inches = FALSE,xlim=c(1,100),ylim=c(1,100),xaxt="n",yaxt="n",ylab=NA,xlab=NA)
+text(43,10,"Oligonucleotide 2",col="darkgreen",cex=1)
+text(87,10,"Oligonucleotide 3",col="darkred",cex=1)
+text(70,98,"Oligonucleotide 1",col="blue",cex=1)
+text(69,80,"x1",cex=2.5)
+text(45,40,"x2",cex=2.5)
+text(95,40,"x3",cex=2.5)
+text(20,93,c("The improvement of"))
+text(20,87,c("1st degeneracy"))
+if(nbsequence=="optional") text(20,81,c(paste("(x1) = ",zz1[1])))
+if(nbsequence!="optional") text(20,81,c(paste("(x1) = ",c(round((zz1[1]/as.numeric(nbsequence))*100))," %")))
+text(20,75,c("The improvement of"))
+text(20,69,c("2nd degeneracy"))
+if(nbsequence=="optional") text(20,63,c(paste("(x2) = ",zz1[2])))
+if(nbsequence!="optional") text(20,63,c(paste("(x2) = ",c(round((zz1[2]/as.numeric(nbsequence))*100))," %")))
+text(20,57,c("The improvement of"))
+text(20,51,c("3rd degeneracy"))
+if(nbsequence=="optional") text(20,45,c(paste("(x3) = ",zz1[3])))
+if(nbsequence!="optional") text(20,45,c(paste("(x3) = ",c(round((zz1[3]/as.numeric(nbsequence))*100))," %")))
+}
+tt11 <- tktoplevel()
+tkwm.title(tt11,"Improvements of degeneracies on oligonucleotide")
+img <- tkrplot(tt11,fun=temp,hscale=1.5,vscale=1.5)
+CopyToClip <- function(){tkrreplot(img)}
+copy.but <- tkbutton(tt11,text="Copy to Clipboard",command=CopyToClip)
+tkgrid(img)
+tkgrid(copy.but)
+tkgrid(tklabel(tt11,text="  ")) 
+}

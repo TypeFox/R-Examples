@@ -1,0 +1,10 @@
+data (mozart.df)
+interactionPlots(Time~Movement+Period,data=mozart.df)
+mozart.fit<-lm(Time~Movement+Period+Movement*Period,data=mozart.df)
+eovcheck(mozart.fit)
+mozart.fit1<-lm(log(Time)~Movement+Period+Movement*Period,data=mozart.df)
+eovcheck(mozart.fit1)
+summary2way(mozart.fit1,page="table")
+normcheck(mozart.fit1)
+summary2way(mozart.fit1,page="interaction")
+

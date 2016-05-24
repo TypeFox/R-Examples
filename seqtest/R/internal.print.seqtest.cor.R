@@ -1,0 +1,165 @@
+##########################################################################################################
+#
+# seqtest: Sequential Triangular Test
+#
+# Internal function: print.seqtest.cor
+#
+# Author: Takuya Yanagida <takuya.yanagida@univie.ac.at>
+#
+internal.print.seqtest.cor <- function(x, print.step = 1, print.max = 1, ...) {
+
+  #-----------------------------------------------------------------------------------
+  # Main function
+
+  if (print.step == 1) {
+
+    cat("\nSequential triangular test for Pearson's correlation coefficient\n\n")
+
+    if (x$spec$alternative == "two.sided") {
+
+        cat("  H0: rho =", x$spec$rho, " versus  H1: rho !=",  x$spec$rho, "\n")
+
+    } else {
+
+      if (x$spec$alternative == "less") {
+
+        cat("  H0: rho >=", x$spec$rho, " versus  H1: rho <",  x$spec$rho, "\n")
+
+      } else {
+
+        cat("  H0: rho <=", x$spec$rho, " versus  H1: rho >",  x$spec$rho, "\n")
+
+      }
+
+    }
+
+    ###
+
+    cat("  alpha:", x$spec$alpha, " beta:", x$spec$beta, " delta:", x$spec$delta, "\n\n")
+
+  }
+
+  ###
+
+  V.m.print <- ifelse(!is.na(x$res$V.m[x$res$step]), formatC(x$res$V.m[x$res$step], digits = 3, format = "f"), NA)
+  Z.m.print <- ifelse(!is.na(x$res$Z.m[x$res$step]), formatC(x$res$Z.m[x$res$step], digits = 3, format = "f"), NA)
+
+  if (!is.na(V.m.print) & !is.na(V.m.print)) {
+
+    # two-sided
+    if (x$spec$alternative == "two.sided") {
+
+      if (x$res$V.m[x$res$step] < x$tri$intersec) {
+
+        x.r <- range(c(-x$tri$a1 + 3 * x$tri$b1 * x$res$V.m[x$res$step],
+                       -x$tri$a2 + 3 * x$tri$b2 * x$res$V.m[x$res$step],
+                       x$tri$a1 + x$tri$b1 * x$res$V.m[x$res$step],
+                       x$tri$a2 + x$tri$b2 * x$res$V.m[x$res$step]))
+
+        cat("  Step", x$res$step, "\n",
+            "   V.m:    ", V.m.print, paste(rep(" ", times = 10 - nchar(V.m.print)), collapse = ""),
+            "Z.m:", paste(rep(" ", times = 9 - nchar(Z.m.print)), collapse = ""), Z.m.print, "\n",
+            paste0("   Continuation range | V.m: [",
+                   formatC(x.r[which.min(x.r)], digits = 3, format = "f"), ", ",
+                   formatC(x.r[which.max(x.r)], digits = 3, format = "f"), "]\n\n"))
+
+      } else {
+
+        if (all(x$res$V.m[x$res$step] < x$tri$V.max)) {
+
+          x1.1 <- formatC(-x$tri$a1 + 3 * x$tri$b1 * x$res$V.m[x$res$step], digits = 3, format = "f")
+          x1.2 <- formatC(-x$tri$a2 + 3 * x$tri$b2 * x$res$V.m[x$res$step], digits = 3, format = "f")
+
+          x2.1 <- formatC(x$tri$a1 + x$tri$b1 * x$res$V.m[x$res$step], digits = 3, format = "f")
+          x2.2 <- formatC(x$tri$a2 + x$tri$b2 * x$res$V.m[x$res$step], digits = 3, format = "f")
+
+          width.1 <- max(c(nchar(c(x1.1, x2.1)[which.min(c(x1.1, x2.1))]), nchar(formatC(c(x1.2, x2.2)[which.min(c(x1.2, x2.2))]))))
+          width.2 <- max(c(nchar(c(x1.1, x2.1)[which.max(c(x1.1, x2.1))]), nchar(formatC(c(x1.2, x2.2)[which.max(c(x1.2, x2.2))]))))
+
+          cat("  Step", x$res$step, "\n",
+              "   V.m:    ", V.m.print, paste(rep(" ", times = 10 - nchar(V.m.print)), collapse = ""),
+              "Z.m:", paste(rep(" ", times = 10 - nchar(Z.m.print)), collapse = ""), Z.m.print, "\n",
+              paste0("   Continuation range | V.m: [",
+                     formatC(c(x1.1, x2.1)[which.min(c(x1.1, x2.1))], width = width.1, format = "f"), ", ",
+                     formatC(c(x1.1, x2.1)[which.max(c(x1.1, x2.1))], width = width.2, format = "f"), "]\n",
+                     "                              [",
+                     formatC(c(x1.2, x2.2)[which.min(c(x1.2, x2.2))], width = width.1, format = "f"), ", ",
+                     formatC(c(x1.2, x2.2)[which.max(c(x1.2, x2.2))], width = width.2, format = "f"), "]\n\n"))
+
+        } else {
+
+          if (x$res$V.m[x$res$step] < x$tri$V.max[1]) {
+
+            x1.1 <- -x$tri$a1 + 3 * x$tri$b1 * x$res$V.m[x$res$step]
+            x2.1 <-  x$tri$a1 + x$tri$b1 * x$res$V.m[x$res$step]
+
+            cat("  Step", x$res$step, "\n",
+                "   V.m:    ", V.m.print, paste(rep(" ", times = 10 - nchar(V.m.print)), collapse = ""),
+                "Z.m:", paste(rep(" ", times = 9 - nchar(Z.m.print)), collapse = ""), Z.m.print, "\n",
+                paste0("   Continuation range | V.m: [",
+                       formatC(c(x1.1, x2.1)[which.min(c(x1.1, x2.1))], digits = 3, format = "f"), ", ",
+                       formatC(c(x1.1, x2.1)[which.max(c(x1.1, x2.1))], digits = 3, format = "f"), "]\n\n"))
+
+          } else {
+
+            x1.2 <- -x$tri$a2 + 3 * x$tri$b2 * x$res$V.m[x$res$step]
+            x2.2 <-  x$tri$a2 + x$tri$b2 * x$res$V.m[x$res$step]
+
+            cat("  Step", x$res$step, "\n",
+                "   V.m:    ", V.m.print, paste(rep(" ", times = 10 - nchar(V.m.print)), collapse = ""),
+                "Z.m:", paste(rep(" ", times = 9 - nchar(Z.m.print)), collapse = ""), Z.m.print, "\n",
+                paste0("   Continuation range | V.m: [",
+                       formatC(c(x1.2, x2.2)[which.min(c(x1.2, x2.2))], digits = 3, format = "f"), ", ",
+                       formatC(c(x1.2, x2.2)[which.max(c(x1.2, x2.2))], digits = 3, format = "f"), "]\n\n"))
+
+          }
+
+        }
+
+      }
+
+    # one-sided
+    } else {
+
+      x1 <- -x$tri$a + 3 * x$tri$b * x$res$V.m[x$res$step]
+      x2 <-  x$tri$a + x$tri$b * x$res$V.m[x$res$step]
+
+      cat("  Step", x$res$step, "\n",
+          "   V.m:    ", V.m.print, paste(rep(" ", times = 10 - nchar(V.m.print)), collapse = ""),
+          "Z.m:", paste(rep(" ", times = 9 - nchar(Z.m.print)), collapse = ""), Z.m.print, "\n",
+          paste0("   Continuation range | V.m: [",
+                 formatC(c(x1, x2)[which.min(c(x1, x2))], digits = 3, format = "f"), ", ",
+                 formatC(c(x1, x2)[which.max(c(x1, x2))], digits = 3, format = "f"), "]\n\n"))
+
+    }
+
+  } else {
+
+    cat("  Step", x$res$step, "\n",
+        "   V.m:       NA        Z.m:    NA\n",
+        "   Continuation range | V.m: [NA, NA]\n\n")
+
+  }
+
+  ###
+
+  if (x$res$decision != "continue" | print.step == print.max) {
+
+    if (x$res$decision == "continue") {
+
+      cat("  Test not finished, continue by adding data via update()\n",
+          " Current sample size for", x$res$step,
+          ifelse(x$res$step == 1, "correlation coefficient:", "correlation coefficients:"),
+          x$res$step, "x", x$spec$k, "=", x$res$step*x$spec$k, "\n\n")
+
+    } else {
+
+      cat("  Test finished:", ifelse(x$res$decision == "H0", "Keep null hypothesis (H0)", "Accept alternative hypothesis (H1)"), "\n",
+          " Final sample size for", x$res$step, ifelse(x$res$step == 1, "correlation coefficient:", "correlation coefficients:"),
+          x$res$step, "x", x$spec$k, "=", x$res$step * x$spec$k, "\n\n")
+
+    }
+
+  }
+
+}

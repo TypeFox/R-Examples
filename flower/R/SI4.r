@@ -1,0 +1,66 @@
+SI4<-function(dd,pop,ind){
+fls=as.factor(ind)
+pop=as.factor(pop)
+LL=levels(pop)
+a=length(LL)
+m=length(dd)
+DT=data.frame(pop,fls,dd)
+RRR=array(0,dim=c(1,a))
+colnames(RRR)=LL
+rownames(RRR)=c('SI4')
+Result=array(0,dim=c(a,5))
+colnames(Result)=c("n","min","max","mean","sd")
+rownames(Result)=LL
+for (i in 1:a){
+DD2=DT[DT$pop==LL[i],][,]
+m2=length(DD2)
+DDday=as.matrix(DD2[,3:m2])
+DDpop=DD2[,1:2]
+DDsub=data.frame(DDpop,DDday)
+AA=as.matrix(DDsub$fls)
+m3=length(levels(as.factor(AA)))
+DDResult=array(0,dim=c(m3,m2))
+colnames(DDResult)=colnames(DDsub)
+pit=array(0,dim=c(a,m2-2))
+colnames(pit)=colnames(DDsub[3:m2])
+rownames(pit)=LL
+for (j in 3:m2) {
+BB=aggregate(DDsub[,j], list(DDsub$pop,DDsub$fls), sum)
+DDResult[,1]=BB[,1]
+DDResult[,2]=BB[,2]
+DDResult[,j]=as.matrix(BB[,3])
+}
+ppresult=array(0,dim=c(1,m2-2))
+colnames(ppresult)=colnames(DDsub[3:m2])
+for (k in 3:m2){
+CC=DDResult[,k]
+ppresult[1,k-2]=length(CC[CC!=0])/length(CC)
+}
+pit[i,]=ppresult[1,]
+DDsub2=t(DDResult[,3:m2])
+colnames(DDsub2)=paste(LL[i],'-',levels(as.factor(AA)))
+m5=colSums(DDsub2)
+bij=array(0,dim=c(a,1))
+DDsub3=DDsub2/m5
+DDsub4=colSums(DDsub3)
+m6=length(DDsub3[1,])
+RR=array(0,dim=c(1,m6))
+colnames(RR)=colnames(DDsub3)
+for (h in 1:m6){
+EE=as.matrix(DDsub3[,h])*as.matrix(pit[i,])
+FF=sum(EE)
+RR[1,h]=FF
+}
+print(LL[i])
+print(paste(LL[i],"-SI4"))
+print(RR)
+RRn=length(RR)
+RRmin=min(RR)
+RRmax=max(RR)
+RRmean=mean(RR)
+RRsd=sd(RR)
+GG=c(RRn,RRmin,RRmax,RRmean,RRsd)
+Result[i,]=GG
+}
+list(Result.si4=Result)
+}

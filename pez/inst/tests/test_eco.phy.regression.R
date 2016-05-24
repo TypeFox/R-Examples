@@ -1,0 +1,51 @@
+#I'm not thoroughly testing the output of the quantile, mantel, etc. methods, because those are maintained by other people
+#Setup
+require(testthat)
+require(picante)
+data(phylocom)
+data <- comparative.comm(phylocom$phy, phylocom$sample, warn=FALSE)
+
+context("eco.phy.regression")
+
+test_that("quantile", {
+  set.seed(123)
+  basic.quantile <<- eco.phy.regression(data)
+  set.seed(123)
+  expect_that(basic.quantile$method, equals("quantile"))
+  expect_that(basic.quantile$method, equals(eco.phy.regression(data, method="quantile")$method))
+  expect_that(names(basic.quantile), equals(c("observed", "randomisations", "obs.slope", "rnd.slopes", "method", "permute", "randomisation", "type", "data")))
+  expect_that(basic.quantile$permute, equals(0))
+  expect_that(basic.quantile$method, equals("quantile"))
+  expect_that(basic.quantile$randomisations, equals(list()))
+  expect_that(round(basic.quantile$obs.slope,4), is_equivalent_to(-0.0556))
+  expect_that(basic.quantile$data, equals(data))
+  expect_that(basic.quantile, is_a("eco.xxx.regression"))
+  expect_that(basic.quantile$type, equals("eco.phy.regression"))
+})
+
+test_that("mantel", {
+  set.seed(123)
+  basic.mantel <<- eco.phy.regression(data, method="mantel")
+  expect_that(names(basic.mantel), equals(names(basic.quantile)))
+  expect_that(basic.mantel$permute, equals(basic.quantile$permute))
+  expect_that(basic.mantel$method, equals("mantel"))
+  expect_that(basic.mantel$randomisations, equals(basic.quantile$randomisations))
+  expect_that(round(basic.mantel$obs.slope,4), equals(-0.3656))
+  expect_that(basic.mantel$data, equals(data))
+  expect_that(basic.mantel, is_a("eco.xxx.regression"))
+  expect_that(basic.mantel$type, equals("eco.phy.regression"))
+})
+
+test_that("lm", {
+  set.seed(123)
+  basic.lm <<- eco.phy.regression(data, method="lm")
+  set.seed(123)
+  expect_that(names(basic.lm), equals(names(basic.quantile)))
+  expect_that(basic.lm$permute, equals(basic.quantile$permute))
+  expect_that(basic.lm$method, equals("lm"))
+  expect_that(basic.lm$randomisations, equals(basic.lm$randomisations))
+  expect_that(round(basic.lm$obs.slope,4), is_equivalent_to(-0.0422))
+  expect_that(basic.lm$data, equals(data))
+  expect_that(basic.lm, is_a("eco.xxx.regression"))
+  expect_that(basic.lm$type, equals("eco.phy.regression"))
+})

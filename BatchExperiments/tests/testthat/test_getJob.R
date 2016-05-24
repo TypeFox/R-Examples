@@ -1,0 +1,16 @@
+context("getJob")
+
+test_that("getJob", {  
+  r = makeTestRegistry()
+  p1 = addProblem(r, "one", 1)
+  p2 = addProblem(r, "two", 2)
+  a1 = addAlgorithm(r, "A", fun=function(static, dynamic) 1)
+  a2 = addAlgorithm(r, "B", fun=function(static, dynamic) 1)
+  addExperiments(r, c("one", "two"), c("A", "B"))
+  id = findExperiments(r, prob.pattern="two", algo.pattern="A")
+  expect_true(length(id) == 1)
+  j = getJob(r, id)
+  expect_equal(j$prob.id, "two")
+  expect_equal(j$algo.id, "A")
+  expect_equal(j$repl, 1L)
+})

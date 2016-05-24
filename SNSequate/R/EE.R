@@ -1,0 +1,23 @@
+EE<-function(Dist.X,Dist.Y,S.X=seq(0,length(Dist.X)-1,1),S.Y=seq(0,length(Dist.Y)-1,1),X){
+prov.X<-cdf.Dist(Dist.X,S.X)
+prov.Y<-cdf.Dist(Dist.Y,S.Y)
+DX<-prov.X$res.dist
+DY<-prov.Y$res.dist
+Seq.X<-prov.X$res.seq
+Seq.Y<-prov.Y$res.seq
+if (X<min(Seq.X)) res<-min(Seq.Y)
+else{
+I<-max(Seq.X[Seq.X<=X])
+ind<-(1:length(Seq.X))[Seq.X==I]
+I1<-Seq.X[ind+1]
+PI<-DX[ind]
+PI1<-DX[ind+1]
+Perc.X<-PI+(PI1-PI)*(X-I)/(I1-I)
+J<-max(Seq.Y[DY<=Perc.X])
+ind2<-(1:length(Seq.Y))[Seq.Y==J]
+J1<-Seq.Y[ind2+1]
+PJ<-DY[ind2]
+PJ1<-DY[ind2+1]
+res<-J+(Perc.X-PJ)*(J1-J)/(PJ1-PJ)}
+return(res)
+}

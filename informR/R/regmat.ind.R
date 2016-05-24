@@ -1,0 +1,9 @@
+regmat.ind<-function(reg,evl,...){
+   evl.str<-paste(evl,collapse="")
+   regret<-gregexpr(reg,evl.str,...)
+   if(!grepl(reg,evl.str)){return(NULL)}
+   pos1<-regret[[1]]
+   pos2<-pos1+(attr(regret[[1]],"match.length")-1)
+   pm.Mat<-cbind(start=pos1,stop=pos2,len=attr(pos1,"match.length"))
+   pm.Mat
+}

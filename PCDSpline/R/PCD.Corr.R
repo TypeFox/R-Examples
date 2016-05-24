@@ -1,0 +1,10 @@
+PCD.Corr<-function(x,beta,nu,gamma,t1,t2,t3,t4,order,knots){
+  mu0t1<-colSums(gamma*Ispline(t1,order,knots))
+  mu0t2<-colSums(gamma*Ispline(t2,order,knots))
+  mu0t3<-colSums(gamma*Ispline(t3,order,knots))
+  mu0t4<-colSums(gamma*Ispline(t4,order,knots))
+  lamb1<-(mu0t2-mu0t1)*exp(x%*%beta)
+  lamb2<-(mu0t4-mu0t3)*exp(x%*%beta)
+  rho<-((1+nu/lamb1)*(1+nu/lamb2))^(-0.5)
+  return(list(corr.rho=rho))
+}

@@ -1,0 +1,1 @@
+`ldata` <- as.data.frame(cbind("trat"=as.factor(c("Trat1","Trat1","Trat1","Trat2","Trat2","Trat2","Trat3","Trat3","Trat3","Trat4","Trat4","Trat4","Trat5","Trat5","Trat5")),"block"=as.factor(c("1","2","3","1","2","3","1","2","3","1","2","3","1","2","3")),"resp"=c(1.1,1.3,0.9,1.8,1.7,1.9,2.1,2.6,2.5,3.8,3.4,3.3,1.0,0.9,0.8)))

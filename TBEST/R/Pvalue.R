@@ -1,0 +1,104 @@
+Pvalue<-function(mystat,method="ML",Nexcmax=150){
+	x<-mystat$x
+	y<-mystat$y	
+	alpha<-0.05
+	beta<-0.6824
+	S<-25
+	iss<-0.1
+	max_isnan_counts<-5
+	c_max<-100
+	if(method=="ML"){
+		range<-c(-1,0.5)
+	}
+	if(method=="MOM"){
+                range<-c(-0.25,0.5)
+        }
+	#if(sum(y>x)>length(y)/2){
+        #        x<- -x
+        #        y<- -y
+        #}
+	Z<-1
+	initial<-Ppermest_opt(x,y,beta,method,Nexcmax,Z)
+	P<-initial[[1]]
+	dummy<-initial[[2]]
+	k<-initial[[3]]
+	if(!is.na(k)){
+	if(!(k>=range[1]&k<=range[2])){
+		c<-0
+		while(is.na(k)|!(k>=range[1]&k<=range[2])){
+        		Z<-abs(2*rnorm(1)+1)
+        		iter<-Ppermest_opt(x,y,beta,method,Nexcmax,Z)
+			P<-iter[[1]]
+			dummy<-iter[[2]]
+			k<-iter[[3]]
+        		c<-c + 1
+			if (c>c_max){
+				k<-1
+				Z<-NA
+				break
+			}
+		}
+	}
+	if(k==1){
+                initial_opt<-Ppermest_opt(x,y,alpha,method,Nexcmax,1)
+                P_opt<-initial_opt[[1]]
+                Pci_opt<-initial_opt[[2]]
+                k_opt<-initial_opt[[3]]
+                Z_opt<-NA
+        }
+	if(k!=1){
+		k_low<-k
+    		Z_up<-Z
+    		isnan_counts<-0
+    		while((k_low>=range[1]|is.na(k_low))&isnan_counts<=max_isnan_counts){
+        		Z_up<-Z_up+iss
+        		iter<-Ppermest_opt(x,y,beta,method,Nexcmax,Z_up)
+			P<-iter[[1]]
+                        dummy<-iter[[2]]
+                        k_low<-iter[[3]]
+        		if(is.na(k_low)){isnan_counts<-isnan_counts+1}
+    		}
+    		k_high<-k
+    		Z_down<-Z
+    		isnan_counts<-0
+    		while((k_high<=range[2]|is.na(k_high))&isnan_counts<=max_isnan_counts){
+        		Z_down<-Z_down-iss
+        		iter<-Ppermest_opt(x,y,beta,method,Nexcmax,Z_down)
+			P<-iter[[1]]
+                        dummy<-iter[[2]]
+                        k_high<-iter[[3]]
+        		if(is.na(k_high)){isnan_counts<-isnan_counts+1}
+		}
+    		Zvec<-seq(Z_down,Z_up,length=S)
+    		P<-rep(1,S) 
+		Pci<-matrix(ncol=2,nrow=S,data=1)
+    		k<-P 
+    		for(s in 1:S){
+        		iter_opt<-Ppermest_opt(x,y,beta,method,Nexcmax,Z=Zvec[s])
+			P[s]<-iter_opt[[1]]
+                	Pci[s,]<-iter_opt[[2]]
+                	k[s]<-iter_opt[[3]]
+    		}
+    		PciInterval<-abs(log10(Pci[,2])-log10(Pci[,1]))
+    		PciInterval[is.na(PciInterval)]<- Inf
+    		PciInterval[!(k>=range[1]&k<=range[2])]<- Inf
+    		if(all(is.infinite(PciInterval)|is.na(PciInterval))){
+        		iter_opt<-Ppermest_opt(x,y,alpha,method,Nexcmax,1)
+		        P_opt<-iter_opt[[1]]
+                        Pci_opt<-iter_opt[[2]]
+                        k_opt<-iter_opt[[3]]
+			Z_opt = 1
+		}
+    		if(!all(is.infinite(PciInterval)|is.na(PciInterval))){
+        		j<-which.min(PciInterval);
+        		iter_opt<-Ppermest_opt(x,y,alpha,method,Nexcmax,Z=Zvec[j])
+			P_opt<-iter_opt[[1]]
+                        Pci_opt<-iter_opt[[2]]
+                        k_opt<-iter_opt[[3]]
+			Z_opt<-Zvec[j]
+		}
+	}
+	return(P_opt)
+	}else{return(P)}
+	#return(list(P_opt,Pci_opt,k_opt))
+}

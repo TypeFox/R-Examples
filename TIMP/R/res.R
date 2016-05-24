@@ -1,0 +1,5 @@
+"res" <-
+function(...){
+	new("res", ...)
+}
+

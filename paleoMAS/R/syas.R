@@ -1,0 +1,36 @@
+syas <-
+function(x,y,z,fossil,age,delta,percen,method="canberra",
+	quant=0.05,plot=TRUE,window=3,detrend=FALSE,crossv,
+	maximum=0.99,classes=200,colors=c("red","blue"),line=TRUE,
+	ylabel="Age",xlabel="Parameter")
+{
+{
+	ak<-z[colnames(y),]
+	syn.as<-synthetic(x,y,z,delta,plot=FALSE,percen=percen)
+	distances<-fossil.dist(syn.as,fossil,method=method)
+	values<-fossil.values(distances,age,quant=quant,
+		detrend=detrend,crossv=crossv)
+	if(plot==TRUE){
+		dis<-distances[-1,]
+		ifelse(dis>quantile(dis,prob=maximum),quantile(dis,
+			prob=maximum),dis)->dis1
+		dis2<-matrix(as.integer(cut(dis1,seq(min(dis1),max(dis1),
+			l=classes),include.lowest=TRUE)),dim(dis1))
+		colorRampPalette(colors)(classes)->palette
+		image(x=distances[1,],y=values[,1],scale(t(dis2)),
+			col=palette,ylab=ylabel,xlab=xlabel)
+		if(line==TRUE){	
+			if(detrend==FALSE){
+				lines(values[,c(2,1)],type="l")
+				}
+			else{
+				lines(values[,c(3,1)],type="l")
+				}
+			}
+	}
+results<-list(syn.as,values)
+names(results)<-c("syn.as","values")
+return(results)
+}
+}
+

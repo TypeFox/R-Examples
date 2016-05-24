@@ -1,0 +1,10 @@
+data (oysters.df)
+boxplot(Oysters~Site,ylab="Number of Oysters",main="Boxplot of Oysters by Site",data=oysters.df)
+oyster.fit<-lm(Oysters~Site,data=oysters.df)
+eovcheck(oyster.fit)
+oyster.fit<-lm(log(Oysters)~Site,data=oysters.df)
+eovcheck(oyster.fit)
+normcheck(oyster.fit)
+summary1way(oyster.fit)
+multipleComp(oyster.fit)
+

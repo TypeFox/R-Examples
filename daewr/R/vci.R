@@ -1,0 +1,22 @@
+vci<-function(confl,c1,ms1,nu1,c2,ms2,nu2){
+  delta<-c1*ms1-c2*ms2
+  alpha<-1-confl
+  Falpha1<-qf(confl,nu1,10000000)
+  Falpha12<-qf(confl,nu1,nu2)
+  Fconf2<-qf(alpha,nu2,10000000)
+  Fconf12<-qf(alpha,nu1,nu2)
+  Falpha2<-qf(confl,nu2,10000000)
+  Fconf1<-qf(alpha,nu1,10000000)
+  Fconf12<-qf(alpha,nu1,nu2)
+  G1<-1-(1/Falpha1)
+  H2<-(1/Fconf2)-1
+  G12<-((Falpha12-1)**2-G1**2*Falpha12**2-H2**2)/Falpha12
+  VL<-G1**2*c1**2*ms1**2+H2**2*c2**2*ms2**2+G12*c1*c2*ms1*ms2
+  H1<-(1/Fconf1)-1
+  G2<-1-(1/Falpha2)
+  H12<-((1-Fconf12)**2-H1**2*Fconf12**2-G2**2)/Fconf12
+  VU<-H1**2*c1**2*ms1**2+G2**2*c2**2*ms2**2
+  L<-delta-sqrt(VL)
+  U<-delta+sqrt(VU)
+  cat("delta=",delta," Lower Limit=",L," Upper Limit=",U,"\n")
+}

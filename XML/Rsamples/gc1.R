@@ -1,0 +1,17 @@
+library(XML)
+doc = xmlParse(system.file("exampleData", "mtcars.xml", package = "XML"))
+nodes1 = getNodeSet(doc, "//record[@id='Mazda RX4']")
+.Call("R_getXMLRefCount", nodes1[[1]])
+nodes2 = getNodeSet(doc, "//record[@id='Mazda RX4']")
+.Call("R_getXMLRefCount", nodes2[[1]])
+.Call("R_getXMLRefCount", nodes1[[1]])
+
+rm(doc)
+gc()
+rm(nodes1)
+gc()
+.Call("R_getXMLRefCount", nodes2[[1]])
+gc()
+
+rm(nodes2)
+gc()

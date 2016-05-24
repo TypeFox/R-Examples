@@ -1,0 +1,1 @@
+as.im.bivden <- function(X, ...) return(im(t(X$Zm),xcol=X$X,yrow=X$Y))

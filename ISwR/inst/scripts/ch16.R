@@ -1,0 +1,40 @@
+t <- 0:10
+y <- rnorm(11, mean=5*exp(-t/5), sd=.2)
+plot(y ~ t)
+if (.make.epsf) dev.copy2eps(file="nonlin-sim.ps")
+nlsout <- nls(y ~ A*exp(-alpha*t), start=c(A=2, alpha=0.05))
+summary(nlsout) 
+attach(subset(juul2, age<20 & age>5 & sex==1))
+plot(height ~ age)
+if (.make.epsf) dev.copy2eps(file="juul-a-h.ps")
+plot(log(5.3-log(height))~age)
+if (.make.epsf) dev.copy2eps(file="gomp-dif.ps")
+lm(log(5.3-log(height))~age)
+fit <- nls(height~alpha*exp(-beta*exp(-gamma*age)),
+           start=c(alpha=exp(5.3),beta=exp(0.42),gamma=0.15))
+summary(fit)
+plot(age, height)
+newage <- seq(5,20,length=500)
+lines(newage, predict(fit,newdata=data.frame(age=newage)),lwd=2)
+if (.make.epsf) dev.copy2eps(file="gompertz.ps")
+
+fit <- nls(log(height)~log(alpha*exp(-beta*exp(-gamma*age))),
+start=c(alpha=exp(5.3),beta=exp(.12),gamma=.12))
+summary(fit)
+plot(age, log(height))
+lines(newage, predict(fit,newdata=data.frame(age=newage)),lwd=2)
+if (.make.epsf) dev.copy2eps(file="log-gompertz.ps")
+# count quoted in text, subtract 1 for SSD()
+length(ls(pattern="SS.*", "package:stats"))-1
+summary(nls(height~SSgompertz(age, Asym, b2, b3))) 
+cf <- coef(nls(height ~ SSgompertz(age, Asym, b2, b3)))
+summary(nls(log(height) ~ 
+               log(as.vector(SSgompertz(age,Asym, b2, b3))),
+            start=as.list(cf)))
+par(mfrow=c(3,1))
+plot(profile(fit))
+if (.make.epsf) dev.copy2eps(file="gomp-prof.ps")
+confint(fit)
+confint.default(fit)
+rm(list=ls())
+while(search()[2] != "package:ISwR") detach()

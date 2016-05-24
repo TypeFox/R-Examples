@@ -1,0 +1,3 @@
+RRprofStop<-function(){
+  Rprof(NULL)
+}
