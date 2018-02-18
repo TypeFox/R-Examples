@@ -151,7 +151,7 @@ NULL
 #'   Niklaus J. Grünwald. 2014. Sudden_Oak_Death_in_Oregon_Forests: Spatial and 
 #'   temporal population dynamics of the sudden oak death epidemic in Oregon 
 #'   Forests. ZENODO, doi:
-#'   \href{http://doi.org/10.5281/zenodo.13007}{10.5281/zenodo.13007}
+#'   \href{https://doi.org/10.5281/zenodo.13007}{10.5281/zenodo.13007}
 #'   
 #'   Goss, E. M., Larsen, M., Chastagner, G. A., Givens, D. R., and Grünwald, N.
 #'   J. 2009. Population genetic analysis infers migration pathways of 

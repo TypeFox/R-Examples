@@ -69,7 +69,7 @@
 #'
 #' Paparrizos J and Gravano L (2015). ``k-Shape: Efficient and Accurate Clustering of Time Series.''
 #' In \emph{Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data},
-#' series SIGMOD '15, pp. 1855-1870. ISBN 978-1-4503-2758-9, \url{http://doi.org/10.1145/2723372.2737793}.
+#' series SIGMOD '15, pp. 1855-1870. ISBN 978-1-4503-2758-9, \url{https://doi.org/10.1145/2723372.2737793}.
 #'
 #' Petitjean F, Ketterlin A and Gancarski P (2011). ``A global averaging method for dynamic time
 #' warping, with applications to clustering.'' \emph{Pattern Recognition}, \strong{44}(3), pp. 678 -
@@ -78,12 +78,12 @@
 #'
 #' Sakoe H and Chiba S (1978). ``Dynamic programming algorithm optimization for spoken word
 #' recognition.'' \emph{Acoustics, Speech and Signal Processing, IEEE Transactions on},
-#' \strong{26}(1), pp. 43-49. ISSN 0096-3518, \url{http://doi.org/10.1109/TASSP.1978.1163055}.
+#' \strong{26}(1), pp. 43-49. ISSN 0096-3518, \url{https://doi.org/10.1109/TASSP.1978.1163055}.
 #'
 #' Wang X, Mueen A, Ding H, Trajcevski G, Scheuermann P and Keogh E (2013). ``Experimental comparison
 #' of representation methods and distance measures for time series data.'' \emph{Data Mining and
 #' Knowledge Discovery}, \strong{26}(2), pp. 275-309. ISSN 1384-5810,
-#' \url{http://doi.org/10.1007/s10618-012-0250-5}, \url{http://dx.doi.org/10.1007/s10618-012-0250-5}.
+#' \url{https://doi.org/10.1007/s10618-012-0250-5}, \url{http://dx.doi.org/10.1007/s10618-012-0250-5}.
 #'
 #' Bedzek, J.C. (1981). Pattern recognition with fuzzy objective function algorithms.
 #'

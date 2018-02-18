@@ -12,9 +12,9 @@
 #' @name ks2013.3
 #' @usage ks2013.3
 #' @format A data.frame with 1440 rows and 6 variables.
-#' @source Klauer, K. C., & Singmann, H. (2013). Does logic feel good? Testing for intuitive detection of logicality in syllogistic reasoning. Journal of Experimental Psychology: Learning, Memory, and Cognition, 39(4), 1265-1273. http://doi.org/10.1037/a0030530
+#' @source Klauer, K. C., & Singmann, H. (2013). Does logic feel good? Testing for intuitive detection of logicality in syllogistic reasoning. Journal of Experimental Psychology: Learning, Memory, and Cognition, 39(4), 1265-1273. https://doi.org/10.1037/a0030530
 #' 
-#' Morsanyi, K., & Handley, S. J. (2012). Logic feels so good-I like it! Evidence for intuitive detection of logicality in syllogistic reasoning. Journal of Experimental Psychology: Learning, Memory, and Cognition, 38(3), 596-616. http://doi.org/10.1037/a0026099
+#' Morsanyi, K., & Handley, S. J. (2012). Logic feels so good-I like it! Evidence for intuitive detection of logicality in syllogistic reasoning. Journal of Experimental Psychology: Learning, Memory, and Cognition, 38(3), 596-616. https://doi.org/10.1037/a0026099
 #' 
 #' 
 #' 

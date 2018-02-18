@@ -31,20 +31,20 @@
 #'
 #' @source Simberloff, D. S., & Wilson, E. O.. (1969). Experimental Zoogeography
 #'   of Islands: The Colonization of Empty Islands. \emph{Ecology},
-#'   \bold{50(2)}, 278--296. \url{http://doi.org/10.2307/1934856}
+#'   \bold{50(2)}, 278--296. \url{https://doi.org/10.2307/1934856}
 #'
 #' @references Wilson, E. O.. (2010). Island Biogeography in the 1960s: THEORY
 #'   AND EXPERIMENT. In J. B. Losos and R. E. Ricklefs (Eds.), \emph{The Theory
 #'   of Island Biogeography Revisited} (pp. 1--12). Princeton University Press.
 #'   \cr \cr Simberloff, D. S., and Wilson, E. O.. (1969). Experimental
 #'   Zoogeography of Islands: The Colonization of Empty Islands. \emph{Ecology},
-#'   \bold{50(2)}, 278--296. \url{http://doi.org/10.2307/1934856} \cr \cr
+#'   \bold{50(2)}, 278--296. \url{https://doi.org/10.2307/1934856} \cr \cr
 #'   Wilson, E. O., and Simberloff, D. S.. (1969). Experimental Zoogeography of
 #'   Islands: Defaunation and Monitoring Techniques. \emph{Ecology},
-#'   \bold{50(2)}, 267--278. \url{http://doi.org/10.2307/1934855} \cr \cr
+#'   \bold{50(2)}, 267--278. \url{https://doi.org/10.2307/1934855} \cr \cr
 #'   Simberloff, D. S.. (1969). Experimental Zoogeography of Islands: A Model
 #'   for Insular Colonization. \emph{Ecology}, \bold{50(2)}, 296--314.
-#'   \url{http://doi.org/10.2307/1934857}
+#'   \url{https://doi.org/10.2307/1934857}
 #'
 #' @name simberloff
 NULL

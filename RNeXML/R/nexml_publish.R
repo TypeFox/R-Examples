@@ -78,7 +78,7 @@ nexml_figshare <- function(nexml,
   }
 
 
-  doi <- paste("http://doi.org/10.6084/m9.figshare", id, sep=".")
+  doi <- paste("https://doi.org/10.6084/m9.figshare", id, sep=".")
 
   rfigshare::fs_add_authors(id, authors = m[["dc:creator"]])
   rfigshare::fs_add_categories(id, categories)

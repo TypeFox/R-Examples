@@ -68,9 +68,9 @@
 #'
 #'Henseler, J., Ringle, C. M., & Sinkovics, R. R. (2009). The use of partial least squares path modeling in international marketing. \emph{Advances in International Marketing}, 20, 277–319.
 #'
-#'Rönkkö, M., & Evermann, J. (2013). A critical examination of common beliefs about partial least squares path modeling. \emph{Organizational Research Methods}, 16(3), 425–448. http://doi.org/10.1177/1094428112474693
+#'Rönkkö, M., & Evermann, J. (2013). A critical examination of common beliefs about partial least squares path modeling. \emph{Organizational Research Methods}, 16(3), 425–448. https://doi.org/10.1177/1094428112474693
 #'
-#'Rönkkö, M., McIntosh, C. N., & Antonakis, J. (2015). On the adoption of partial least squares in psychological research: Caveat emptor. \emph{Personality and Individual Differences}, (87), 76–84. http://doi.org/10.1016/j.paid.2015.07.019
+#'Rönkkö, M., McIntosh, C. N., & Antonakis, J. (2015). On the adoption of partial least squares in psychological research: Caveat emptor. \emph{Personality and Individual Differences}, (87), 76–84. https://doi.org/10.1016/j.paid.2015.07.019
 #'
 #'
 matrixpls.boot <- function(data, ..., R = 500,

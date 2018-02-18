@@ -90,7 +90,7 @@
 #'
 #'Lohmöller J.-B. (1989) \emph{Latent variable path modeling with partial least squares.} Heidelberg: Physica-Verlag.
 #'
-#'Rönkkö, M., McIntosh, C. N., & Antonakis, J. (2015). On the adoption of partial least squares in psychological research: Caveat emptor. \emph{Personality and Individual Differences}, (87), 76–84. \href{http://doi.org/10.1016/j.paid.2015.07.019}{DOI:10.1016/j.paid.2015.07.019}
+#'Rönkkö, M., McIntosh, C. N., & Antonakis, J. (2015). On the adoption of partial least squares in psychological research: Caveat emptor. \emph{Personality and Individual Differences}, (87), 76–84. \href{https://doi.org/10.1016/j.paid.2015.07.019}{DOI:10.1016/j.paid.2015.07.019}
 #'
 #'Wold, H. (1982). Soft modeling - The Basic Design And Some Extensions. In K. G. Jöreskog & S. Wold (Eds.),\emph{Systems under indirect observation: causality, structure, prediction} (pp. 1–54). Amsterdam: North-Holland.
 #'
