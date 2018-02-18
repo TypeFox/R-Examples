@@ -44,7 +44,7 @@
 #'
 #'Rönkkö, M., McIntosh, C. N., & Antonakis, J. (2015). On the adoption of partial least squares in 
 #'psychological research: Caveat emptor. \emph{Personality and Individual Differences}, (87), 76–84.
-#'\href{http://doi.org/10.1016/j.paid.2015.07.019}{DOI:10.1016/j.paid.2015.07.019}
+#'\href{https://doi.org/10.1016/j.paid.2015.07.019}{DOI:10.1016/j.paid.2015.07.019}
 NULL
 
 #'@describeIn signChangeCorrection individual sign change correction

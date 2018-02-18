@@ -37,7 +37,7 @@
 ##'
 ##' @export
 ##'
-##' @references Jamil and ter Braak (2013) Generalized linear mixed models can detect unimodal species-environment relationships. \emph{PeerJ} \strong{1:e95}; DOI \href{http://doi.org/10.7717/peerj.95}{10.7717/peerj.95}.
+##' @references Jamil and ter Braak (2013) Generalized linear mixed models can detect unimodal species-environment relationships. \emph{PeerJ} \strong{1:e95}; DOI \href{https://doi.org/10.7717/peerj.95}{10.7717/peerj.95}.
 ##'
 ##' @examples
 ##' set.seed(42)

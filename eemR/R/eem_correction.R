@@ -9,7 +9,7 @@
 #'
 #' @references Murphy, K. R., Stedmon, C. a., Graeber, D., & Bro, R. (2013).
 #'   Fluorescence spectroscopy and multi-way techniques. PARAFAC. Analytical
-#'   Methods, 5(23), 6557. http://doi.org/10.1039/c3ay41160e
+#'   Methods, 5(23), 6557. https://doi.org/10.1039/c3ay41160e
 #'
 #'   \url{http://xlink.rsc.org/?DOI=c3ay41160e}
 #'
@@ -145,11 +145,11 @@ eem_remove_blank <- function(eem, blank = NA) {
 #' Lakowicz, J. R. (2006). Principles of Fluorescence Spectroscopy.
 #' Boston, MA: Springer US.#'
 #'
-#' \url{http://doi.org/10.1007/978-0-387-46312-4}
+#' \url{https://doi.org/10.1007/978-0-387-46312-4}
 #'
 #' Murphy, K. R., Stedmon, C. a., Graeber, D., & Bro, R. (2013).
 #' Fluorescence spectroscopy and multi-way techniques. PARAFAC. Analytical
-#' Methods, 5(23), 6557. http://doi.org/10.1039/c3ay41160e#'
+#' Methods, 5(23), 6557. https://doi.org/10.1039/c3ay41160e#'
 #'
 #'  \url{http://xlink.rsc.org/?DOI=c3ay41160e}
 #'
@@ -262,7 +262,7 @@ eem_remove_scattering <- function(eem, type, order = 1, width = 10){
 #' Lawaetz, A. J., & Stedmon, C. A. (2009). Fluorescence Intensity Calibration
 #' Using the Raman Scatter Peak of Water. Applied Spectroscopy, 63(8), 936-940.
 #'
-#' \url{http://doi.org/10.1366/000370209788964548}
+#' \url{https://doi.org/10.1366/000370209788964548}
 #'
 #' Murphy, K. R., Stedmon, C. a., Graeber, D., & Bro, R. (2013). Fluorescence
 #' spectroscopy and multi-way techniques. PARAFAC. Analytical Methods, 5(23),
@@ -404,12 +404,12 @@ eem_raman_normalisation <- function(eem, blank = NA) {
 #'
 #' @references Parker, C. a., & Barnes, W. J. (1957). Some experiments with
 #'   spectrofluorimeters and filter fluorimeters. The Analyst, 82(978), 606.
-#'   \url{http://doi.org/10.1039/an9578200606}
+#'   \url{https://doi.org/10.1039/an9578200606}
 #'
 #'   Kothawala, D. N., Murphy, K. R., Stedmon, C. A., Weyhenmeyer, G. A., &
 #'   Tranvik, L. J. (2013). Inner filter correction of dissolved organic matter
 #'   fluorescence. Limnology and Oceanography: Methods, 11(12), 616-630.
-#'   \url{http://doi.org/10.4319/lom.2013.11.616}
+#'   \url{https://doi.org/10.4319/lom.2013.11.616}
 #'
 #' @return An object of class \code{eem} containing: \itemize{ \item sample The
 #'   file name of the eem. \item x A matrix with fluorescence values. \item em

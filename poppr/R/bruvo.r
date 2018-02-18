@@ -702,7 +702,7 @@ bruvo.msn <- function (gid, replen = 1, add = TRUE, loss = TRUE,
 #' @references Zhian N. Kamvar, Meg M. Larsen, Alan M. Kanaskie, Everett M. 
 #'   Hansen, & Niklaus J. Grünwald. Sudden_Oak_Death_in_Oregon_Forests: Spatial
 #'   and temporal population dynamics of the sudden oak death epidemic in Oregon
-#'   Forests. ZENODO, http://doi.org/10.5281/zenodo.13007, 2014.
+#'   Forests. ZENODO, https://doi.org/10.5281/zenodo.13007, 2014.
 #'   
 #'   Kamvar, Z. N., Larsen, M. M., Kanaskie, A. M., Hansen, E. M., & Grünwald,
 #'   N. J. (2015). Spatial and temporal analysis of populations of the sudden
@@ -767,7 +767,7 @@ consistent_replen <- function(index, alleles, replen){
 #' @references Zhian N. Kamvar, Meg M. Larsen, Alan M. Kanaskie, Everett M. 
 #'   Hansen, & Niklaus J. Grünwald. Sudden_Oak_Death_in_Oregon_Forests: Spatial
 #'   and temporal population dynamics of the sudden oak death epidemic in Oregon
-#'   Forests. ZENODO, http://doi.org/10.5281/zenodo.13007, 2014.
+#'   Forests. ZENODO, https://doi.org/10.5281/zenodo.13007, 2014.
 #'   
 #'   Kamvar, Z. N., Larsen, M. M., Kanaskie, A. M., Hansen, E. M., & Grünwald,
 #'   N. J. (2015). Spatial and temporal analysis of populations of the sudden

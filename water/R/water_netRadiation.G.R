@@ -451,8 +451,8 @@ albedo <- function(image.SR, aoi, coeff="Tasumi"){
 #' @author Fernando Fuentes Peñailillo
 #' @references 
 #' R. G. Allen, M. Tasumi, and R. Trezza, "Satellite-based energy balance for mapping evapotranspiration with internalized calibration (METRIC) - Model" Journal of Irrigation and Drainage Engineering, vol. 133, p. 380, 2007 \cr
-#' Carrasco-Benavides, M., Ortega-Farias, S., Lagos, L., Kleissl, J., Morales-Salinas, L., & Kilic, A. (2014). Parameterization of the Satellite-Based Model (METRIC) for the Estimation of Instantaneous Surface Energy Balance Components over a Drip-Irrigated Vineyard. Remote Sensing, 6(11), 11342-11371. http://doi.org/10.3390/rs61111342\cr
-#' Johnson, L. F. (2003). Temporal Stability of the NDVI-LAI Relationship in a Napa Valley Vineyard, 96-101. http://doi.org/10.1111/j.1755-0238.2003.tb00258.x
+#' Carrasco-Benavides, M., Ortega-Farias, S., Lagos, L., Kleissl, J., Morales-Salinas, L., & Kilic, A. (2014). Parameterization of the Satellite-Based Model (METRIC) for the Estimation of Instantaneous Surface Energy Balance Components over a Drip-Irrigated Vineyard. Remote Sensing, 6(11), 11342-11371. https://doi.org/10.3390/rs61111342\cr
+#' Johnson, L. F. (2003). Temporal Stability of the NDVI-LAI Relationship in a Napa Valley Vineyard, 96-101. https://doi.org/10.1111/j.1755-0238.2003.tb00258.x
 #' @export
 ## Cite Pocas work for LAI from METRIC2010
 LAI <- function(method="metric2010", image, aoi, L=0.1){

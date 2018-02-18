@@ -37,10 +37,10 @@
 #'   Letters}, \bold{18}, 451--461. \cr \cr Simberloff, D. S., and Wilson, E.
 #'   O.. (1969). Experimental Zoogeography of Islands: The Colonization of Empty
 #'   Islands. \emph{Ecology}, \bold{50(2)}, 278--296.
-#'   \url{http://doi.org/10.2307/1934856} \cr \cr Simberloff, D. S.. (1969).
+#'   \url{https://doi.org/10.2307/1934856} \cr \cr Simberloff, D. S.. (1969).
 #'   Experimental Zoogeography of Islands: A Model for Insular Colonization.
 #'   \emph{Ecology}, \bold{50(2)}, 296--314.
-#'   \url{http://doi.org/10.2307/1934857}
+#'   \url{https://doi.org/10.2307/1934857}
 #'
 #' @docType package
 #' @name island

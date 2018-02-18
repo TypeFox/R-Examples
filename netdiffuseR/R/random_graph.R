@@ -120,10 +120,10 @@ rgraph_er <- function(n=10, t=1, p=0.3, undirected=getOption("diffnet.undirected
 #' @references
 #' Bollobás, B´., Riordan, O., Spencer, J., & Tusnády, G. (2001). The degree
 #' sequence of a scale-free random graph process. Random Structures & Algorithms,
-#' 18(3), 279–290. \url{http://doi.org/10.1002/rsa.1009}
+#' 18(3), 279–290. \url{https://doi.org/10.1002/rsa.1009}
 #'
 #' Albert-László Barabási, & Albert, R. (1999). Emergence of Scaling in Random
-#' Networks. Science, 286(5439), 509–512. \url{http://doi.org/10.1126/science.286.5439.509}
+#' Networks. Science, 286(5439), 509–512. \url{https://doi.org/10.1126/science.286.5439.509}
 #'
 #' Albert-László Barabási. (2016). Network Science: (1st ed.). Cambridge University Press.
 #' Retrieved from \url{http://barabasi.com/book/network-science}
@@ -281,7 +281,7 @@ rgraph_ba <- function(m0=1L, m=1L, t=10L, graph=NULL) {
 #' networks. Nature, 393(6684), 440–2. \url{http://dx.doi.org/10.1038/30918}
 #'
 #' Newman, M. E. J. (2003). The Structure and Function of Complex Networks.
-#' SIAM Review, 45(2), 167–256. \url{http://doi.org/10.1137/S003614450342480}
+#' SIAM Review, 45(2), 167–256. \url{https://doi.org/10.1137/S003614450342480}
 #' @author George G. Vega Yon
 #' @examples
 #'

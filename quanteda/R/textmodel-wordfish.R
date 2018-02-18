@@ -75,7 +75,7 @@ setClass("textmodel_wordfish_predicted",
 #'   
 #'   Lowe, Will and Kenneth Benoit. 2013. "Validating Estimates of Latent Traits
 #'   from Textual Data Using Human Judgment as a Benchmark." \emph{Political Analysis}
-#'   21(3), 298-313. \url{http://doi.org/10.1093/pan/mpt002}
+#'   21(3), 298-313. \url{https://doi.org/10.1093/pan/mpt002}
 #' @author Benjamin Lauderdale and Kenneth Benoit
 #' @examples
 #' textmodel_wordfish(LBGexample, dir = c(1,5))

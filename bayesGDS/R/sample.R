@@ -61,7 +61,7 @@
 #' @references
 #' Braun, Michael and Paul Damien (2015).  Scalable Rejection Sampling for
 #' Bayesian Hierarchical Models. Marketing Science. Articles in Advance.
-#' http://doi.org/10.1287/mksc.2014.0901
+#' https://doi.org/10.1287/mksc.2014.0901
 #' @export
 sample.GDS <- function(n.draws, log.phi, post.mode, fn.dens.post,
                        fn.dens.prop, fn.draw.prop,

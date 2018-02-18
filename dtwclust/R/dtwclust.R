@@ -255,7 +255,7 @@
 #'
 #' Sakoe H and Chiba S (1978). ``Dynamic programming algorithm optimization for spoken word
 #' recognition.'' \emph{Acoustics, Speech and Signal Processing, IEEE Transactions on},
-#' \strong{26}(1), pp. 43-49. ISSN 0096-3518, \url{http://doi.org/10.1109/TASSP.1978.1163055}.
+#' \strong{26}(1), pp. 43-49. ISSN 0096-3518, \url{https://doi.org/10.1109/TASSP.1978.1163055}.
 #'
 #' Ratanamahatana A and Keogh E (2004). ``Everything you know about dynamic time warping is wrong.''
 #' In \emph{3rd Workshop on Mining Temporal and Sequential Data, in conjunction with 10th ACM SIGKDD
@@ -268,7 +268,7 @@
 #'
 #' Paparrizos J and Gravano L (2015). ``k-Shape: Efficient and Accurate Clustering of Time Series.''
 #' In \emph{Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data},
-#' series SIGMOD '15, pp. 1855-1870. ISBN 978-1-4503-2758-9, \url{http://doi.org/10.1145/2723372.2737793}.
+#' series SIGMOD '15, pp. 1855-1870. ISBN 978-1-4503-2758-9, \url{https://doi.org/10.1145/2723372.2737793}.
 #'
 #' @example inst/dtwclust-examples.R
 #'

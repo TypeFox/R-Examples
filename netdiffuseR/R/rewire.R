@@ -101,7 +101,7 @@
 #'
 #' @references
 #' Watts, D. J., & Strogatz, S. H. (1998). Collectivedynamics of "small-world" networks.
-#' Nature, 393(6684), 440–442. \url{http://doi.org/10.1038/30918}
+#' Nature, 393(6684), 440–442. \url{https://doi.org/10.1038/30918}
 #'
 #' Milo, R., Kashtan, N., Itzkovitz, S., Newman, M. E. J., & Alon, U.
 #' (2004). On the uniform generation of random graphs with prescribed degree sequences.
